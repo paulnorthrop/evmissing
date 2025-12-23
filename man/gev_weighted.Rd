@@ -139,5 +139,5 @@ summary(fit2)
 \references{
 McVittie, J. H. and Murphy, O. A. (2025) Weighted Parameter
 Estimators of the Generalized Extreme Value Distribution in the Presence
-of Missing Observations. arXiv preprint arXiv:2506.15964.
+of Missing Observations. \doi{10.48550/arXiv.2506.15964}
 }
