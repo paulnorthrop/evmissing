@@ -26,9 +26,8 @@ standard model diagnostic plots, with appropriate adjustment made for
 the presence of missing values. Example datasets containing missing
 values are provided.
 
-The `evmissing` package was created to accompany the research paper
-[Simpson, E. S. and Northrop, P. J. (2025) Accounting for missing data
-when modelling block maxima](https://arxiv.org/abs/2512.15429).
+The `evmissing` package was created to accompany Simpson and Northrop
+(2025).
 
 ## An example
 
@@ -162,6 +161,14 @@ Heffernan, Janet E., and Alec G. Stephenson. 2018.
 *<span class="nocase">i</span>smev: An Introduction to Statistical
 Modeling of Extreme Values*.
 <https://doi.org/10.32614/CRAN.package.ismev>.
+
+</div>
+
+<div id="ref-SimpsonNorthrop2025" class="csl-entry">
+
+Simpson, Emma S., and Paul J. Northrop. 2025. “Accounting for Missing
+Data When Modelling Block Maxima.”
+<https://doi.org/10.48550/arXiv.2512.15429>.
 
 </div>
 
