@@ -44,7 +44,7 @@ of non-missing values in block $i$ and let $M_{n_i}$ denote the block
 maximum of such a block. We suppose that $M_{n_i}$ has a GEV($\mu(n_i)$,
 $\sigma(n_i)$, $\xi$) distribution, where
 $\mu(n_i) = \mu + \sigma [(n_i/n)^\xi -1] / \xi$ and
-$\sigma(n_i) = \sigma (n_i/n)^\xi$. These equations are based on the
+$\sigma(n_i) = \sigma (n_i/n)^\xi$. These expressions are based on the
 supposition that $M_{n_i}$ has a distribution function of
 $G(x)^{n_i/n}$, where $n_i/n$ reflects the effective block size for
 block $i$ relative to the full block size.
