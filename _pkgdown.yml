@@ -1,0 +1,52 @@
+destination: docs
+
+url: https://github.com/paulnorthrop/evmissing
+
+development:
+  mode: release
+
+template:
+  bootstrap: 5
+  bootswatch: flatly
+  math-rendering: mathjax
+
+reference:
+  - title: Package
+    desc: ~
+    contents:
+      - "evmissing"
+  - title: GEV Inference
+    desc: ~
+    contents:
+      - "block_maxima"
+      - "gev_mle"
+      - "gev_bayes"
+      - "gev_weighted"
+      - "evmissing_methods"
+      - "confint_gev_methods"
+  - title: Return levels
+    desc: ~
+    contents:
+      - "gev_return"
+      - "return_level_methods"
+      - "confint_return_level_methods"
+  - title: Example datasets
+    desc: ~
+    contents:
+      - "BloomsburyOzone"
+      - "BloomsburyOzoneMaxima"
+      - "BrestSurgeDays"
+      - "BrestSurgeMaxima"
+      - "BrestSurgeMissing"
+      - "PlymouthOzone"
+      - "PlymouthOzoneMaxima"
+      - "days"
+  - title: GEV influence curves
+    desc: ~
+    contents:
+      - "gev_influence"
+      - "gev_influence_rl"
+  - title: Simulation
+    desc: ~
+    contents:
+      - "sim_data"

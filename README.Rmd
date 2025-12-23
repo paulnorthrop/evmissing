@@ -1,0 +1,122 @@
+---
+output: github_document
+bibliography: SimpsonNorthrop2025/refs.bib
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  fig.align = "center",
+  out.width = "100%"
+)
+library(htmltools)
+knitr::knit_hooks$set(imgcenter = function(before, options, envir){
+  if (before) {
+    HTML("<p align='center'>")
+  } else {
+    HTML("</p>")
+  }
+})
+```
+
+[![Appveyor Build status](https://ci.appveyor.com/api/projects/status/99jojhgk9t4agdmv/branch/main?svg=true)](https://ci.appveyor.com/project/paulnorthrop/evmissing/branch/main)
+[![R-CMD-check](https://github.com/paulnorthrop/evmissing/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/paulnorthrop/evmissing/actions/workflows/R-CMD-check.yaml)
+[![Coverage Status](https://codecov.io/github/paulnorthrop/evmissing/coverage.svg?branch=master)](https://app.codecov.io/github/paulnorthrop/evmissing?branch=master)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/evmissing)](https://cran.r-project.org/package=evmissing)
+[![Downloads (monthly)](https://cranlogs.r-pkg.org/badges/evmissing?color=brightgreen)](https://cran.r-project.org/package=evmissing)
+[![Downloads (total)](https://cranlogs.r-pkg.org/badges/grand-total/evmissing?color=brightgreen)](https://cran.r-project.org/package=evmissing)
+
+## Extreme Value Analyses with Missing Data
+
+Performs likelihood-based extreme value inferences with adjustment for the presence of missing values. A GEV distribution is fitted to block maxima using maximum likelihood estimation, with the GEV location and scale parameter reflecting the numbers of non-missing raw values in each block. A Bayesian version is also provided. For the purposes of comparison, there are options to make no adjustment for missing values or to discard any block maximum for which greater than a percentage of the underlying raw values are missing. A plot method provides a set of standard model diagnostic plots, with appropriate adjustment made for the presence of missing values. Example datasets containing missing values are provided.
+
+The `evmissing` package was created to accompany the research paper [Simpson, E. S. and Northrop, P. J. (2025) Accounting for missing data when modelling block maxima](https://arxiv.org/abs/2512.15429).
+
+## An example
+
+The main function in `evmissing` is `gev_mle()`, which fits a GEV distribution to block maxima using maximum likelihood estimation, with the option to make an adjustment for the numbers of non-missing raw values in each block. 
+
+The main adjustment is based on the strong assumption that missing values occur completely at random. We suppose that a block maximum $M_n$ based on a full block of length $n$ has a GEV($\mu$, $\sigma$, $\xi$) distribution, with distribution function $G(x)$. Let $n_i$ be the number of non-missing values in block $i$ and let $M_{n_i}$ denote the block maximum of such a block. We suppose that $M_{n_i}$ has a GEV($\mu(n_i)$, $\sigma(n_i)$, $\xi$) distribution, where $\mu(n_i) = \mu + \sigma [(n_i/n)^\xi -1] / \xi$, $\sigma(n_i) = \sigma (n_i/n)^\xi$.
+
+### Sea surge height data
+
+We illustrate this using the data `BrestSurgeMaxima`, which is a data frame
+containing annual maximum sea surge heights (in cm) at Brest, France for the years 1846-2007 inclusive. 
+
+```{r}
+library(evmissing)
+head(BrestSurgeMaxima)
+```
+
+In addition to the annual maxima this data frame includes `notNA`, the number of days in each year for which raw data were available, and `n`, the number of days in the year, that is, the block length. The function `block_maxima()` can be used to create data of this format from a raw time series and information about how blocks are defined. Alternatively, we can provide a raw time series directly to `gev_mle()`.
+
+### Model fitting
+
+```{r}
+# Make the adjustment
+fit_adjust <- gev_mle(BrestSurgeMaxima)
+summary(fit_adjust)
+
+# Make no adjustment
+fit_no_adjust <- gev_mle(BrestSurgeMaxima, adjust = FALSE)
+summary(fit_no_adjust)
+```
+
+The most obvious difference between these model fits is that the estimated location parameter with adjustment (52.27 cm) is smaller than that when the adjustment is used (52.89 cm). This is as expected because if some of the data 
+that could contribute to an annual maximum are missing then the observed annual
+maximum is stochastically smaller than the unobserved maximum based on full 
+data.
+
+Alternatively, if the argument `adjust` to `gev_mle()` is a numeric scalar then any block maximum for which greater than `adjust` percent of the underlying raw values are missing is discarded before fitting a GEV distribution, with no further adjustment made.
+
+### Model diagnostic plots
+
+The plot method for an object returned from `gev_mle` creates visual model diagnostics like those described in @Coles2001 and implemented in @ismev, where the values plotted have been adjusted, where necessary, for the presence of missing values. 
+
+```{r echo=FALSE}
+library(htmltools)
+knitr::opts_chunk$set(
+  fig.align = "center"
+)
+knitr::knit_hooks$set(imgcenter = function(before, options, envir){
+  if (before) {
+    HTML("<p align='center'>")
+  } else {
+    HTML("</p>")
+  }
+})
+```    
+
+```{r plots, echo = TRUE, eval = FALSE, fig.width = 5, fig.height = 5, out.width="50%"}
+plot(fit_adjust)
+```    
+```{r plots, echo = FALSE, imgcenter = TRUE, fig.width = 5, fig.height = 5, out.width="60%"}
+```    
+
+We see that overall the GEV model fits these data well, although the largest annual maximum sea surge height lies outside the profile-based 95\% confidence interval that is relevant to this observation.
+
+## Installation
+
+```{r, echo = FALSE}
+released <- FALSE
+```
+
+```{asis, echo = !released}
+To install this development version from GitHub:
+```
+```{r github_installation, eval = FALSE, echo = !released}
+remotes::install_github("paulnorthrop/evmissing")
+```
+
+```{asis, echo = released}
+To install the current released version from CRAN:
+```
+```{r cran_installation, eval = FALSE, echo = released}
+install.packages("evmissing")
+```
+
+## References
