@@ -2,3 +2,6 @@
 ^\.Rproj\.user$
 ^refs\.bib$
 ^\.github$
+^README\.Rmd$
+^appveyor\.yml$
+^_pkgdown\.yml$
