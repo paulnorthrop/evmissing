@@ -2,15 +2,15 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 [![Appveyor Build
-status](https://ci.appveyor.com/api/projects/status/99jojhgk9t4agdmv/branch/main?svg=true)](https://ci.appveyor.com/project/paulnorthrop/evmiss/branch/main)
-[![R-CMD-check](https://github.com/paulnorthrop/evmiss/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/paulnorthrop/evmiss/actions/workflows/R-CMD-check.yaml)
+status](https://ci.appveyor.com/api/projects/status/99jojhgk9t4agdmv/branch/main?svg=true)](https://ci.appveyor.com/project/paulnorthrop/evmissing/branch/main)
+[![R-CMD-check](https://github.com/paulnorthrop/evmissing/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/paulnorthrop/evmissing/actions/workflows/R-CMD-check.yaml)
 [![Coverage
-Status](https://codecov.io/github/paulnorthrop/evmiss/coverage.svg?branch=master)](https://app.codecov.io/github/paulnorthrop/evmiss?branch=master)
-[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/evmiss)](https://cran.r-project.org/package=evmiss)
+Status](https://codecov.io/github/paulnorthrop/evmissing/coverage.svg?branch=master)](https://app.codecov.io/github/paulnorthrop/evmissing?branch=master)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/evmissing)](https://cran.r-project.org/package=evmissing)
 [![Downloads
-(monthly)](https://cranlogs.r-pkg.org/badges/evmiss?color=brightgreen)](https://cran.r-project.org/package=evmiss)
+(monthly)](https://cranlogs.r-pkg.org/badges/evmissing?color=brightgreen)](https://cran.r-project.org/package=evmissing)
 [![Downloads
-(total)](https://cranlogs.r-pkg.org/badges/grand-total/evmiss?color=brightgreen)](https://cran.r-project.org/package=evmiss)
+(total)](https://cranlogs.r-pkg.org/badges/grand-total/evmissing?color=brightgreen)](https://cran.r-project.org/package=evmissing)
 
 ## Extreme Value Analyses with Missing Data
 
@@ -26,13 +26,13 @@ standard model diagnostic plots, with appropriate adjustment made for
 the presence of missing values. Example datasets containing missing
 values are provided.
 
-The `evmiss` package was created to accompany the research paper
+The `evmissing` package was created to accompany the research paper
 [Simpson, E. S. and Northrop, P. J. (2025) Accounting for missing data
 when modelling block maxima](https://arxiv.org/abs/2512.15429).
 
 ## An example
 
-The main function in `evmiss` is `gev_mle()`, which fits a GEV
+The main function in `evmissing` is `gev_mle()`, which fits a GEV
 distribution to block maxima using maximum likelihood estimation, with
 the option to make an adjustment for the numbers of non-missing raw
 values in each block.
@@ -54,7 +54,7 @@ frame containing annual maximum sea surge heights (in cm) at Brest,
 France for the years 1846-2007 inclusive.
 
 ``` r
-library(evmiss)
+library(evmissing)
 head(BrestSurgeMaxima)
 #>      maxima notNA   n block
 #> 1846 59.987   361 365     1
@@ -137,7 +137,7 @@ largest annual maximum sea surge height lies outside the profile-based
 To install this development version from GitHub:
 
 ``` r
-remotes::install_github("paulnorthrop/evmiss")
+remotes::install_github("paulnorthrop/evmissing")
 ```
 
 ## References
