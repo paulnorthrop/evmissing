@@ -37,15 +37,18 @@ distribution to block maxima using maximum likelihood estimation, with
 the option to make an adjustment for the numbers of non-missing raw
 values in each block.
 
-The main adjustment is based on the strong assumption that missing
-values occur completely at random. We suppose that a block maximum $M_n$
-based on a full block of length $n$ has a GEV($\mu$, $\sigma$, $\xi$)
+Our adjustment is based on the strong assumption that missing values
+occur completely at random. We suppose that a block maximum $M_n$ based
+on a full block of length $n$ has a GEV($\mu$, $\sigma$, $\xi$)
 distribution, with distribution function $G(x)$. Let $n_i$ be the number
 of non-missing values in block $i$ and let $M_{n_i}$ denote the block
 maximum of such a block. We suppose that $M_{n_i}$ has a GEV($\mu(n_i)$,
 $\sigma(n_i)$, $\xi$) distribution, where
-$\mu(n_i) = \mu + \sigma [(n_i/n)^\xi -1] / \xi$,
-$\sigma(n_i) = \sigma (n_i/n)^\xi$.
+$\mu(n_i) = \mu + \sigma [(n_i/n)^\xi -1] / \xi$ and
+$\sigma(n_i) = \sigma (n_i/n)^\xi$. These equations are based on the
+supposition that $M_{n_i}$ has a distribution function of
+$G(x)^{n_i/n}$, where $n_i/n$ reflects the effective block size for
+block $i$ relative to the full block size.
 
 ### Sea surge height data
 
