@@ -11,7 +11,7 @@ Authors@R: c(
 Maintainer: Paul J. Northrop <p.northrop@ucl.ac.uk>
 Description: Performs likelihood-based extreme value inferences with 
     adjustment for the presence of missing values based on Simpson and 
-    Northrop (2025) <arXiv:2512.15429>. A Generalised Extreme Value
+    Northrop (2025) <doi:10.48550/arXiv.2512.15429>. A Generalised Extreme Value
     distribution is fitted to block maxima using maximum likelihood estimation, 
     with the location and scale parameters reflecting the numbers of 
     non-missing raw values in each block. A Bayesian version is also provided. 
