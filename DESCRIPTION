@@ -22,11 +22,9 @@ Description: Performs likelihood-based extreme value inferences with
 Imports: gamlssx,
     graphics,
     itp,
-    Monte.Carlo.se,
     nieve,
     revdbayes,
     rust,
-    R.utils,
     stats
 License: GPL (>= 3)
 LazyData: TRUE
