@@ -26,3 +26,20 @@ infrl <- gev_influence_rl(z = z, mu = 0, sigma = 1, xi = 0.1, m = m)
 test_that("GEV influence fn for mu = that for corresponding return level", {
   testthat::expect_equal(infmu[, 3], infrl[, 3])
 })
+
+# Check that we can pass graphical parameters to plot.gev_influence() and
+# plot.gev_influence_rl() pass
+
+par_input <- list(x = infmu, main = "", cex.axis = 1.25, cex.lab = 1.5,
+                  col = 3:1, lty = 3:1, lwd = 1:3)
+par_output <- do.call(plot, par_input)
+test_that("plot.gev_influence() graphical parameters", {
+  testthat::expect_equal(par_output, par_input[-1])
+})
+
+par_input <- list(x = infrl, main = "", cex.axis = 1.25, cex.lab = 1.5,
+                  col = 3:1, lty = 3:1, lwd = 1:3)
+par_output <- do.call(plot, par_input)
+test_that("plot.gev_influence_rl() graphical parameters", {
+  testthat::expect_equal(par_output, par_input[-1])
+})
