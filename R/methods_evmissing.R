@@ -187,8 +187,8 @@ logLik.evmissing <- function(object, ...) {
 #'   values in the summary.
 #' @rdname evmissing_methods
 #' @export
-summary.evmissing <- function(object, digits = max(3, getOption("digits") - 3L),
-                           ...) {
+summary.evmissing <- function(object,
+                              digits = max(3, getOption("digits") - 3L), ...) {
   res <- list()
   res$call <- attr(object, "call")
   mles <- signif(coef(object), digits = digits)
@@ -258,8 +258,9 @@ print.summary.evmissing <- function(x, ...) {
 #'   `epsilon` to be a small positive value, for example, `epsilon = 1e-4`.
 #' @rdname evmissing_methods
 #' @export
-confint.evmissing <- function(object, parm = "all", level = 0.95, profile = FALSE,
-                           mult = 2, faster = FALSE, epsilon = 1e-4, ...) {
+confint.evmissing <- function(object, parm = "all", level = 0.95,
+                              profile = FALSE, mult = 2, faster = FALSE,
+                              epsilon = 1e-4, ...) {
   # GEV parameter names
   parm_values <- c("mu", "sigma", "xi")
   # Convert numeric values for parm to parameter names
