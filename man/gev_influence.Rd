@@ -49,7 +49,9 @@ corresponding values of \code{y}. Columns 3-5 contain the values of the GEV
 influence function for \eqn{\mu}, \eqn{\sigma} and \eqn{\xi} respectively
 at the values of \code{z}.
 
-\code{plot.gev_influence}: nothing, only the plot is produced.
+\code{plot.gev_influence}: a list of the graphical parameters used in producing
+the plot, either the defaults or supplied via \code{...}, is returned
+invisibly.
 }
 \description{
 Calculates influence function curves for maximum likelihood estimators of

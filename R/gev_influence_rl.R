@@ -22,7 +22,9 @@
 #'   influence function for the return levels in `m` respectively at the values
 #'   of `z`.
 #'
-#'   `plot.gev_influence_rl`: nothing, only the plot is produced.
+#'   `plot.gev_influence_rl`: a list of the graphical parameters used in producing
+#'   the plot, either the defaults or supplied via `...`, is returned
+#'   invisibly.
 #' @references Hampel, F. R., Ronchetti, E. M., Rousseeuw, P. J., and
 #'   Stahel, W. A. (2005). Robust Statistics. Wiley-Interscience, New York.
 #'   \doi{10.1002/9781118186435}
@@ -196,5 +198,7 @@ plot.gev_influence_rl <- function(x, xvar = c("z", "y"), vlines, ...) {
   }
   legend_args <- c(dots, list(col = col_vec, lty = lty_vec, lwd = lwd_vec))
   do.call(legend_fn, legend_args)
-  return(invisible())
+  # Return a list of the graphical parameters used
+  par_list <- c(dots, list(col = col_vec, lty = lty_vec, lwd = lwd_vec))
+  return(invisible(par_list))
 }

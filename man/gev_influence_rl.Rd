@@ -50,7 +50,9 @@ corresponding values of \code{y}. Columns 3-5 contain the values of the GEV
 influence function for the return levels in \code{m} respectively at the values
 of \code{z}.
 
-\code{plot.gev_influence_rl}: nothing, only the plot is produced.
+\code{plot.gev_influence_rl}: a list of the graphical parameters used in producing
+the plot, either the defaults or supplied via \code{...}, is returned
+invisibly.
 }
 \description{
 Calculates influence function curves for maximum likelihood estimators of
