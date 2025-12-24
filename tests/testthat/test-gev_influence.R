@@ -23,6 +23,6 @@ m <- c(1 / (1 - exp(-1)), 50, 100)
 infmu <- gev_influence(z = z, mu = 0, sigma = 1, xi = 0.1)
 infrl <- gev_influence_rl(z = z, mu = 0, sigma = 1, xi = 0.1, m = m)
 
-test_that("GEV influence fn for mu = that for correspnding return level", {
+test_that("GEV influence fn for mu = that for corresponding return level", {
   testthat::expect_equal(infmu[, 3], infrl[, 3])
 })
