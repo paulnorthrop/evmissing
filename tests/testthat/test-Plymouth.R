@@ -120,3 +120,22 @@ test_that("plot.evmissing, RL CI upper prof = TRUE > prof = FALSE", {
 test_that("plot.evmissing, RL CI lower prof = TRUE > prof = FALSE", {
   testthat::expect_gt(profTRUE[2, 1], profFALSE[2, 1])
 })
+
+# Check plot.conf_gev()
+
+confPlymouth <- confint(fitPlymouth1, profile = TRUE)
+conf_mu <- plot(confPlymouth)
+conf_sigma <- plot(confPlymouth, parm = "sigma")
+conf_xi <- plot(confPlymouth, parm = "xi")
+
+test_that("plot.conf_gev() returns the correct interval for mu", {
+  testthat::expect_equal(confPlymouth[1, ], conf_mu)
+})
+
+test_that("plot.conf_gev() returns the correct interval for sigma", {
+  testthat::expect_equal(confPlymouth[2, ], conf_sigma)
+})
+
+test_that("plot.conf_gev() returns the correct interval for xi", {
+  testthat::expect_equal(confPlymouth[3, ], conf_xi)
+})
