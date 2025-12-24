@@ -467,9 +467,9 @@ confint.evmissing <- function(object, parm = "all", level = 0.95, profile = FALS
 #' @rdname evmissing_methods
 #' @export
 plot.evmissing <- function(x, adjust = TRUE,
-                        which = c("pp", "qq", "return", "density"),
-                        m = c(2, 10, 100, 1000), level = 0.95, profile = TRUE,
-                        num, npy = 1, ...) {
+                           which = c("pp", "qq", "return", "density"),
+                           m = c(2, 10, 100, 1000), level = 0.95,
+                           profile = TRUE, num, npy = 1, ...) {
   # Choose which plots to produce
   if (!missing(which)) {
     if (is.character(which)) {
