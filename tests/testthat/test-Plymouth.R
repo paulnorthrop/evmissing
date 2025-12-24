@@ -121,9 +121,16 @@ test_that("plot.evmissing, RL CI lower prof = TRUE > prof = FALSE", {
   testthat::expect_gt(profTRUE[2, 1], profFALSE[2, 1])
 })
 
-# Check plot.conf_gev()
+# Check print.conf_gev()
 
 confPlymouth <- confint(fitPlymouth1, profile = TRUE)
+
+test_that("print.conf_gev() returns its first argument", {
+  testthat::expect_equal(print(confPlymouth), confPlymouth)
+})
+
+# Check plot.conf_gev()
+
 conf_mu <- plot(confPlymouth)
 conf_sigma <- plot(confPlymouth, parm = "sigma")
 conf_xi <- plot(confPlymouth, parm = "xi")
