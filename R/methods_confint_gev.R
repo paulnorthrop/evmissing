@@ -21,7 +21,8 @@
 #'   but will be triangular in the middle.
 #' @return `print.confint_gev`: the argument `x` is returned, invisibly.
 #'
-#'   `plot.confint_gev`: nothing. Only the plots are produced.
+#'   `plot.confint_gev`: a numeric vector containing the confidence limits for
+#'   the parameter requested in `parm` is returned invisibly.
 #' @section Examples: See [`evmissing_methods`].
 #' @seealso [`gev_mle`] and [`evmissing_methods`].
 #' @name confint_gev_methods
@@ -95,5 +96,5 @@ plot.confint_gev <- function(x, parm = c("mu", "sigma", "xi"), add = TRUE,
     legend_text <- paste0(level, "% CI: (", rlimits[1], ",", rlimits[2], ")")
     graphics::legend("bottom", legend = legend_text)
   }
-  return(invisible())
+  return(invisible(limits))
 }

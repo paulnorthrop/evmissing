@@ -35,7 +35,8 @@ limits in the legend, if \code{add = TRUE}.}
 \value{
 \code{print.confint_gev}: the argument \code{x} is returned, invisibly.
 
-\code{plot.confint_gev}: nothing. Only the plots are produced.
+\code{plot.confint_gev}: a numeric vector containing the confidence limits for
+the parameter requested in \code{parm} is returned invisibly.
 }
 \description{
 Methods for objects of class \code{"confint_gev"} returned from
