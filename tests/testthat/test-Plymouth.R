@@ -121,6 +121,12 @@ test_that("plot.evmissing, RL CI lower prof = TRUE > prof = FALSE", {
   testthat::expect_gt(profTRUE[2, 1], profFALSE[2, 1])
 })
 
+prof_qq <- plot(fitPlymouth1, profile = FALSE, which = "qq")
+prof_2 <- plot(fitPlymouth1, profile = FALSE, which = 2)
+test_that("plot.evmissing, QQ plot two ways", {
+  testthat::expect_equal(prof_qq, prof_2)
+})
+
 # Check print.conf_gev()
 
 confPlymouth <- confint(fitPlymouth1, profile = TRUE)
