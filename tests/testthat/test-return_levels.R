@@ -4,7 +4,9 @@
 # Fit a GEV distribution to block maxima from the full data
 fit2 <- gev_mle(sdata$data_miss, block_length = sdata$block_length,
                 init = "moments")
-summary(fit2)
+test_that("summary.evmissing()", {
+  testthat::expect_equal(print(summary(fit2)), summary(fit2), ignore_attr = TRUE)
+})
 
 # Extract the MLEs of the GEV parameters
 mles <- fit2$par

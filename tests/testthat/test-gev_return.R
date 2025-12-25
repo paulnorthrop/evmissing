@@ -3,6 +3,9 @@
 
 fit <- gev_mle(PlymouthOzoneMaxima, method = "L-BFGS-B")
 rl <- gev_return(fit, m = c(50, 100))
+test_that("summary.return_level()", {
+  testthat::expect_equal(print(summary(rl)), summary(rl), ignore_attr = TRUE)
+})
 
 # Profile-based confidence intervals, faster = TRUE
 prof <- confint(rl, profile = TRUE, mult = 32, faster = TRUE)
