@@ -35,9 +35,11 @@ test_that("gev_mle() vs gev_weighted scheme 2: symmetric confint", {
 
 # profile confint
 conf0 <- confint(fit0, profile = TRUE)
-test_that("gev_mle() vs gev_weighted scheme 1: symmetric confint", {
+conf0ep_lt_0 <- confint(fit0, profile = TRUE, epsilon = -1)
+test_that("gev_mle() vs gev_weighted scheme 1: profile confint", {
   testthat::expect_equal(conf0, confint(fit1, profile = TRUE))
 })
-test_that("gev_mle() vs gev_weighted scheme 2: symmetric confint", {
-  testthat::expect_equal(conf0, confint(fit2, profile = TRUE))
+test_that("gev_mle() vs gev_weighted scheme 2: profile confint", {
+  testthat::expect_equal(conf0ep_lt_0, confint(fit2, profile = TRUE,
+                                               epsilon = -1))
 })
