@@ -34,7 +34,7 @@ test_that("Symmetric intervals for return level 2", {
 
 # Repeat for gev_weighted()
 
-fit <- gev_weighted(PlymouthOzoneMaxima)
+fit <- gev_weighted(PlymouthOzoneMaxima, method = "L-BFGS-B")
 rl <- gev_return(fit, m = c(50, 100))
 
 # Profile-based confidence intervals, faster = TRUE
