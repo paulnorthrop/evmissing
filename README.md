@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# evmissing <a href="https://paulnorthrop.github.io/evmissing/"><img src="man/figures/evmissing_logo.png" style="float:right; height:150px;" alt=""/></a>
+# evmissing <a href="https://paulnorthrop.github.io/evmissing/"><img src="man/figures/evmissing_logo.png" align="right" style="float:right; height:150px;" alt="evmissing logo"/></a>
 
 [![R-CMD-check](https://github.com/paulnorthrop/evmissing/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/paulnorthrop/evmissing/actions/workflows/R-CMD-check.yaml)
 [![Coverage
