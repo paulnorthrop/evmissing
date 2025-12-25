@@ -28,3 +28,10 @@ names(val) <- names(coef(res))
 test_that("gev_mle: optim throws and error", {
   testthat::expect_equal(coef(res), val)
 })
+
+# Repeat for gev_weighted()
+
+res <- suppressWarnings(gev_weighted(maxima_notNA))
+test_that("gev_weighted: optim throws and error", {
+  testthat::expect_equal(coef(res), val)
+})
