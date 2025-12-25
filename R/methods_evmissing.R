@@ -82,9 +82,10 @@
 #'   `crit` at the limits of the confidence interval. The attribute `level` is
 #'   the input argument `level`.
 #'
-#'   `plot.evmissing`: a 3-column matrix containing the values plotted in the
-#'   return level plot. Column 2 contains the estimated return levels and
-#'   columns 1 and 3 the lower and upper confidence limits.
+#'   `plot.evmissing`: if a return level plot has been requested, a 3-column
+#'   matrix containing the values plotted in the return level plot. Column 2
+#'   contains the estimated return levels and columns 1 and 3 the lower and
+#'   upper confidence limits.
 #' @examples
 #' ## Plymouth ozone data
 #'
@@ -527,11 +528,15 @@ plot.evmissing <- function(x, adjust = TRUE,
     }
     rl_cis <- gev_rl(x = x, adjust = adjust, m = m, level = level,
                      profile = profile, num = num, npy = npy, ...)
+    val <- rl_cis
+  } else {
+    val <- NULL
   }
 
   # Density plot
   if (is.element("density", which)) {
     gev_his(x = x, adjust = adjust, ...)
   }
-  return(invisible(rl_cis))
+
+  return(invisible(val))
 }

@@ -177,9 +177,10 @@ log-likelihood. The profile log-likelihood is equal to the attribute
 \code{crit} at the limits of the confidence interval. The attribute \code{level} is
 the input argument \code{level}.
 
-\code{plot.evmissing}: a 3-column matrix containing the values plotted in the
-return level plot. Column 2 contains the estimated return levels and
-columns 1 and 3 the lower and upper confidence limits.
+\code{plot.evmissing}: if a return level plot has been requested, a 3-column
+matrix containing the values plotted in the return level plot. Column 2
+contains the estimated return levels and columns 1 and 3 the lower and
+upper confidence limits.
 }
 \description{
 Methods for objects of class \code{"evmissing"} returned from \code{\link{gev_mle}}.
