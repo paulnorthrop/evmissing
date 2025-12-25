@@ -45,3 +45,11 @@ test_that("RL CI lower limits increase with return period, faster = TRUE", {
 test_that("RL CI upper limits increase with return period, faster = TRUE", {
   testthat::expect_lt(prof[1, 2], prof[2, 2])
 })
+# Profile-based confidence intervals, faster = FALSE
+prof <- confint(rl, profile = TRUE, mult = 32, faster = FALSE)
+test_that("RL CI lower limits increase with return period, faster = FALSE", {
+  testthat::expect_lt(prof[1, 1], prof[2, 1])
+})
+test_that("RL CI upper limits increase with return period, faster = FALSE", {
+  testthat::expect_lt(prof[1, 2], prof[2, 2])
+})

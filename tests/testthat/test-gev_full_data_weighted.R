@@ -41,5 +41,5 @@ test_that("gev_mle() vs gev_weighted scheme 1: profile confint", {
 })
 test_that("gev_mle() vs gev_weighted scheme 2: profile confint", {
   testthat::expect_equal(conf0ep_lt_0, confint(fit2, profile = TRUE,
-                                               faster= TRUE, epsilon = -1))
+                                               faster = TRUE, epsilon = -1))
 })
