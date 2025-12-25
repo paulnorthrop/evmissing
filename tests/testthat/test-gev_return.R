@@ -1,7 +1,7 @@
 # Check that the limits of profile-based CIs for return level increase with
 # return period
 
-fit <- gev_mle(PlymouthOzoneMaxima)
+fit <- gev_mle(PlymouthOzoneMaxima, method = "L-BFGS-B")
 rl <- gev_return(fit, m = c(50, 100))
 
 # Profile-based confidence intervals, faster = TRUE
