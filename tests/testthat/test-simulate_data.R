@@ -27,3 +27,16 @@ test_that("sim_data(): no missing values", {
 test_that("sim_data(): with missing values", {
   testthat::expect_equal(sdata$data_miss, data)
 })
+
+# Check mcar2
+
+blocks <- 3
+block_length <- 4
+pmiss <- 0.25
+sdata2 <- sim_data(blocks = blocks, block_length = block_length,
+                   missing_fn = mcar2, missing_args = list(pmiss = pmiss))
+nmiss <- sum(is.na(sdata2$data_miss))
+
+test_that("sim_data(): mcar2()", {
+  testthat::expect_equal(nmiss, blocks * block_length * pmiss)
+})
