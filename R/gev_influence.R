@@ -70,8 +70,8 @@
 NULL
 
 #' @rdname gev_influence
-#' @param x An object inheriting from class `"gev_influence"`, a result of a
-#'   call to [`gev_influence`].
+#' @param x An object inheriting from class `"gev_influence"`, from a call to
+#'   [`gev_influence`].
 #' @param xvar A logical scalar.
 #'   If `xvar = "z"` then the influence curves are plotted against the standard
 #'   normal quantiles in `x[, "z"]`.

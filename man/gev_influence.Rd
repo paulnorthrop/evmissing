@@ -16,8 +16,8 @@ calculate the GEV influence function. See \strong{Details}.}
 \item{mu, sigma, xi}{Numeric scalars supplying the values of the GEV
 parameters \eqn{\mu}, \eqn{\sigma} and \eqn{\xi}.}
 
-\item{x}{An object inheriting from class \code{"gev_influence"}, a result of a
-call to \code{\link{gev_influence}}.}
+\item{x}{An object inheriting from class \code{"gev_influence"}, from a call to
+\code{\link{gev_influence}}.}
 
 \item{xvar}{A logical scalar.
 If \code{xvar = "z"} then the influence curves are plotted against the standard

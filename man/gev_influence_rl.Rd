@@ -22,8 +22,8 @@ in years. All entries in \code{m} must be greater than 1.}
 \item{npy}{A numeric scalar.  The number \eqn{n_{py}} of block maxima per
 year. If the blocks are of length 1 year then \code{npy = 1}.}
 
-\item{x}{An object inheriting from class \code{"gev_influence_rl"}, a result of a
-call to \code{\link{gev_influence_rl}}.}
+\item{x}{An object inheriting from class \code{"gev_influence_rl"}, returned from
+a call to \code{\link{gev_influence_rl}}.}
 
 \item{xvar}{A logical scalar.
 If \code{xvar = "z"} then the influence curves are plotted against the standard

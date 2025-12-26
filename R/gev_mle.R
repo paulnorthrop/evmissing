@@ -10,9 +10,9 @@
 #'   * a numeric vector containing a time series of raw data,
 #'   * an object returned from [`block_maxima`], a list with components
 #'     `maxima`, `notNA` and `n`,
-#'   * a data frame or named list containing the same information (variables
-#'     `maxima`, `notNA` and `n`) as an object returned from [`block_maxima`],
-#'     such as the data frame [`BrestSurgeMaxima`].
+#'   * a data frame or named list containing the same information, that is, the
+#'     variables `maxima`, `notNA` and `n`, as an object returned from
+#'     [`block_maxima`], such as the data frame [`BrestSurgeMaxima`].
 #'
 #' @param block_length A numeric scalar. Used calculate the maxima of disjoint
 #'   blocks of `block_length` contiguous values in the vector `data`.

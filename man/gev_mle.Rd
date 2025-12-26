@@ -20,9 +20,9 @@ gev_mle(
 \item a numeric vector containing a time series of raw data,
 \item an object returned from \code{\link{block_maxima}}, a list with components
 \code{maxima}, \code{notNA} and \code{n},
-\item a data frame or named list containing the same information (variables
-\code{maxima}, \code{notNA} and \code{n}) as an object returned from \code{\link{block_maxima}},
-such as the data frame \code{\link{BrestSurgeMaxima}}.
+\item a data frame or named list containing the same information, that is, the
+variables \code{maxima}, \code{notNA} and \code{n}, as an object returned from
+\code{\link{block_maxima}}, such as the data frame \code{\link{BrestSurgeMaxima}}.
 }}
 
 \item{block_length}{A numeric scalar. Used calculate the maxima of disjoint
