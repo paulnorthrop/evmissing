@@ -15,9 +15,9 @@ provided. For the purposes of comparison, there are options to make no
 adjustment for missing values or to discard any block maximum for which
 greater than a percentage of the underlying raw values are missing.
 
-The \code{evmissing} package was created to accompany the research
-paper Simpson, E. S. and Northrop, P. J. (2025) Accounting for missing data
-when modelling block maxima. \doi{10.48550/arXiv.2512.15429}
+The \code{evmissing} package was created to accompany Simpson, E. S. and
+Northrop, P. J. (2025) Accounting for missing data when modelling block
+maxima. \doi{10.48550/arXiv.2512.15429}
 }
 \details{
 The main functions are
