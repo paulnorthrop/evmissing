@@ -3,7 +3,6 @@
 ^refs\.bib$
 ^\.github$
 ^README\.Rmd$
-^appveyor\.yml$
 ^_pkgdown\.yml$
 ^cran-comments\.md$
 ^LICENSE\.md$
