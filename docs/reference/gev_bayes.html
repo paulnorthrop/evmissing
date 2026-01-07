@@ -71,9 +71,9 @@ values in each block.</p>
 <dd><p>Either</p><ul><li><p>a numeric vector containing a time series of raw data,</p></li>
 <li><p>an object returned from <code><a href="block_maxima.html">block_maxima</a></code>, a list with components
 <code>maxima</code>, <code>notNA</code> and <code>n</code>,</p></li>
-<li><p>a data frame or named list containing the same information (variables
-<code>maxima</code>, <code>notNA</code> and <code>n</code>) as an object returned from <code><a href="block_maxima.html">block_maxima</a></code>,
-such as the data frame <code><a href="BrestSurgeMaxima.html">BrestSurgeMaxima</a></code>.</p></li>
+<li><p>a data frame or named list containing the same information, that is, the
+variables <code>maxima</code>, <code>notNA</code> and <code>n</code>, as an object returned from
+<code><a href="block_maxima.html">block_maxima</a></code>, such as the data frame <code><a href="BrestSurgeMaxima.html">BrestSurgeMaxima</a></code>.</p></li>
 </ul></dd>
 
 
@@ -130,12 +130,12 @@ posterior distribution for \((\mu, \sigma, \xi)\).</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Further arguments to be passed to <code><a href="https://paulnorthrop.github.io/rust/reference/ru.html" class="external-link">rust::ru</a></code>.</p></dd>
+<dd><p>Further arguments to be passed to <code><a href="https://github.com/paulnorthrop/rust/reference/ru.html" class="external-link">rust::ru</a></code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An object returned from <code><a href="https://paulnorthrop.github.io/rust/reference/ru.html" class="external-link">rust::ru</a></code>. The following components are
+    <p>An object returned from <code><a href="https://github.com/paulnorthrop/rust/reference/ru.html" class="external-link">rust::ru</a></code>. The following components are
 added to this list</p><ul><li><p><code>model</code>: = <code>"gev"</code>.</p></li>
 <li><p><code>data,prior</code>: the inputs <code>data</code> and <code>prior</code>.</p></li>
 <li><p><code>call</code>: the call to <code>gev_bayes</code>.</p></li>
@@ -159,12 +159,12 @@ S3 methods.</p>
     <p>The likelihood described in <code><a href="gev_mle.html">gev_mle</a></code> is combined with the prior
 density provided by <code>prior</code> to produce, up to proportionality, a
 posterior density for \((\mu, \sigma, \xi)\).</p>
-<p>A function to evaluate the log-posterior is passed to <code><a href="https://paulnorthrop.github.io/rust/reference/ru.html" class="external-link">rust::ru</a></code> to
+<p>A function to evaluate the log-posterior is passed to <code><a href="https://github.com/paulnorthrop/rust/reference/ru.html" class="external-link">rust::ru</a></code> to
 simulate a random sample from this posterior distribution using the
 generalised ratio-of-uniforms method, using relocation of the mode of the
 density to the origin to increase efficiency. The value of <code>init</code> is used
 as an initial estimate in a search for the posterior mode. Arguments to
-<code><a href="https://paulnorthrop.github.io/rust/reference/ru.html" class="external-link">rust::ru</a></code> can be passed via <code>...</code>. The default setting is
+<code><a href="https://github.com/paulnorthrop/rust/reference/ru.html" class="external-link">rust::ru</a></code> can be passed via <code>...</code>. The default setting is
 <code>trans = "none"</code>, that is, no transformation of the margins, and
 <code>rotate = TRUE</code>, rotation of the parameter axes to improve isotropy
 with a view to increasing efficiency.</p>
