@@ -127,7 +127,7 @@ plot(fit_adjust)
 
 <p align="center">
 
-<img src="man/figures/README-plots-1.png" width="60%" style="display: block; margin: auto;" />
+<img src="man/figures/README-plots-1.png" alt="Diagnostic plots of for the Brest Sea Surge Maxima data. PP, QQ, return level and density plots." width="60%" style="display: block; margin: auto;" />
 </p>
 
 We see that overall the GEV model fits these data well, although the

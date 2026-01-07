@@ -95,7 +95,7 @@ knitr::knit_hooks$set(imgcenter = function(before, options, envir){
 ```{r plots, echo = TRUE, eval = FALSE, fig.width = 5, fig.height = 5, out.width="50%"}
 plot(fit_adjust)
 ```    
-```{r plots, echo = FALSE, imgcenter = TRUE, fig.width = 5, fig.height = 5, out.width="60%", alt = "Diagnostic plots of for the Brest Sea Surge Maxima data. PP, QQ, return level and density plots."}
+```{r plots, echo = FALSE, imgcenter = TRUE, fig.width = 5, fig.height = 5, out.width="60%", fig.alt = "Diagnostic plots of for the Brest Sea Surge Maxima data. PP, QQ, return level and density plots."}
 ```    
 
 We see that overall the GEV model fits these data well, although the largest annual maximum sea surge height lies outside the profile-based 95\% confidence interval that is relevant to this observation.
