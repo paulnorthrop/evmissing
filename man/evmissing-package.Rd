@@ -23,9 +23,9 @@ maxima. \doi{10.48550/arXiv.2512.15429}
 The main functions are
 \itemize{
 \item \code{\link{gev_mle}}: maximum likelihood inference for block maxima based on a GEV
-distributon, with \code{\link[=evmissing_methods]{S3 methods}} including \code{confint}.
+distribution, with \code{\link[=evmissing_methods]{S3 methods}} including \code{confint}.
 \item \code{\link{gev_bayes}}: Bayesian inference for block maxima based on a GEV
-distributon.
+distribution.
 }
 
 For objects returned by \code{gev_mle}, inferences about return levels are

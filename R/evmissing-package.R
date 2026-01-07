@@ -16,9 +16,9 @@
 #' @details The main functions are
 #'
 #' * [`gev_mle`]: maximum likelihood inference for block maxima based on a GEV
-#'   distributon, with [`S3 methods`][evmissing_methods] including `confint`.
+#'   distribution, with [`S3 methods`][evmissing_methods] including `confint`.
 #' * [`gev_bayes`]: Bayesian inference for block maxima based on a GEV
-#'   distributon.
+#'   distribution.
 #'
 #' For objects returned by `gev_mle`, inferences about return levels are
 #' performed by [`gev_return`], with with [`S3 methods`][return_level_methods]
