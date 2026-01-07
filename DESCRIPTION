@@ -32,7 +32,6 @@ Encoding: UTF-8
 Depends:
     R (>= 4.1.0)
 Suggests: 
-    mev,
     testthat (>= 3.0.0)
 URL: https://paulnorthrop.github.io/evmissing/, https://github.com/paulnorthrop/evmissing
 BugReports: https://github.com/paulnorthrop/evmissing/issues
