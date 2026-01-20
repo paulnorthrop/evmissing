@@ -57,7 +57,7 @@ values in each block.</p>
 <span>  adjust <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  discard <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  init <span class="op">=</span> <span class="st">"quartiles"</span>,</span>
-<span>  prior <span class="op">=</span> <span class="fu">revdbayes</span><span class="fu">::</span><span class="fu"><a href="https://paulnorthrop.github.io/revdbayes/reference/set_prior.html" class="external-link">set_prior</a></span><span class="op">(</span>prior <span class="op">=</span> <span class="st">"flat"</span>, model <span class="op">=</span> <span class="st">"gev"</span><span class="op">)</span>,</span>
+<span>  prior <span class="op">=</span> <span class="fu">revdbayes</span><span class="fu">::</span><span class="fu"><a href="https://github.com/paulnorthrop/revdbayes/reference/set_prior.html" class="external-link">set_prior</a></span><span class="op">(</span>prior <span class="op">=</span> <span class="st">"flat"</span>, model <span class="op">=</span> <span class="st">"gev"</span><span class="op">)</span>,</span>
 <span>  n <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -119,9 +119,9 @@ variance of these maxima and an initial value of 0.1 for \(\xi\).</p></dd>
 
 <dt id="arg-prior">prior<a class="anchor" aria-label="anchor" href="#arg-prior"></a></dt>
 <dd><p>Specifies a prior distribution for the GEV parameters. This is
-most easily set using <code><a href="https://paulnorthrop.github.io/revdbayes/reference/set_prior.html" class="external-link">revdbayes::set_prior</a></code>. The default is a prior
+most easily set using <code><a href="https://github.com/paulnorthrop/revdbayes/reference/set_prior.html" class="external-link">revdbayes::set_prior</a></code>. The default is a prior
 \(\pi(\mu, \sigma, \xi) \propto \sigma^{-1}\) for \(\sigma &gt; 0\). See
-<code><a href="https://paulnorthrop.github.io/revdbayes/reference/set_prior.html" class="external-link">revdbayes::set_prior</a></code> for details.</p></dd>
+<code><a href="https://github.com/paulnorthrop/revdbayes/reference/set_prior.html" class="external-link">revdbayes::set_prior</a></code> for details.</p></dd>
 
 
 <dt id="arg-n">n<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
@@ -150,8 +150,8 @@ only if the input argument <code>adjust</code> was <code>TRUE</code>.</p></li>
 <li><p><code>adjust,discard</code> : the values of these input arguments.</p></li>
 </ul><p>The class of the returned object is
 <code>c("evpost", "ru", "bayes", "evmissing")</code>.
-Objects of class <code>"evpost"</code> have <code><a href="https://paulnorthrop.github.io/revdbayes/reference/print.evpost.html" class="external-link">print</a></code>,
-<code><a href="https://paulnorthrop.github.io/revdbayes/reference/summary.evpost.html" class="external-link">summary</a></code> and <code><a href="https://paulnorthrop.github.io/revdbayes/reference/plot.evpost.html" class="external-link">plot</a></code>
+Objects of class <code>"evpost"</code> have <code><a href="https://github.com/paulnorthrop/revdbayes/reference/print.evpost.html" class="external-link">print</a></code>,
+<code><a href="https://github.com/paulnorthrop/revdbayes/reference/summary.evpost.html" class="external-link">summary</a></code> and <code><a href="https://github.com/paulnorthrop/revdbayes/reference/plot.evpost.html" class="external-link">plot</a></code>
 S3 methods.</p>
     </div>
     <div class="section level2">
