@@ -53,7 +53,8 @@ print.confint_gev <- function(x, ...) {
 #'   indicating the values of these limits and a legend stating the
 #'   confidence interval.
 #' @param digits An integer. Passed to [`signif`] to round the confidence
-#'   limits in the legend, if `add = TRUE`.
+#'   limits in the legend, if `add = TRUE`. The confidence level is hard-coded
+#'   to be expressed to 3 significant figures.
 #' @rdname confint_gev_methods
 #' @export
 plot.confint_gev <- function(x, parm = c("mu", "sigma", "xi"), add = TRUE,
@@ -93,7 +94,8 @@ plot.confint_gev <- function(x, parm = c("mu", "sigma", "xi"), add = TRUE,
     graphics::abline(v = limits, lty = 2)
     level <- attr(x, "level") * 100
     rlimits <- signif(limits, digits)
-    legend_text <- paste0(level, "% CI: (", rlimits[1], ",", rlimits[2], ")")
+    legend_text <- paste0(signif(level, 3), "% CI: (", rlimits[1], ",",
+                          rlimits[2], ")")
     graphics::legend("bottom", legend = legend_text)
   }
   return(invisible(limits))

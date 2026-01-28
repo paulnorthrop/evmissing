@@ -29,7 +29,8 @@ indicating the values of these limits and a legend stating the
 confidence interval.}
 
 \item{digits}{An integer. Passed to \code{\link{signif}} to round the confidence
-limits in the legend, if \code{add = TRUE}.}
+limits in the legend, if \code{add = TRUE}. The confidence level is hard-coded
+to be expressed to 3 significant figures.}
 }
 \value{
 \code{print.confint_return_level}: the argument \code{x} is returned, invisibly.
