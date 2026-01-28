@@ -35,7 +35,7 @@ knitr::knit_hooks$set(imgcenter = function(before, options, envir){
 
 Performs likelihood-based extreme value inferences with adjustment for the presence of missing values. A GEV distribution is fitted to block maxima using maximum likelihood estimation, with the GEV location and scale parameter reflecting the numbers of non-missing raw values in each block. A Bayesian version is also provided. For the purposes of comparison, there are options to make no adjustment for missing values or to discard any block maximum for which greater than a percentage of the underlying raw values are missing. A plot method provides a set of standard model diagnostic plots, with appropriate adjustment made for the presence of missing values. Example datasets containing missing values are provided.
 
-The `evmissing` package was created to accompany @SimpsonNorthrop2025.
+The `evmissing` package was created to accompany @SimpsonNorthrop2026, which will appear in [Environmetrics in 2026](https://onlinelibrary.wiley.com/loi/1099095x/year/2026).
 
 ## An example
 
@@ -102,21 +102,9 @@ We see that overall the GEV model fits these data well, although the largest ann
 
 ## Installation
 
-```{r, echo = FALSE}
-released <- FALSE
-```
-
-```{asis, echo = !released}
-To install this development version from GitHub:
-```
-```{r github_installation, eval = FALSE, echo = !released}
-remotes::install_github("paulnorthrop/evmissing")
-```
-
-```{asis, echo = released}
 To install the current released version from CRAN:
-```
-```{r cran_installation, eval = FALSE, echo = released}
+
+```{r cran_installation, eval = FALSE, echo = TRUE}
 install.packages("evmissing")
 ```
 

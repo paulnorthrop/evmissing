@@ -27,7 +27,8 @@ the presence of missing values. Example datasets containing missing
 values are provided.
 
 The `evmissing` package was created to accompany Simpson and Northrop
-(2025).
+(2026), which will appear in [Environmetrics in
+2026](https://onlinelibrary.wiley.com/loi/1099095x/year/2026).
 
 ## An example
 
@@ -136,10 +137,10 @@ largest annual maximum sea surge height lies outside the profile-based
 
 ## Installation
 
-To install this development version from GitHub:
+To install the current released version from CRAN:
 
 ``` r
-remotes::install_github("paulnorthrop/evmissing")
+install.packages("evmissing")
 ```
 
 ## References
@@ -164,11 +165,10 @@ Modeling of Extreme Values*.
 
 </div>
 
-<div id="ref-SimpsonNorthrop2025" class="csl-entry">
+<div id="ref-SimpsonNorthrop2026" class="csl-entry">
 
-Simpson, Emma S., and Paul J. Northrop. 2025. “Accounting for Missing
-Data When Modelling Block Maxima.”
-<https://doi.org/10.48550/arXiv.2512.15429>.
+Simpson, Emma S., and Paul J. Northrop. 2026. “Accounting for Missing
+Data When Modelling Block Maxima.” *Environmetrics (To Appear)*.
 
 </div>
 
