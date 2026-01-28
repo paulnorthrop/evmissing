@@ -167,8 +167,8 @@ print.summary.return_level <- function(x, ...) {
 #'     that defines the confidence limits, once profiling has been successful
 #'     in finding an interval within which this value lies.
 #'
-#'    * If `epsilon[i] < 0` quadratic interpolation is used, which will tend to
-#'      be faster.
+#'    * If `epsilon[i] < 0` monotonic cubic spline interpolation is used, which
+#'      will tend to be faster.
 #'
 #'   * If `epsilon[i] = 0` then linear interpolation is used, which will be
 #'     faster still.

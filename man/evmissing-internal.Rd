@@ -16,7 +16,6 @@
 \alias{gev_profile_init}
 \alias{call_gev_profile_init}
 \alias{return_level_profile_init}
-\alias{lagrangianInterpolation}
 \alias{gev_pp}
 \alias{gev_qq}
 \alias{gev_rl}
@@ -80,8 +79,6 @@ gev_profile_init(data, mu, sigma, xi)
 call_gev_profile_init(data, which, par_value)
 
 return_level_profile_init(gev_object, level, mult, epsilon, m, npy)
-
-lagrangianInterpolation(x0, y0)
 
 gev_pp(x, adjust, level, ...)
 

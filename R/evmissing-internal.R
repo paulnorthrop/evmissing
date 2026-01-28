@@ -226,7 +226,9 @@ faster_profile_ci <- function(negated_loglik_fn, which = 1, level, mle,
     while_condition <- function(my_val) {
       return(my_val < conf_line)
     }
-    temp <- lagrangianInterpolation(c(v2[1], v2[2]), c(x2[1], x2[2]))
+    temp <- stats::splinefun(c(v2[1], v2[2]),
+                             c(x2[1], x2[2]),
+                             method = "hyman")
     delta <- -(x2[2] - temp(conf_line))
   } else {
     searched_upwards <- TRUE
@@ -297,7 +299,9 @@ faster_profile_ci <- function(negated_loglik_fn, which = 1, level, mle,
     while_condition <- function(my_val) {
       return(my_val < conf_line)
     }
-    temp <- lagrangianInterpolation(c(v1[1], v1[2]), c(x1[1], x1[2]))
+    temp <- stats::splinefun(c(v1[1], v1[2]),
+                             c(x1[1], x1[2]),
+                             method = "hyman")
     delta <- -(temp(conf_line) - x1[2])
   } else {
     searched_downwards <- TRUE
@@ -348,8 +352,8 @@ faster_profile_ci <- function(negated_loglik_fn, which = 1, level, mle,
   y2low <- prof_lik[loc_lower + 1]
 
   # If epsilon = 0 then use linear interpolation
-  # If epsilon < 0 then use quadratic interpolation
-  # If epsilon > 0 then use quadratic interpolation and then itp::itp()
+  # If epsilon < 0 then use monotonic cubic spline interpolation
+  # If epsilon > 0 then use monotonic cubic spline and then itp::itp()
 
   lower_pars <- NULL
   upper_pars <- NULL
@@ -358,7 +362,7 @@ faster_profile_ci <- function(negated_loglik_fn, which = 1, level, mle,
   if (epsilon != 0) {
     # Calculate the values of the profile log-likelihood at these limits and
     # use the 3 points (the bracketing points and this new point) to estimate
-    # the confidence limits by quadratic interpolation
+    # the confidence limits by monotonic cubic spline interpolation
 
     # Upper
     opt <- try(stats::optim(sol_upper, profiling_fn,
@@ -371,8 +375,9 @@ faster_profile_ci <- function(negated_loglik_fn, which = 1, level, mle,
                  silent = TRUE)
     }
     up_new <- -opt$value
-    temp <- lagrangianInterpolation(c(y1up, up_new, y2up),
-                                    c(x1up, up_lim, x2up))
+    temp <- stats::splinefun(c(y1up, up_new, y2up),
+                             c(x1up, up_lim, x2up),
+                             method = "hyman")
     save_up_lim <- up_lim
     up_lim <- temp(conf_line)
 
@@ -387,8 +392,9 @@ faster_profile_ci <- function(negated_loglik_fn, which = 1, level, mle,
                  silent = TRUE)
     }
     low_new <- -opt$value
-    temp <- lagrangianInterpolation(c(y1low, low_new, y2low),
-                                    c(x1low, low_lim, x2low))
+    temp <- stats::splinefun(c(y1low, low_new, y2low),
+                             c(x1low, low_lim, x2low),
+                             method = "hyman")
     save_low_lim <- low_lim
     low_lim <- temp(conf_line)
 
@@ -592,15 +598,15 @@ profile_ci <- function(negated_loglik_fn, which = 1, level, mle, inc, epsilon,
   y2low <- prof_lik[loc_lower + 1]
 
   # If epsilon = 0 then use linear interpolation
-  # If epsilon < 0 then use quadratic interpolation
-  # If epsilon > 0 then use quadratic interpolation and then itp::itp()
+  # If epsilon < 0 then use monotonic cubic spline interpolation
+  # If epsilon > 0 then use monotonic cubic spline and then itp::itp()
 
   up_lim <- x1up + (conf_line - y1up) * (x2up - x1up) / (y2up - y1up)
   low_lim <- x1low + (conf_line - y1low) * (x2low - x1low) / (y2low - y1low)
   if (epsilon != 0) {
     # Calculate the values of the profile log-likelihood at these limits and
     # use the 3 points (the bracketing points and this new point) to estimate
-    # the confidence limits by quadratic interpolation
+    # the confidence limits by monotonic cubic spline interpolation
 
     # Upper
     opt <- try(stats::optim(sol_upper, profiling_fn,
@@ -613,8 +619,9 @@ profile_ci <- function(negated_loglik_fn, which = 1, level, mle, inc, epsilon,
                  silent = TRUE)
     }
     up_new <- -opt$value
-    temp <- lagrangianInterpolation(c(y1up, up_new, y2up),
-                                    c(x1up, up_lim, x2up))
+    temp <- stats::splinefun(c(y1up, up_new, y2up),
+                             c(x1up, up_lim, x2up),
+                             method = "hyman")
     save_up_lim <- up_lim
     up_lim <- temp(conf_line)
 
@@ -629,8 +636,9 @@ profile_ci <- function(negated_loglik_fn, which = 1, level, mle, inc, epsilon,
                  silent = TRUE)
     }
     low_new <- -opt$value
-    temp <- lagrangianInterpolation(c(y1low, low_new, y2low),
-                                    c(x1low, low_lim, x2low))
+    temp <- stats::splinefun(c(y1low, low_new, y2low),
+                             c(x1low, low_lim, x2low),
+                             method = "hyman")
     save_low_lim <- low_lim
     low_lim <- temp(conf_line)
 
@@ -981,17 +989,6 @@ return_level_profile_init <- function(gev_object, level, mult, epsilon,
   names(upper_init) <- c(paste0(m, "-year ", "return level"), "sigma", "xi")
   return(list(lower_init = unlist(lower_init),
               upper_init = unlist(upper_init)))
-}
-
-#' @keywords internal
-#' @rdname evmissing-internal
-lagrangianInterpolation <- function(x0, y0) {
-  f <- function(x) {
-    sum(y0 * sapply(seq_along(x0), \(j) {
-      prod(x - x0[-j])/prod(x0[j] - x0[-j])
-    }))
-  }
-  return(Vectorize(f, "x"))
 }
 
 #' @keywords internal
