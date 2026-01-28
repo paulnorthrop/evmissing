@@ -405,8 +405,8 @@ faster_profile_ci <- function(negated_loglik_fn, which = 1, level, mle,
     # when we do something similar below for the epsilon > 0 case
     if (epsilon < 0) {
       n <- length(par_values)
-      par_values <- c(par_values[1:loc_lower], low_lim,
-                      par_values[(loc_lower + 1):loc_upper], up_lim,
+      par_values <- c(par_values[1:loc_lower], save_low_lim,
+                      par_values[(loc_lower + 1):loc_upper], save_up_lim,
                       par_values[(loc_upper + 1):n])
       prof_lik <- c(prof_lik[1:loc_lower], low_new,
                     prof_lik[(loc_lower + 1):loc_upper],
