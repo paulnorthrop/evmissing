@@ -17,8 +17,8 @@
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Extreme Value Analyses with Missing Data">
-<meta name="description" content="Performs likelihood-based extreme value inferences with adjustment for the presence of missing values based on Simpson and Northrop (2025) &lt;doi:10.48550/arXiv.2512.15429&gt;. A Generalised Extreme Value distribution is fitted to block maxima using maximum likelihood estimation, with the location and scale parameters reflecting the numbers of non-missing raw values in each block. A Bayesian version is also provided. For the purposes of comparison, there are options to make no adjustment for missing values or to discard any block maximum for which greater than a percentage of the underlying raw values are missing. Example datasets containing missing values are provided.">
-<meta property="og:description" content="Performs likelihood-based extreme value inferences with adjustment for the presence of missing values based on Simpson and Northrop (2025) &lt;doi:10.48550/arXiv.2512.15429&gt;. A Generalised Extreme Value distribution is fitted to block maxima using maximum likelihood estimation, with the location and scale parameters reflecting the numbers of non-missing raw values in each block. A Bayesian version is also provided. For the purposes of comparison, there are options to make no adjustment for missing values or to discard any block maximum for which greater than a percentage of the underlying raw values are missing. Example datasets containing missing values are provided.">
+<meta name="description" content="Performs likelihood-based extreme value inferences with adjustment for the presence of missing values based on Simpson and Northrop (2026), to appear in Environmetrics. A Generalised Extreme Value distribution is fitted to block maxima using maximum likelihood estimation, with the location and scale parameters reflecting the numbers of non-missing raw values in each block. A Bayesian version is also provided. For the purposes of comparison, there are options to make no adjustment for missing values or to discard any block maximum for which greater than a percentage of the underlying raw values are missing. Example datasets containing missing values are provided.">
+<meta property="og:description" content="Performs likelihood-based extreme value inferences with adjustment for the presence of missing values based on Simpson and Northrop (2026), to appear in Environmetrics. A Generalised Extreme Value distribution is fitted to block maxima using maximum likelihood estimation, with the location and scale parameters reflecting the numbers of non-missing raw values in each block. A Bayesian version is also provided. For the purposes of comparison, there are options to make no adjustment for missing values or to discard any block maximum for which greater than a percentage of the underlying raw values are missing. Example datasets containing missing values are provided.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -60,7 +60,7 @@
 <h2 id="extreme-value-analyses-with-missing-data">Extreme Value Analyses with Missing Data<a class="anchor" aria-label="anchor" href="#extreme-value-analyses-with-missing-data"></a>
 </h2>
 <p>Performs likelihood-based extreme value inferences with adjustment for the presence of missing values. A GEV distribution is fitted to block maxima using maximum likelihood estimation, with the GEV location and scale parameter reflecting the numbers of non-missing raw values in each block. A Bayesian version is also provided. For the purposes of comparison, there are options to make no adjustment for missing values or to discard any block maximum for which greater than a percentage of the underlying raw values are missing. A plot method provides a set of standard model diagnostic plots, with appropriate adjustment made for the presence of missing values. Example datasets containing missing values are provided.</p>
-<p>The <code>evmissing</code> package was created to accompany Simpson and Northrop (2025).</p>
+<p>The <code>evmissing</code> package was created to accompany Simpson and Northrop (2026), which will appear in <a href="https://onlinelibrary.wiley.com/loi/1099095x/year/2026" class="external-link">Environmetrics in 2026</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="an-example">An example<a class="anchor" aria-label="anchor" href="#an-example"></a>
@@ -127,9 +127,9 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>To install this development version from GitHub:</p>
+<p>To install the current released version from CRAN:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"paulnorthrop/evmissing"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"evmissing"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -141,8 +141,8 @@ Coles, Stuart G. 2001. <em>An Introduction to Statistical Modeling of Extreme Va
 <div id="ref-ismev" class="csl-entry">
 Heffernan, Janet E., and Alec G. Stephenson. 2018. <em><span class="nocase">i</span>smev: An Introduction to Statistical Modeling of Extreme Values</em>. <a href="https://doi.org/10.32614/CRAN.package.ismev" class="external-link uri">https://doi.org/10.32614/CRAN.package.ismev</a>.
 </div>
-<div id="ref-SimpsonNorthrop2025" class="csl-entry">
-Simpson, Emma S., and Paul J. Northrop. 2025. “Accounting for Missing Data When Modelling Block Maxima.” <a href="https://doi.org/10.48550/arXiv.2512.15429" class="external-link uri">https://doi.org/10.48550/arXiv.2512.15429</a>.
+<div id="ref-SimpsonNorthrop2026" class="csl-entry">
+Simpson, Emma S., and Paul J. Northrop. 2026. “Accounting for Missing Data When Modelling Block Maxima.” <em>Environmetrics (To Appear)</em>.
 </div>
 </div>
 </div>
