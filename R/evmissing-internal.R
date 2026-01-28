@@ -218,7 +218,7 @@ faster_profile_ci <- function(negated_loglik_fn, which = 1, level, mle,
   v2[ii] <- my_val
 
   # If my_val < conf_line then the profile log-likelihood has dropped below
-  # the required level in one (big) step. We use linear interpolation between
+  # the required level in one (big) step. We use (linear) interpolation between
   # this point and the MLE to move back (hopefully, just) above the level.
   # This should work because the profile log-likelihood should be convex.
   if (my_val < conf_line) {
@@ -291,7 +291,7 @@ faster_profile_ci <- function(negated_loglik_fn, which = 1, level, mle,
   v1[ii] <- my_val
 
   # If my_val < conf_line then the profile log-likelihood has dropped below
-  # the required level in one (big) step. We use linear interpolation between
+  # the required level in one (big) step. We use (linear) interpolation between
   # this point and the MLE to move back (hopefully, just) above the level.
   # This should work because the profile log-likelihood should be convex.
   if (my_val < conf_line) {
