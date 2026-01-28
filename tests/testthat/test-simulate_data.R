@@ -40,3 +40,15 @@ nmiss <- sum(is.na(sdata2$data_miss))
 test_that("sim_data(): mcar2()", {
   testthat::expect_equal(nmiss, blocks * block_length * pmiss)
 })
+
+# Tests for simulated (exponential) data for which the point estimate of
+# the GEV shape parameter xi is negative
+
+fit_sim <- gev_mle(sdata$data_miss, block_length = sdata$block_length)
+conf_sim <- confint(fit_sim, profile = TRUE, faster = TRUE, mult = 16,
+                    epsilon = 0)
+conf_xi <- plot(conf_sim, parm = "xi", type = "b")
+
+test_that("sim data: plot.conf_gev() returns the correct interval for xi", {
+  testthat::expect_equal(conf_sim[3, ], conf_xi)
+})
