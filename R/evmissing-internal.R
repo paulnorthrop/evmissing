@@ -430,7 +430,7 @@ faster_profile_ci <- function(negated_loglik_fn, which = 1, level, mle,
         return(val)
       }
       # Find the upper limit of the confidence interval
-      if (up_new > 0) {
+      if (up_new > conf_line) {
         interval <- c(x1up, save_up_lim)
       } else {
         interval <- c(save_up_lim, x2up)
@@ -441,7 +441,7 @@ faster_profile_ci <- function(negated_loglik_fn, which = 1, level, mle,
                         epsilon = epsilon, ...)
       up_lim <- upper$root
       # Find the lower limit of the confidence interval
-      if (low_new > 0) {
+      if (low_new > conf_line) {
         interval <- c(x1low, save_low_lim)
       } else {
         interval <- c(save_low_lim, x2low)
@@ -659,7 +659,7 @@ profile_ci <- function(negated_loglik_fn, which = 1, level, mle, inc, epsilon,
         return(val)
       }
       # Find the upper limit of the confidence interval
-      if (up_new > 0) {
+      if (up_new > conf_line) {
         interval <- c(x1up, save_up_lim)
       } else {
         interval <- c(save_up_lim, x2up)
@@ -670,7 +670,7 @@ profile_ci <- function(negated_loglik_fn, which = 1, level, mle, inc, epsilon,
                         epsilon = epsilon, ...)
       up_lim <- upper$root
       # Find the lower limit of the confidence interval
-      if (low_new > 0) {
+      if (low_new > conf_line) {
         interval <- c(x1low, save_low_lim)
       } else {
         interval <- c(save_low_lim, x2low)
