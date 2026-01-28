@@ -351,9 +351,9 @@ faster_profile_ci <- function(negated_loglik_fn, which = 1, level, mle,
   y1low <- prof_lik[loc_lower]
   y2low <- prof_lik[loc_lower + 1]
 
-  # If epsilon = 0 then use linear interpolation
-  # If epsilon < 0 then use monotonic cubic spline interpolation
-  # If epsilon > 0 then use monotonic cubic spline and then itp::itp()
+  # If epsilon = 0 use linear interpolation
+  # If epsilon < 0 use monotonic cubic spline interpolation
+  # If epsilon > 0 use monotonic cubic spline interpolation then itp::itp()
 
   lower_pars <- NULL
   upper_pars <- NULL
@@ -597,9 +597,9 @@ profile_ci <- function(negated_loglik_fn, which = 1, level, mle, inc, epsilon,
   y1low <- prof_lik[loc_lower]
   y2low <- prof_lik[loc_lower + 1]
 
-  # If epsilon = 0 then use linear interpolation
-  # If epsilon < 0 then use monotonic cubic spline interpolation
-  # If epsilon > 0 then use monotonic cubic spline and then itp::itp()
+  # If epsilon = 0 use linear interpolation
+  # If epsilon < 0 use monotonic cubic spline interpolation
+  # If epsilon > 0 use monotonic cubic spline interpolation then itp::itp()
 
   up_lim <- x1up + (conf_line - y1up) * (x2up - x1up) / (y2up - y1up)
   low_lim <- x1low + (conf_line - y1low) * (x2low - x1low) / (y2low - y1low)
