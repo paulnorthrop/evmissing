@@ -165,7 +165,7 @@ summary(fit4)
 
 ## Plymouth ozone data
 
-# Calculate the values in Table 3 of Simpson and Northrop (2025)
+# Calculate the values in Table 4 of Simpson and Northrop (2026)
 # discard = 50 is chosen to discard data from 2001 and 2006
 fit1 <- gev_mle(PlymouthOzoneMaxima)
 fit2 <- gev_mle(PlymouthOzoneMaxima, adjust = FALSE)

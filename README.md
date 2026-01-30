@@ -27,8 +27,7 @@ the presence of missing values. Example datasets containing missing
 values are provided.
 
 The `evmissing` package was created to accompany Simpson and Northrop
-(2026), which will appear in [Environmetrics in
-2026](https://onlinelibrary.wiley.com/loi/1099095x/year/2026).
+(2026).
 
 ## An example
 
@@ -159,8 +158,8 @@ Extreme Values*. London: Springer.
 <div id="ref-ismev" class="csl-entry">
 
 Heffernan, Janet E., and Alec G. Stephenson. 2018.
-*<span class="nocase">i</span>smev: An Introduction to Statistical
-Modeling of Extreme Values*.
+“<span class="nocase">i</span>smev: An Introduction to Statistical
+Modeling of Extreme Values.”
 <https://doi.org/10.32614/CRAN.package.ismev>.
 
 </div>
@@ -168,7 +167,8 @@ Modeling of Extreme Values*.
 <div id="ref-SimpsonNorthrop2026" class="csl-entry">
 
 Simpson, Emma S., and Paul J. Northrop. 2026. “Accounting for Missing
-Data When Modelling Block Maxima.” *Environmetrics (To Appear)*.
+Data When Modelling Block Maxima.” *Environmetrics* 37 (2): e70075.
+<https://doi.org/10.1002/env.70075>.
 
 </div>
 

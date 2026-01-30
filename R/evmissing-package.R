@@ -11,8 +11,8 @@
 #'
 #' The `evmiss` package was created to accompany the research
 #' paper Simpson, E. S. and Northrop, P. J. (2026) Accounting for missing data
-#' when modelling block maxima, which will appear in the journal Environmetrics
-#' in 2026.
+#' when modelling block maxima, *Environmetrics*, **37**(2): e70075
+#' \doi{10.1002/env.70075}.
 #'
 #' @details The main functions are
 #'
