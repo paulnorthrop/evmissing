@@ -38,6 +38,10 @@
 #' * [`BrestSurgeMaxima`]: Annual maxima surge heights at Brest, France,
 #'   1846-2007.
 #'
+#' @references Simpson, E. S. and Northrop, P. J. (2026) Accounting for Missing
+#' Data When Modelling Block Maxima, *Environmetrics* **37**(2): e70075.
+#' \doi{10.1002/env.70075}.
+#'
 #' @docType package
 #' @aliases evmissing-package
 #' @import revdbayes

@@ -47,6 +47,11 @@ UK, 1998-2024.
 1846-2007.
 }
 }
+\references{
+Simpson, E. S. and Northrop, P. J. (2026) Accounting for Missing
+Data When Modelling Block Maxima, \emph{Environmetrics} \strong{37}(2): e70075.
+\doi{10.1002/env.70075}.
+}
 \seealso{
 Useful links:
 \itemize{
