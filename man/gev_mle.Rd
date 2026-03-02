@@ -88,13 +88,14 @@ values in each block. The GEV location and scale parameters are adjusted to
 reflect the proportion of raw values that are missing.
 }
 \details{
-If \code{data} is numeric vector then exactly one of the arguments
+If \code{data} is a numeric vector then exactly one of the arguments
 \code{block_length} or \code{block} must be supplied. The parameters are fitted
 using maximum likelihood estimation.
 
 The adjustment for the numbers of non-missing values underlying the block
-maxima is based on the strong assumption that missing values occur
-completely at random. We suppose that a block maximum \eqn{M_n} based on
+maxima is based on the strong assumptions that missing values occur
+completely at random and that the raw data are independent and identically
+distributed. We suppose that a block maximum \eqn{M_n} based on
 a full (no missing raw values) block of length \eqn{n} has a
 \eqn{\text{GEV}(\mu, \sigma, \xi)} distribution, with distribution function
 \eqn{G(x)}. Let \eqn{n_i} be the number of non-missing values in block \eqn{i}
@@ -176,4 +177,9 @@ MLEs <- cbind(coef(fit1), coef(fit2), coef(fit3), coef(fit4))
 SEs <- cbind(se(fit1), se(fit2), se(fit3), se(fit4))
 round(MLEs, 2)
 round(SEs, 2)
+}
+\references{
+Simpson, E. S. and Northrop, P. J. (2026) Accounting for Missing
+Data When Modelling Block Maxima, \emph{Environmetrics} \strong{37}(2): e70075.
+\doi{10.1002/env.70075}.
 }

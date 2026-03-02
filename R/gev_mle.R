@@ -42,13 +42,14 @@
 #'   \eqn{\xi}. If `init = "moments"` then instead we use the sample mean and
 #'   variance of these maxima and an initial value of 0.1 for \eqn{\xi}.
 #' @param ... Further arguments to be passed to [`stats::optim`].
-#' @details If `data` is numeric vector then exactly one of the arguments
+#' @details If `data` is a numeric vector then exactly one of the arguments
 #'   `block_length` or `block` must be supplied. The parameters are fitted
 #'   using maximum likelihood estimation.
 #'
 #' The adjustment for the numbers of non-missing values underlying the block
-#' maxima is based on the strong assumption that missing values occur
-#' completely at random. We suppose that a block maximum \eqn{M_n} based on
+#' maxima is based on the strong assumptions that missing values occur
+#' completely at random and that the raw data are independent and identically
+#' distributed. We suppose that a block maximum \eqn{M_n} based on
 #' a full (no missing raw values) block of length \eqn{n} has a
 #' \eqn{\text{GEV}(\mu, \sigma, \xi)} distribution, with distribution function
 #' \eqn{G(x)}. Let \eqn{n_i} be the number of non-missing values in block \eqn{i}
@@ -101,6 +102,10 @@
 #'
 #' Objects inheriting from class `"evmissing"` have `coef`, `logLik`, `nobs`,
 #' `summary`, `vcov` and `confint` methods.  See [`evmissing_methods`].
+#'
+#' @references Simpson, E. S. and Northrop, P. J. (2026) Accounting for Missing
+#' Data When Modelling Block Maxima, *Environmetrics* **37**(2): e70075.
+#' \doi{10.1002/env.70075}.
 #' @examples
 #' ## Simulate raw data from an exponential distribution
 #'
