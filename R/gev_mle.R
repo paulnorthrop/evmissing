@@ -205,7 +205,7 @@ gev_mle <- function(data, block_length, block, adjust = TRUE, discard = 0,
   #   (n_1, ..., n_b).
 
   # If init is a has not been supplied then calculate initial estimates of mu
-  # and sigma for assuming that xi = 0
+  # and sigma assuming that xi = 0
   if (is.character(init)) {
     init_method <- match.arg(init, c("quartiles", "moments"))
     init <- gev_init(maxima_notNA, init_method = init_method)
