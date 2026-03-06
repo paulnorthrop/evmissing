@@ -3,9 +3,10 @@
 #' Extracts block maxima and the number of non-missing observations per block.
 #' Works like [`block_maxima`] but returns two extra components: `whereNA`,
 #' the positions of the missing values within each block, and `pseudo_maxima`,
-#' the maxima created by applying blockwise missing value patterns to full
-#' blocks, that is, blocks without any missing values. To be useful for
-#' [`gev_ts`] the input data, `data`, must contain at least one full block.
+#' the maxima created by applying blockwise missing value patterns in
+#' incomplete blocks to full blocks, that is, blocks without any missing
+#' values. To be useful, the input data, `data`, must contain at least one full
+#' block.
 #'
 #' @param data A numeric vector containing a time series of raw data.
 #' @param block_length A numeric scalar. Used calculate the maxima of disjoint
@@ -17,7 +18,10 @@
 #'   `block[i]` indicates the block into which `data[i]` falls. For example,
 #'   `block` could provide the year in which observation `i` was observed.
 #' @details Exactly one of the arguments `block_length` or `block` must be
-#'   supplied.
+#'   supplied. If the block sizes implied by `block` are unequal then an
+#'   incomplete block and a full block may have different lengths. If this
+#'   occurs when `pseudo_maxima` are calculated, then the longer block is
+#'   trimmed, by discarding trailing values, so that the lengths match.
 #'
 #' @return A list, with class `c("list", "block_maxima_ts", "evmissing")`,
 #'   containing the following components:

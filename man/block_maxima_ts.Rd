@@ -53,13 +53,17 @@ If \code{block} is supplied then these vectors are named using the values in
 Extracts block maxima and the number of non-missing observations per block.
 Works like \code{\link{block_maxima}} but returns two extra components: \code{whereNA},
 the positions of the missing values within each block, and \code{pseudo_maxima},
-the maxima created by applying blockwise missing value patterns to full
-blocks, that is, blocks without any missing values. To be useful for
-\code{\link{gev_ts}} the input data, \code{data}, must contain at least one full block.
+the maxima created by applying blockwise missing value patterns in
+incomplete blocks to full blocks, that is, blocks without any missing
+values. To be useful, the input data, \code{data}, must contain at least one full
+block.
 }
 \details{
 Exactly one of the arguments \code{block_length} or \code{block} must be
-supplied.
+supplied. If the block sizes implied by \code{block} are unequal then an
+incomplete block and a full block may have different lengths. If this
+occurs when \code{pseudo_maxima} are calculated, then the longer block is
+trimmed, by discarding trailing values, so that the lengths match.
 }
 \examples{
 ## Simulate example data
