@@ -36,8 +36,9 @@
 #'    all full blocks, that is, blocks without any missing values. Each column
 #'    contains the pseudo-maxima resulting from a particular incomplete block.
 #'    The columns are labelled by the number of the incomplete block and the
-#'    columns by the number of the full block. If there are no full blocks or
-#'    no incomplete blocks then `pseudo_maxima` is `NA`.
+#'    columns by the number of the full block. If an incomplete block contains
+#'    all missing values then its entry in `pseudo_maxima` is `NA`. If there
+#'    are no full blocks or no incomplete blocks then `pseudo_maxima` is `NA`.
 #'
 #' If a block contains only missing values then its value of `maxima` is `NA`,
 #' its value of `notNA` is `0` and `whereNA` contains the positions of all the
