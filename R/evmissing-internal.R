@@ -201,17 +201,26 @@ pseudo_maxima_block <- function(maxima_notNA, data, block) {
   if (n_full == 0 || n_incomplete == 0) {
     return(NA)
   }
+
   # A full block and an incomplete block may have different lengths.
   # Annual maxima in leap years are based on more raw data than other years.
   # To account for this we trim the longer block length to match the shorter
   # block length by dropping extra values at the end of the longer block.
-  # (This is not coded yet!)
+
   # Function to apply missing pattern from block i to full block j
   apply_missings_to_block_j <- function(j, i) {
+    # Calculate the minimum length of full block j and incomplete block i
+    min_length <- min(maxima_notNA$n[c(i, j)])
     # Extract block j
     temp <- data[block == j]
+    # Trim the raw block data to length min_length
+    temp <- temp[seq_len(min_length)]
+    # Extract the missing value pattern from incomplete block i
+    missing_pattern <- maxima_notNA$whereNA[[i]]
+    # Trim to remove any missing locations outside the trimmed block
+    missing_pattern <- missing_pattern[missing_pattern <= min_length]
     # Create missings in the pattern observed in block i
-    temp[maxima_notNA$whereNA[[i]]] <- NA
+    temp[missing_pattern] <- NA
     # Return the block maximum, or NA if all values are missing
     if (any(!is.na(temp))) {
       val <- max(temp, na.rm = TRUE)
