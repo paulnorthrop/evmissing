@@ -22,12 +22,10 @@ test_that("block_maxima() errors when neither block_length or block are supplied
 test_that("block_maxima() errors when both block_length and block are supplied", {
   testthat::expect_error(block_maxima(data, a_block_length, a_block))
 })
-
 # block_maxima() errors when block does no have the same length as data
 test_that("block_maxima() errors when length(block) != length(data)", {
   testthat::expect_error(block_maxima(data, block = a_block[1:5]))
 })
-
 
 maxima <- c(4, 7, 10, 8, 4)
 notNA <- c(3, 3, 3, 4, 2)
@@ -38,7 +36,6 @@ test_that("block_maxima(): example data 1, block gives correct result", {
   testthat::expect_equal(block_maxima(data, block = a_block),
                          results, ignore_attr = TRUE)
 })
-
 test_that("block_maxima(): example data 1, block_length gives correct result", {
   testthat::expect_equal(block_maxima(data, block_length = a_block_length),
                          results, ignore_attr = TRUE)
@@ -60,7 +57,6 @@ test_that("block_maxima(): example data 2, block gives correct result", {
   testthat::expect_equal(block_maxima(data, block = a_new_block),
                          block_results, ignore_attr = TRUE)
 })
-
 test_that("block_maxima(): example data 2, block_length gives correct result", {
   testthat::expect_equal(block_maxima(data, block_length = a_block_length),
                          block_length_results, ignore_attr = TRUE)
