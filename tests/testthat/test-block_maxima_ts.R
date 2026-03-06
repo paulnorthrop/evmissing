@@ -50,14 +50,15 @@ test_that("block_maxima_ts(): example data 1, block_length gives correct result"
 
 # Start again with the same example data but modify them
 
-# A very simple example
+# A simple example
 data <- c(1:10, 10:1)
 # Add some missing values
 data[c(3, 8, 9, 19, 20)] <- NA
 # Create data with 2 extra blocks:
 #   One with all (4) NA
 #   Another with an incomplete block of length 3
-data <- c(data, rep(NA, 4), c(1, 2, NA))
+#data <- c(data, rep(NA, 4), c(1, 2, NA))
+data <- c(data, rep(NA, 4), c(NA, 1, 2))
 # Remove data[3] and set block so that the first block full and length 3
 data <- data[-3]
 # If block is supplied (correctly) then the incomplete block is not ignored
@@ -71,12 +72,12 @@ a_new_block <- c(rep(1, 3),
 # lengths (4) of many of the other blocks, including some incomplete blocks
 
 # If block_length is supplied then the final block should be ignored
-maxima <- c(5, 7, 10, 7, 3, 1)
-notNA <- c(4, 2, 4, 4, 1, 1)
+maxima <- c(5, 7, 10, 7, 3, NA)
+notNA <- c(4, 2, 4, 4, 1, 0)
 n <- rep(4, 6)
-whereNA1 <- list(integer(0), 3:4, integer(0), integer(0), 2:4, 1:3)
+whereNA1 <- list(integer(0), 3:4, integer(0), integer(0), 2:4, 1:4)
 names(whereNA1) <- paste0("block", 1:6)
-pseudo_maxima <- matrix(c(2, 10, 7, 1, 10, 7, 5, 8, 4), ncol = 3, nrow = 3)
+pseudo_maxima <- matrix(c(2, 10, 7, 1, 10, 7, NA, NA, NA), ncol = 3, nrow = 3)
 colnames(pseudo_maxima) <- c(2, 5, 6)
 rownames(pseudo_maxima) <- c(1, 3, 4)
 block_length_results <- list(maxima = maxima, notNA = notNA, n = n,
@@ -85,9 +86,9 @@ block_length_results <- list(maxima = maxima, notNA = notNA, n = n,
 maxima <- c(4, 7, 10, 8, 4, NA, 2)
 notNA <- c(3, 3, 3, 4, 2, 0, 2)
 n <- c(3, 4, 4, 4, 4, 4, 3)
-whereNA2 <- list(integer(0), 4, 1, integer(0), 3:4, 1:4, 3)
+whereNA2 <- list(integer(0), 4, 1, integer(0), 3:4, 1:4, 1)
 names(whereNA2) <- paste0("block", 1:7)
-pseudo_maxima <- matrix(c(4, 8, 4, 7, 2, 8, NA, NA, 2, 8), ncol = 5, nrow = 2)
+pseudo_maxima <- matrix(c(4, 8, 4, 7, 2, 8, NA, NA, 4, 7), ncol = 5, nrow = 2)
 colnames(pseudo_maxima) <- c(2, 3, 5, 6, 7)
 rownames(pseudo_maxima) <- c(1, 4)
 block_results <- list(maxima = maxima, notNA = notNA, n = n,
