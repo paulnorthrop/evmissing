@@ -32,6 +32,13 @@ missing values in the block. For example, if (only) the first and fifth
 observations in block 3 are missing then the third component (named
 \code{block3}) of \code{whereNA} is \code{c(1, 5)}. If a block has no missing values
 then its component in \code{whereNA} is \code{integer(0)}.
+\item \code{pseudo_maxima}: a numeric matrix containing (pseudo) block maxima
+created by applying the missing value patterns from incomplete blocks to
+all full blocks, that is, blocks without any missing values. Each column
+contains the pseudo-maxima resulting from a particular incomplete block.
+The columns are labelled by the number of the incomplete block and the
+columns by the number of the full block. If there are no full blocks or
+no incomplete blocks then \code{pseudo_maxima} is \code{NA}.
 }
 
 If a block contains only missing values then its value of \code{maxima} is \code{NA},
@@ -43,8 +50,11 @@ If \code{block} is supplied then these vectors are named using the values in
 }
 \description{
 Extracts block maxima and the number of non-missing observations per block.
-Works like \code{\link{block_maxima}} but returns an extra component, the
-positions of the missing values within each block.
+Works like \code{\link{block_maxima}} but returns two extra components: \code{whereNA},
+the positions of the missing values within each block, and \code{pseudo_maxima},
+the maxima created by applying blockwise missing value patterns to full
+blocks, that is, blocks without any missing values. To be useful for
+\code{\link{gev_ts}} the input data, \code{data}, must contain at least one full block.
 }
 \details{
 Exactly one of the arguments \code{block_length} or \code{block} must be

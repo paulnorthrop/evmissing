@@ -28,20 +28,21 @@ test_that("block_maxima() errors when length(block) != length(data)", {
   testthat::expect_error(block_maxima_ts(data, block = a_block[1:5]))
 })
 
-
 maxima <- c(4, 7, 10, 8, 4)
 notNA <- c(3, 3, 3, 4, 2)
 n <- c(4, 4, 4, 4, 4)
 whereNA <- list(3, 4, 1, integer(0), 3:4)
 names(whereNA) <- paste0("block", 1:5)
+pseudo_maxima <- matrix(c(8, 8, 7, 8), ncol = 4, nrow = 1)
+colnames(pseudo_maxima) <- c(1, 2, 3, 5)
+rownames(pseudo_maxima) <- 4
 results <- list(maxima = maxima, notNA = notNA, n = n,
-                whereNA = whereNA)
+                whereNA = whereNA, pseudo_maxima = pseudo_maxima)
 
 test_that("block_maxima_ts(): example data 1, block gives correct result", {
   testthat::expect_equal(block_maxima_ts(data, block = a_block),
                          results, ignore_attr = TRUE)
 })
-
 test_that("block_maxima_ts(): example data 1, block_length gives correct result", {
   testthat::expect_equal(block_maxima_ts(data, block_length = a_block_length),
                          results, ignore_attr = TRUE)
@@ -55,21 +56,28 @@ data <- c(data, rep(NA, 4), c(1, 2, NA))
 # If block_length is supplied then the incomplete block should be ignored
 whereNA1 <- list(3, 4, 1, integer(0), 3:4, 1:4)
 names(whereNA1) <- paste0("block", 1:6)
+pseudo_maxima <- matrix(c(8, 8, 7, 8, NA), ncol = 5, nrow = 1)
+colnames(pseudo_maxima) <- c(1, 2, 3, 5, 6)
+rownames(pseudo_maxima) <- 4
 block_length_results <- list(maxima = c(maxima, NA), notNA = c(notNA, 0),
-                             n = c(n, 4), whereNA = whereNA1)
+                             n = c(n, 4), whereNA = whereNA1,
+                             pseudo_maxima = pseudo_maxima)
 
 # If block is supplied (correctly) then the incomplete block is not ignored
 a_new_block <- c(a_block, rep(6, 4), rep(7, 3))
 whereNA2 <- list(3, 4, 1, integer(0), 3:4, 1:4, 3)
 names(whereNA2) <- paste0("block", 1:7)
+pseudo_maxima <- matrix(c(8, 8, 7, 8, NA, 8), ncol = 6, nrow = 1)
+colnames(pseudo_maxima) <- c(1, 2, 3, 5, 6, 7)
+rownames(pseudo_maxima) <- 4
 block_results <- list(maxima = c(maxima, NA, 2), notNA = c(notNA, 0, 2),
-                      n = c(n, 4, 3), whereNA = whereNA2)
+                      n = c(n, 4, 3), whereNA = whereNA2,
+                      pseudo_maxima = pseudo_maxima)
 
 test_that("block_maxima(): example data 2, block gives correct result", {
   testthat::expect_equal(block_maxima_ts(data, block = a_new_block),
                          block_results, ignore_attr = TRUE)
 })
-
 test_that("block_maxima(): example data 2, block_length gives correct result", {
   testthat::expect_equal(block_maxima_ts(data, block_length = a_block_length),
                          block_length_results, ignore_attr = TRUE)

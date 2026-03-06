@@ -190,6 +190,48 @@ pseudo_maxima_block_length <- function(maxima_notNA, data, block_length) {
   return(r)
 }
 
+pseudo_maxima_block <- function(maxima_notNA, data, block) {
+  # Identify full and incomplete blocks
+  nmissing <- maxima_notNA$n - maxima_notNA$notNA
+  full_blocks <- which(nmissing == 0)
+  incomplete_blocks <- which(nmissing > 0)
+  n_full <- length(full_blocks)
+  n_incomplete <- length(incomplete_blocks)
+  # If there are no full blocks or no incomplete blocks then return NA
+  if (n_full == 0 || n_incomplete == 0) {
+    return(NA)
+  }
+  # A full block and an incomplete block may have different lengths.
+  # Annual maxima in leap years are based on more raw data than other years.
+  # To account for this we trim the longer block length to match the shorter
+  # block length by dropping extra values at the end of the longer block.
+  # (This is not coded yet!)
+  # Function to apply missing pattern from block i to full block j
+  apply_missings_to_block_j <- function(j, i) {
+    # Extract block j
+    temp <- data[block == j]
+    # Create missings in the pattern observed in block i
+    temp[maxima_notNA$whereNA[[i]]] <- NA
+    # Return the block maximum, or NA if all values are missing
+    if (any(!is.na(temp))) {
+      val <- max(temp, na.rm = TRUE)
+    } else {
+      val <- NA
+    }
+    return(val)
+  }
+  apply_missing_pattern_from_block_i <- function(i) {
+    sapply(full_blocks, FUN = apply_missings_to_block_j, i = i)
+  }
+  r <- sapply(incomplete_blocks, FUN = apply_missing_pattern_from_block_i)
+  # If there is only 1 full block or 1 incomplete block then we need to
+  # force a matrix return and get the dimensions correct.
+  r <- matrix(r, ncol = length(incomplete_blocks), nrow = length(full_blocks))
+  # If a block contains only missing values then the pseudo
+  colnames(r) <- incomplete_blocks
+  rownames(r) <- full_blocks
+  return(r)
+}
 # ======================== Faster GEV profiling function ==================== #
 
 #' @keywords internal

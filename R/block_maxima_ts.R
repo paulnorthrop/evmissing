@@ -1,8 +1,11 @@
 #' Block maxima for a Time Series
 #'
 #' Extracts block maxima and the number of non-missing observations per block.
-#' Works like [`block_maxima`] but returns an extra component, the
-#' positions of the missing values within each block.
+#' Works like [`block_maxima`] but returns two extra components: `whereNA`,
+#' the positions of the missing values within each block, and `pseudo_maxima`,
+#' the maxima created by applying blockwise missing value patterns to full
+#' blocks, that is, blocks without any missing values. To be useful for
+#' [`gev_ts`] the input data, `data`, must contain at least one full block.
 #'
 #' @param data A numeric vector containing a time series of raw data.
 #' @param block_length A numeric scalar. Used calculate the maxima of disjoint
@@ -28,6 +31,13 @@
 #'    observations in block 3 are missing then the third component (named
 #'    `block3`) of `whereNA` is `c(1, 5)`. If a block has no missing values
 #'    then its component in `whereNA` is `integer(0)`.
+#'  * `pseudo_maxima`: a numeric matrix containing (pseudo) block maxima
+#'    created by applying the missing value patterns from incomplete blocks to
+#'    all full blocks, that is, blocks without any missing values. Each column
+#'    contains the pseudo-maxima resulting from a particular incomplete block.
+#'    The columns are labelled by the number of the incomplete block and the
+#'    columns by the number of the full block. If there are no full blocks or
+#'    no incomplete blocks then `pseudo_maxima` is `NA`.
 #'
 #' If a block contains only missing values then its value of `maxima` is `NA`,
 #' its value of `notNA` is `0` and `whereNA` contains the positions of all the
@@ -123,6 +133,17 @@ block_maxima_ts <- function(data, block_length, block) {
               n = unlist(others[3, ]), whereNA = whereNA)
     names(r) <- c("maxima", "notNA", "n", "whereNA")
   }
+  # For each incomplete block, that is, a block with at least one missing
+  # value, apply its missing value pattern to each full block and calculate
+  # the resulting pseudo maxima
+  if (block_length_supplied) {
+    pseudo_maxima <- pseudo_maxima_block_length(maxima_notNA = r, data = data,
+                                                block_length = block_length)
+  } else {
+    pseudo_maxima <- pseudo_maxima_block(maxima_notNA = r, data = data,
+                                         block = block)
+  }
+  r <- c(r, list(pseudo_maxima = pseudo_maxima))
   # Give the returned object a class, so that we can detect block maxima data
   # created by block_maxima()
   class(r) <- c("list", "block_maxima_ts", "evmissing")
