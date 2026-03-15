@@ -241,6 +241,40 @@ pseudo_maxima_block <- function(maxima_notNA, data, block) {
   rownames(r) <- full_blocks
   return(r)
 }
+
+# ============================= Estimation of p ============================= #
+
+#' @keywords internal
+#' @rdname evmissing-internal
+phat <- function(parameters, maxima_notNA) {
+  # Extract the pseudo-maxima. Each column contains the pseudo_maxima resulting
+  # from a particular incomplete block.
+  pseudo_maxima <- maxima_notNA$pseudo_maxima
+  # Extract the GEV parameter values for a complete block
+  mu <- parameters[1]
+  sigma <- parameters[2]
+  xi <- parameters[3]
+  # Evaluate the current GEV cdf at the pseudo-maxima, retaining matrix format
+  exp_data <- -apply(pseudo_maxima, 2, revdbayes::pgev,
+                     loc = mu, scale = sigma, shape = xi, log.p = TRUE)
+  # Treat column i of exp_data as a random sample from an exp(p_i) distribution
+  # The MLE in this situation is the reciprocal of the sample mean
+  phats <- apply(exp_data, 2, function(x) 1 / mean(x))
+  # Save the unconstrained estimates as an attribute
+  attr(phats, "unconstrained") <- phats
+  # We know that the true p_i cannot exceed 1, so set phats > 1 to 1
+  phats[phats > 1] <- 1
+  # A p_i should be no smaller than the proportion of non-missing values in
+  # block i, so set phats < propn_notNA to propn_notNA
+  propn_notNA <- maxima_notNA$notNA / maxima_notNA$n
+  # Only the propn_notNA (< 1) for the columns of exp_data are relevant
+  propn_notNA <- propn_notNA[colnames(exp_data)]
+  phats[phats < propn_notNA] <- propn_notNA[phats < propn_notNA]
+  # Save the proportions of non-NA values in incomplete blocks as an attribute
+  attr(phats, "propn_notNA") <- propn_notNA
+  return(phats)
+}
+
 # ======================== Faster GEV profiling function ==================== #
 
 #' @keywords internal
