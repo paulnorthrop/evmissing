@@ -268,7 +268,7 @@ phat <- function(parameters, maxima_notNA) {
   # block i, so set phats < propn_notNA to propn_notNA
   propn_notNA <- maxima_notNA$notNA / maxima_notNA$n
   # Only the propn_notNA (< 1) for the columns of exp_data are relevant
-  propn_notNA <- propn_notNA[colnames(exp_data)]
+  propn_notNA <- propn_notNA[as.numeric(colnames(exp_data))]
   phats[phats < propn_notNA] <- propn_notNA[phats < propn_notNA]
   # Save the proportions of non-NA values in incomplete blocks as an attribute
   attr(phats, "propn_notNA") <- propn_notNA
