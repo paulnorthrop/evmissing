@@ -40,6 +40,8 @@ The columns are labelled by the number of the incomplete block and the
 columns by the number of the full block. If an incomplete block contains
 all missing values then its entry in \code{pseudo_maxima} is \code{NA}. If there
 are no full blocks or no incomplete blocks then \code{pseudo_maxima} is \code{NA}.
+\item \code{full_maxima}: a numeric vector of maxima from full blocks.
+\item \code{partial_maxima}: a numeric vector of maxima from partial blocks.
 }
 
 If a block contains only missing values then its value of \code{maxima} is \code{NA},
@@ -50,13 +52,13 @@ If \code{block} is supplied then these vectors are named using the values in
 \code{block}. Otherwise, these vectors do not have names.
 }
 \description{
-Extracts block maxima and the number of non-missing observations per block.
-Works like \code{\link{block_maxima}} but returns two extra components: \code{whereNA},
-the positions of the missing values within each block, and \code{pseudo_maxima},
-the maxima created by applying blockwise missing value patterns in
-incomplete blocks to full blocks, that is, blocks without any missing
-values. To be useful, the input data, \code{data}, must contain at least one full
-block.
+Extracts block maxima and missinf value information for each block.
+Works like \code{\link{block_maxima}} but returns extra components, including:
+\code{whereNA}, the positions of the missing values within each block, and
+\code{pseudo_maxima}, the maxima created by applying blockwise missing value
+patterns in incomplete blocks to full blocks, that is, blocks without any
+missing values. To be useful, the input data, \code{data}, must contain at least
+one full block.
 }
 \details{
 Exactly one of the arguments \code{block_length} or \code{block} must be

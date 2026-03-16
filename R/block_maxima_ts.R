@@ -1,12 +1,12 @@
 #' Block maxima for a Time Series
 #'
-#' Extracts block maxima and the number of non-missing observations per block.
-#' Works like [`block_maxima`] but returns two extra components: `whereNA`,
-#' the positions of the missing values within each block, and `pseudo_maxima`,
-#' the maxima created by applying blockwise missing value patterns in
-#' incomplete blocks to full blocks, that is, blocks without any missing
-#' values. To be useful, the input data, `data`, must contain at least one full
-#' block.
+#' Extracts block maxima and missinf value information for each block.
+#' Works like [`block_maxima`] but returns extra components, including:
+#' `whereNA`, the positions of the missing values within each block, and
+#' `pseudo_maxima`, the maxima created by applying blockwise missing value
+#' patterns in incomplete blocks to full blocks, that is, blocks without any
+#' missing values. To be useful, the input data, `data`, must contain at least
+#' one full block.
 #'
 #' @param data A numeric vector containing a time series of raw data.
 #' @param block_length A numeric scalar. Used calculate the maxima of disjoint
@@ -43,6 +43,8 @@
 #'    columns by the number of the full block. If an incomplete block contains
 #'    all missing values then its entry in `pseudo_maxima` is `NA`. If there
 #'    are no full blocks or no incomplete blocks then `pseudo_maxima` is `NA`.
+#'  * `full_maxima`: a numeric vector of maxima from full blocks.
+#'  * `partial_maxima`: a numeric vector of maxima from partial blocks.
 #'
 #' If a block contains only missing values then its value of `maxima` is `NA`,
 #' its value of `notNA` is `0` and `whereNA` contains the positions of all the
@@ -149,6 +151,9 @@ block_maxima_ts <- function(data, block_length, block) {
                                          block = block)
   }
   r <- c(r, list(pseudo_maxima = pseudo_maxima))
+  # Create vectors that contain the full maxima and partial maxima
+  r$full_maxima <- r$maxima[as.numeric(rownames(r$pseudo_maxima))]
+  r$partial_maxima <- r$maxima[as.numeric(colnames(r$pseudo_maxima))]
   # Give the returned object a class, so that we can detect block maxima data
   # created by block_maxima()
   class(r) <- c("list", "block_maxima_ts", "evmissing")
