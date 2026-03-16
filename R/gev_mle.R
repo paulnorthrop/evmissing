@@ -83,6 +83,7 @@
 #' `optim_error` containing the error message. If the estimated observed
 #' information matrix is singular then a warning is produced and the returned
 #' object has `NA` values for the components `vcov` and `se`.
+#'
 #' @return A list, returned from [`stats::optim`] (the MLEs are in the
 #' component `par`), with the additional components:
 #'
