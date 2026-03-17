@@ -9,7 +9,7 @@
 #' adjustment for missing values or to discard any block maximum for which
 #' greater than a percentage of the underlying raw values are missing.
 #'
-#' The `evmiss` package was created to accompany the research
+#' The `evmissing` package was created to accompany the research
 #' paper Simpson, E. S. and Northrop, P. J. (2026) Accounting for missing data
 #' when modelling block maxima, *Environmetrics*, **37**(2): e70075
 #' \doi{10.1002/env.70075}.
