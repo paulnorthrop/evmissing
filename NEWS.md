@@ -1,6 +1,6 @@
 # evmissing 1.0.2
 
-* [Simpson and Northrop (2006)](https://doi.org/10.1002/env.70075) has appeared in [Environmetrics 37(2)](https://onlinelibrary.wiley.com/toc/1099095x/2026/37/2).
+* [Simpson and Northrop (2026)](https://doi.org/10.1002/env.70075) has appeared in [Environmetrics 37(2)](https://onlinelibrary.wiley.com/toc/1099095x/2026/37/2).
 
 # evmissing 1.0.1
 
