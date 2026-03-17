@@ -36,8 +36,12 @@ names(whereNA) <- paste0("block", 1:5)
 pseudo_maxima <- matrix(c(8, 8, 7, 8), ncol = 4, nrow = 1)
 colnames(pseudo_maxima) <- c(1, 2, 3, 5)
 rownames(pseudo_maxima) <- 4
+full_maxima <- c("4" = 8)
+partial_maxima <- c(4, 7, 10, 4)
+names(partial_maxima) <- c("1", "2", "3", "5")
 results <- list(maxima = maxima, notNA = notNA, n = n,
-                whereNA = whereNA, pseudo_maxima = pseudo_maxima)
+                whereNA = whereNA, pseudo_maxima = pseudo_maxima,
+                full_maxima = full_maxima, partial_maxima = partial_maxima)
 
 test_that("block_maxima_ts(): example data 1, block gives correct result", {
   testthat::expect_equal(block_maxima_ts(data, block = a_block),
@@ -80,8 +84,12 @@ names(whereNA1) <- paste0("block", 1:6)
 pseudo_maxima <- matrix(c(2, 10, 7, 1, 10, 7, NA, NA, NA), ncol = 3, nrow = 3)
 colnames(pseudo_maxima) <- c(2, 5, 6)
 rownames(pseudo_maxima) <- c(1, 3, 4)
+full_maxima <- c(5, 10, 7)
+partial_maxima <- c(7, 3, NA)
 block_length_results <- list(maxima = maxima, notNA = notNA, n = n,
-                             whereNA = whereNA1, pseudo_maxima = pseudo_maxima)
+                             whereNA = whereNA1, pseudo_maxima = pseudo_maxima,
+                             full_maxima = full_maxima,
+                             partial_maxima = partial_maxima)
 
 maxima <- c(4, 7, 10, 8, 4, NA, 2)
 notNA <- c(3, 3, 3, 4, 2, 0, 2)
@@ -91,8 +99,14 @@ names(whereNA2) <- paste0("block", 1:7)
 pseudo_maxima <- matrix(c(4, 8, 4, 7, 2, 8, NA, NA, 4, 7), ncol = 5, nrow = 2)
 colnames(pseudo_maxima) <- c(2, 3, 5, 6, 7)
 rownames(pseudo_maxima) <- c(1, 4)
+full_maxima <- c(4, 8)
+names(full_maxima) <- c(1, 4)
+partial_maxima <- c(7, 10, 4, NA, 2)
+names(partial_maxima) <- c(2, 3, 5, 6, 7)
 block_results <- list(maxima = maxima, notNA = notNA, n = n,
-                      whereNA = whereNA2, pseudo_maxima = pseudo_maxima)
+                      whereNA = whereNA2, pseudo_maxima = pseudo_maxima,
+                      full_maxima = full_maxima,
+                      partial_maxima = partial_maxima)
 
 test_that("block_maxima(): example data 2, block gives correct result", {
   testthat::expect_equal(block_maxima_ts(data, block = a_new_block),
