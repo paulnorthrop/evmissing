@@ -1,6 +1,6 @@
 #' Block maxima for a Time Series
 #'
-#' Extracts block maxima and missinf value information for each block.
+#' Extracts block maxima and missing value information for each block.
 #' Works like [`block_maxima`] but returns extra components, including:
 #' `whereNA`, the positions of the missing values within each block, and
 #' `pseudo_maxima`, the maxima created by applying blockwise missing value
