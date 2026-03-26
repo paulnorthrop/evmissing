@@ -153,7 +153,8 @@ weighted_negated_gev_loglik_ret_levs <- function(parameters, maxima, weights,
 #   (a) Apply its missingness pattern to each full block of data
 #   (b) Store the resulting pseudo maxima
 
-pseudo_maxima_block_length <- function(maxima_notNA, data, block_length) {
+pseudo_maxima_block_length <- function(maxima_notNA, data, block_length,
+                                       sliding = FALSE) {
   # Identify full and incomplete blocks
   nmissing <- maxima_notNA$n - maxima_notNA$notNA
   full_blocks <- which(nmissing == 0)
@@ -165,9 +166,19 @@ pseudo_maxima_block_length <- function(maxima_notNA, data, block_length) {
     return(NA)
   }
   # Function to apply missing pattern from block i to full block j
+  # Set the
+  if (sliding) {
+    find_block_j <- function(j) {
+      return(data[j:(j + block_length - 1)])
+    }
+  } else {
+    find_block_j <- function(j) {
+      return(data[(1 + block_length * (j - 1)):(block_length * j)])
+    }
+  }
   apply_missings_to_block_j <- function(j, i) {
     # Extract block j
-    temp <- data[(1 + block_length * (j - 1)):(block_length * j)]
+    temp <- find_block_j(j)
     # Create missings in the pattern observed in block i
     temp[maxima_notNA$whereNA[[i]]] <- NA
     # Return the block maximum, or NA if all values are missing
