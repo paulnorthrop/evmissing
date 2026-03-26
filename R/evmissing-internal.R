@@ -31,6 +31,7 @@ negated_gev_loglik <- function(parameters, maxima_notNA, adjust,
     mu <- mu + sigma * box_cox_vec(x = p_i, lambda = xi)
     sigma <- sigma * p_i ^ xi
   }
+
   # Check that the parameters are not out-of-bounds
   if (any(sigma <= 0) || any(1 + xi * (maxima - mu) / sigma <= 0)) {
     return(big_val)
@@ -242,11 +243,11 @@ pseudo_maxima_block <- function(maxima_notNA, data, block) {
   return(r)
 }
 
-# ============================= Estimation of p ============================= #
+# ============================= Estimation of r ============================= #
 
 #' @keywords internal
 #' @rdname evmissing-internal
-phat <- function(parameters, maxima_notNA) {
+rhat <- function(parameters, maxima_notNA) {
   # Extract the pseudo-maxima. Each column contains the pseudo_maxima resulting
   # from a particular incomplete block.
   pseudo_maxima <- maxima_notNA$pseudo_maxima
@@ -257,22 +258,78 @@ phat <- function(parameters, maxima_notNA) {
   # Evaluate the current GEV cdf at the pseudo-maxima, retaining matrix format
   exp_data <- -apply(pseudo_maxima, 2, revdbayes::pgev,
                      loc = mu, scale = sigma, shape = xi, log.p = TRUE)
-  # Treat column i of exp_data as a random sample from an exp(p_i) distribution
+  # Treat column i of exp_data as a random sample from an exp(r_i) distribution
   # The MLE in this situation is the reciprocal of the sample mean
-  phats <- apply(exp_data, 2, function(x) 1 / mean(x))
+  rhats <- apply(exp_data, 2, function(x) 1 / mean(x))
   # Save the unconstrained estimates as an attribute
-  attr(phats, "unconstrained") <- phats
-  # We know that the true p_i cannot exceed 1, so set phats > 1 to 1
-  phats[phats > 1] <- 1
-  # A p_i should be no smaller than the proportion of non-missing values in
-  # block i, so set phats < propn_notNA to propn_notNA
+  attr(rhats, "unconstrained") <- rhats
+  # We know that the true r_i cannot exceed 1, so set rhats > 1 to 1
+  rhats[rhats > 1] <- 1
+  # A r_i should be no smaller than the proportion of non-missing values in
+  # block i, so set rhats < propn_notNA to propn_notNA
   propn_notNA <- maxima_notNA$notNA / maxima_notNA$n
   # Only the propn_notNA (< 1) for the columns of exp_data are relevant
   propn_notNA <- propn_notNA[as.numeric(colnames(exp_data))]
-  phats[phats < propn_notNA] <- propn_notNA[phats < propn_notNA]
+  rhats[rhats < propn_notNA] <- propn_notNA[rhats < propn_notNA]
   # Save the proportions of non-NA values in incomplete blocks as an attribute
-  attr(phats, "propn_notNA") <- propn_notNA
-  return(phats)
+  attr(rhats, "propn_notNA") <- propn_notNA
+  return(rhats)
+}
+
+# ======================= GEV log-likelihood for gev_ts() ==================== #
+
+#' @keywords internal
+#' @rdname evmissing-internal
+negated_gev_loglik_ts <- function(parameters, maxima_notNA, pseudo, fixed_r,
+                                  big_val = Inf) {
+  # Extract the full-block maxima, partial-block maxima and pseudo-maxima
+  partial_maxima <- maxima_notNA$partial_maxima
+  full_maxima <- maxima_notNA$full_maxima
+  pseudo_maxima <- maxima_notNA$pseudo_maxima
+  # Row i of pseudo_maxima is produced from full maximum i
+
+  # Extract the GEV parameter values for a complete block
+  mu <- parameters[1]
+  sigma <- parameters[2]
+  xi <- parameters[3]
+  # Check that the parameters are not out-of-bounds for full blocks
+  if (any(sigma <= 0) || any(1 + xi * (full_maxima - mu) / sigma <= 0)) {
+    return(big_val)
+  }
+  # Estimate a vector of values of r for blocks that have missing values
+  # Do not do this if fixed_r has been supplied in order to estimate the
+  # Hessian appropriately
+  # If pseudo = FALSE, use the proportions of non-NA values, as in gev_mle()
+  if (missing(fixed_r)) {
+    rhats <- rhat(parameters = parameters, maxima_notNA = maxima_notNA)
+    if (!pseudo) {
+      rhats <- attr(rhats, "propn_notNA")
+    }
+  } else {
+    rhats <- fixed_r
+  }
+  # rhats[j] is relevant to partial maximum j, in partial_maxima[j]
+  # Calculate the GEV location and scale parameters for such maxima
+  mu_r <- mu + sigma * box_cox_vec(x = rhats, lambda = xi)
+  sigma_r <- sigma * rhats ^ xi
+  # Check that the parameters are not out-of-bounds for partial maxima
+  # (sigma > 0 from above implies that sigma_r > 0)
+  if (any(1 + xi * (partial_maxima - mu_r) / sigma_r <= 0)) {
+    return(big_val)
+  }
+  # Create the contributions to the log-likelihood, using the nieve package
+  # From partial-block maxima, GEV(mu_r, sigma_r, xi) model
+  loglik_partial <- nieve::dGEV(x = partial_maxima,
+                                loc = mu_r, scale = sigma_r, shape = xi,
+                                log = TRUE)
+  # From full-block maxima, GEV(mu, sigma, xi) model
+  loglik_full <- nieve::dGEV(x = full_maxima,
+                             loc = mu, scale = sigma, shape = xi,
+                             log = TRUE)
+  # Combine the contributions
+  loglik <- c(loglik_partial, loglik_full)
+  # Return the negated sum of the log-likelihood contributions
+  return(-sum(loglik))
 }
 
 # ======================== Faster GEV profiling function ==================== #

@@ -7,7 +7,8 @@
 \alias{discard_maxima}
 \alias{negated_gev_loglik_ret_levs}
 \alias{weighted_negated_gev_loglik_ret_levs}
-\alias{phat}
+\alias{rhat}
+\alias{negated_gev_loglik_ts}
 \alias{faster_profile_ci}
 \alias{profile_ci}
 \alias{box_cox}
@@ -53,7 +54,9 @@ weighted_negated_gev_loglik_ret_levs(
   big_val = Inf
 )
 
-phat(parameters, maxima_notNA)
+rhat(parameters, maxima_notNA)
+
+negated_gev_loglik_ts(parameters, maxima_notNA, pseudo, fixed_r, big_val = Inf)
 
 faster_profile_ci(
   negated_loglik_fn,
