@@ -8,7 +8,11 @@
 #' @param data A numeric vector containing a time series of raw data.
 #' @param block_length A numeric scalar. Used calculate the maxima of sliding
 #'   blocks of `block_length` contiguous values in the vector `data`.
-#' @details Add details.
+#' @details The maxima are calculated for **all** blocks of length
+#'   `block_length` present in `data`, starting with the first block
+#'   `data[1:block_length]` and sliding the block repeatedly by one observation
+#'   until reaching the final block
+#'   `data[(length(data) - block_length + 1):length(data)]`.
 #'
 #' @return A list, with class `c("list", "block_maxima_ts", "evmissing")`,
 #'   containing the following components:

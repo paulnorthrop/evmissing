@@ -51,7 +51,11 @@ Works like \code{\link{block_maxima_ts}} but returns information for sliding
 only block length, that is, there is no \code{block} argument.
 }
 \details{
-Add details.
+The maxima are calculated for \strong{all} blocks of length
+\code{block_length} present in \code{data}, starting with the first block
+\code{data[1:block_length]} and sliding the block repeatedly by one observation
+until reaching the final block
+\code{data[(length(data) - block_length + 1):length(data)]}.
 }
 \examples{
 ## Simulate example data
