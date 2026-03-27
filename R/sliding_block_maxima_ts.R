@@ -103,6 +103,6 @@ sliding_block_maxima_ts <- function(data, block_length) {
   r$partial_maxima <- r$maxima[as.numeric(colnames(r$pseudo_maxima))]
   # Give the returned object a class, so that we can detect block maxima data
   # created by block_maxima()
-  class(r) <- c("list", "block_maxima_ts", "evmissing")
+  class(r) <- c("list", "sliding_block_maxima_ts", "evmissing")
   return(r)
 }
