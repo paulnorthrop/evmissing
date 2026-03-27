@@ -122,10 +122,12 @@
 #' pf2 <- gev_mle(sdata$data_miss, block_length = 90)
 #'
 #' # Using sliding blocks
+#' \dontrun{
 #' pts <- gev_ts(sdata$data_miss, block_length = 90, pseudo = TRUE,
 #'               sliding = TRUE)
 #' pfs <- gev_ts(sdata$data_miss, block_length = 90, pseudo = FALSE,
 #'               sliding = TRUE)
+#' }
 #' @export
 gev_ts <- function(data, block_length, block, pseudo = TRUE, sliding = FALSE,
                    init = "quartiles", ...) {

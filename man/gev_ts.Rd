@@ -145,10 +145,12 @@ pf <- gev_ts(sdata$data_miss, block_length = 90, pseudo = FALSE)
 pf2 <- gev_mle(sdata$data_miss, block_length = 90)
 
 # Using sliding blocks
+\dontrun{
 pts <- gev_ts(sdata$data_miss, block_length = 90, pseudo = TRUE,
               sliding = TRUE)
 pfs <- gev_ts(sdata$data_miss, block_length = 90, pseudo = FALSE,
               sliding = TRUE)
+}
 }
 \seealso{
 \code{\link{gev_mle}} provides an adjustment for missing data in the
