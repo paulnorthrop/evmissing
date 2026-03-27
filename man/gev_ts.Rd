@@ -4,17 +4,27 @@
 \alias{gev_ts}
 \title{GEV ML Inference with Adjustment for Missing Data (Stationary Sequences)}
 \usage{
-gev_ts(data, block_length, block, pseudo = TRUE, init = "quartiles", ...)
+gev_ts(
+  data,
+  block_length,
+  block,
+  pseudo = TRUE,
+  sliding = FALSE,
+  init = "quartiles",
+  ...
+)
 }
 \arguments{
 \item{data}{Either
 \itemize{
 \item a numeric vector containing a time series of raw data,
-\item an object returned from \code{\link{block_maxima_ts}}, a list with components
-\code{maxima}, \code{notNA}, \code{n} and \code{whereNA},
+\item an object returned from \code{\link{block_maxima_ts}} or
+\code{\link{sliding_block_maxima_ts}}, a list with components \code{maxima}, \code{notNA},
+\code{n}, \code{whereNA}, \code{pseudo_maxima}, \code{full_maxima} and \code{partial_maxima},
 \item a named list containing the same information, that is, the variables
-\code{maxima}, \code{notNA}, \code{n} and \code{whereNA}, as an object returned from
-\code{\link{block_maxima}}.
+\code{maxima}, \code{notNA}, \code{n}, \code{whereNA}, \code{pseudo_maxima}, \code{full_maxima} and
+\code{partial_maxima} as an object returned from \code{\link{block_maxima_ts}} or
+\code{\link{sliding_block_maxima_ts}}.
 }
 
 There must be at least one full block of data, that is, at least one block
@@ -22,19 +32,26 @@ for which no data are missing.}
 
 \item{block_length}{A numeric scalar. Used calculate the maxima of disjoint
 blocks of \code{block_length} contiguous values in the vector \code{data}.
-If \code{length(data)} is not an integer multiple of \code{block_length} then
-the values at the end of \code{data} that do not constitute a complete block
-of length \code{block_length} are discarded, without warning.}
+If \code{sliding = FALSE} and if \code{length(data)} is not an integer multiple of
+\code{block_length}, then the values at the end of \code{data} that do not constitute
+a complete block of length \code{block_length} are discarded, without warning.}
 
 \item{block}{A numeric vector with the same length as \code{data}. The value of
 \code{block[i]} indicates the block into which \code{data[i]} falls. For example,
-\code{block} could provide the year in which observation \code{i} was observed.}
+\code{block} could provide the year in which observation \code{i} was observed.
+Not applicable if \code{sliding = TRUE}. If \code{sliding = TRUE}, then
+\code{block_length} must be supplied.}
 
 \item{pseudo}{A logical scalar. If \code{pseudo = TRUE} then the pseudo-maxima
 returned from \code{\link{block_maxima_ts}} are used to estimate the value of
 \eqn{r_i} for an incomplete, partially-observed block. See \strong{Details}.
 If \code{pseudo = FALSE} then the ratio \eqn{n_i/n} is used, as in
 \code{\link[=gev_mle]{gev_mle()}}.}
+
+\item{sliding}{A logical scalar. If \code{sliding = TRUE} then inferences are
+based on sliding block maxima returned by \code{\link{sliding_block_maxima_ts}}
+and \code{block_length} must be supplied. If \code{sliding = FALSE} then they are
+based on disjoint block maxima returned from \code{\link{block_maxima_ts}}.}
 
 \item{init}{Either a character scalar, one of \code{"quartiles"} or \code{"moments"},
 or a numeric vector of length 3 giving initial estimates of the GEV
@@ -66,9 +83,10 @@ partially-observed blocks only. The attributes \code{"propn_notNA"} and
 \code{"unconstrained"} give, respectively, the values of \eqn{n_i/n} for these
 blocks and the estimates of \eqn{r_i} before they are constrained to lie
 in the interval \eqn{[n_i/n, 1]}.
+\item \code{sliding}: the input argument \code{sliding}.
 }
 
-The call to \code{gev_mle} is provided in the attribute \code{"call"}.
+The call to \code{gev_ts} is provided in the attribute \code{"call"}.
 }
 \description{
 Fits a GEV distribution to block maxima using maximum likelihood estimation,
@@ -78,8 +96,9 @@ of raw values that are missing and the time series dependence in the data.
 }
 \details{
 If \code{data} is a numeric vector then exactly one of the arguments
-\code{block_length} or \code{block} must be supplied. The parameters are fitted
-using maximum likelihood estimation.
+\code{block_length} or \code{block} must be supplied if \code{sliding = FALSE} and only
+\code{block_length} can be supplied if \code{sliding = TRUE}. The parameters are
+fitted using maximum likelihood estimation.
 
 The adjustment for the numbers of non-missing values underlying the block
 maxima is based on the strong assumption that missing values occur
@@ -119,9 +138,17 @@ block_length <- 90
 missing_args <- list(p0miss = 0.5, min = 0, max = 0.4)
 sdata <- sim_data(blocks = blocks, block_length = block_length,
                   missing_args = missing_args)
+
+# Using disjoint blocks
 pt <- gev_ts(sdata$data_miss, block_length = 90, pseudo = TRUE)
 pf <- gev_ts(sdata$data_miss, block_length = 90, pseudo = FALSE)
 pf2 <- gev_mle(sdata$data_miss, block_length = 90)
+
+# Using sliding blocks
+pts <- gev_ts(sdata$data_miss, block_length = 90, pseudo = TRUE,
+              sliding = TRUE)
+pfs <- gev_ts(sdata$data_miss, block_length = 90, pseudo = FALSE,
+              sliding = TRUE)
 }
 \seealso{
 \code{\link{gev_mle}} provides an adjustment for missing data in the

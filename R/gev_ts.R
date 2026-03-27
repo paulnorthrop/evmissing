@@ -8,28 +8,35 @@
 #' @param data Either
 #'
 #'   * a numeric vector containing a time series of raw data,
-#'   * an object returned from [`block_maxima_ts`], a list with components
-#'     `maxima`, `notNA`, `n` and `whereNA`,
+#'   * an object returned from [`block_maxima_ts`] or
+#'     [`sliding_block_maxima_ts`], a list with components `maxima`, `notNA`,
+#'     `n`, `whereNA`, `pseudo_maxima`, `full_maxima` and `partial_maxima`,
 #'   * a named list containing the same information, that is, the variables
-#'     `maxima`, `notNA`, `n` and `whereNA`, as an object returned from
-#'     [`block_maxima`].
+#'     `maxima`, `notNA`, `n`, `whereNA`, `pseudo_maxima`, `full_maxima` and
+#'     `partial_maxima` as an object returned from [`block_maxima_ts`] or
+#'     [`sliding_block_maxima_ts`].
 #'
 #'   There must be at least one full block of data, that is, at least one block
 #'   for which no data are missing.
 #' @param block_length A numeric scalar. Used calculate the maxima of disjoint
 #'   blocks of `block_length` contiguous values in the vector `data`.
-#'   If `length(data)` is not an integer multiple of `block_length` then
-#'   the values at the end of `data` that do not constitute a complete block
-#'   of length `block_length` are discarded, without warning.
+#'   If `sliding = FALSE` and if `length(data)` is not an integer multiple of
+#'   `block_length`, then the values at the end of `data` that do not constitute
+#'   a complete block of length `block_length` are discarded, without warning.
 #' @param block A numeric vector with the same length as `data`. The value of
 #'   `block[i]` indicates the block into which `data[i]` falls. For example,
 #'   `block` could provide the year in which observation `i` was observed.
+#'   Not applicable if `sliding = TRUE`. If `sliding = TRUE`, then
+#'   `block_length` must be supplied.
 #' @param pseudo A logical scalar. If `pseudo = TRUE` then the pseudo-maxima
 #'   returned from [`block_maxima_ts`] are used to estimate the value of
 #'   \eqn{r_i} for an incomplete, partially-observed block. See **Details**.
 #'   If `pseudo = FALSE` then the ratio \eqn{n_i/n} is used, as in
 #'   [`gev_mle()`].
-#'
+#' @param sliding A logical scalar. If `sliding = TRUE` then inferences are
+#'   based on sliding block maxima returned by [`sliding_block_maxima_ts`]
+#'   and `block_length` must be supplied. If `sliding = FALSE` then they are
+#'   based on disjoint block maxima returned from [`block_maxima_ts`].
 #' @param init Either a character scalar, one of `"quartiles"` or `"moments"`,
 #'   or a numeric vector of length 3 giving initial estimates of the GEV
 #'   location, scale and shape parameters: \eqn{\mu}, \eqn{\sigma} and
@@ -40,8 +47,9 @@
 #'   variance of these maxima and an initial value of 0.1 for \eqn{\xi}.
 #' @param ... Further arguments to be passed to [`stats::optim`].
 #' @details If `data` is a numeric vector then exactly one of the arguments
-#'   `block_length` or `block` must be supplied. The parameters are fitted
-#'   using maximum likelihood estimation.
+#'   `block_length` or `block` must be supplied if `sliding = FALSE` and only
+#'   `block_length` can be supplied if `sliding = TRUE`. The parameters are
+#'   fitted using maximum likelihood estimation.
 #'
 #' The adjustment for the numbers of non-missing values underlying the block
 #' maxima is based on the strong assumption that missing values occur
@@ -92,8 +100,9 @@
 #'    `"unconstrained"` give, respectively, the values of \eqn{n_i/n} for these
 #'    blocks and the estimates of \eqn{r_i} before they are constrained to lie
 #'    in the interval \eqn{[n_i/n, 1]}.
+#' * `sliding`: the input argument `sliding`.
 #'
-#' The call to `gev_mle` is provided in the attribute `"call"`.
+#' The call to `gev_ts` is provided in the attribute `"call"`.
 #'
 #' @seealso [`gev_mle`] provides an adjustment for missing data in the
 #' case where the raw data can be assumed to be independent and identically
@@ -106,26 +115,51 @@
 #' missing_args <- list(p0miss = 0.5, min = 0, max = 0.4)
 #' sdata <- sim_data(blocks = blocks, block_length = block_length,
 #'                   missing_args = missing_args)
+#'
+#' # Using disjoint blocks
 #' pt <- gev_ts(sdata$data_miss, block_length = 90, pseudo = TRUE)
 #' pf <- gev_ts(sdata$data_miss, block_length = 90, pseudo = FALSE)
 #' pf2 <- gev_mle(sdata$data_miss, block_length = 90)
+#'
+#' # Using sliding blocks
+#' pts <- gev_ts(sdata$data_miss, block_length = 90, pseudo = TRUE,
+#'               sliding = TRUE)
+#' pfs <- gev_ts(sdata$data_miss, block_length = 90, pseudo = FALSE,
+#'               sliding = TRUE)
 #' @export
-gev_ts <- function(data, block_length, block, pseudo = TRUE,
+gev_ts <- function(data, block_length, block, pseudo = TRUE, sliding = FALSE,
                    init = "quartiles", ...) {
-  # If data was created by block_maxima_ts() or is a data frame that contains
-  # the correct information then use it. Otherwise, use block_maxima_ts() to
-  # calculate the block maxima, the numbers of non-missing values in the blocks
-  # and the largest possible number of non-missing values in each block
-  if (inherits(data, "block_maxima_ts") && inherits(data, "evmissing")) {
+  # If sliding = TRUE then check that only block_length is supplied
+  block_length_supplied <- !missing(block_length)
+  block_supplied <- !missing(block)
+  if (sliding && (block_supplied || !block_length_supplied)) {
+    stop("If ''sliding = TRUE'' then (only) ''block_length'' must be supplied")
+  }
+  # If data was created by block_maxima_ts() or sliding_block_maxima_ts() or is
+  # a data frame that contains the correct information then use it.
+  # Otherwise, use block_maxima_ts() to calculate the block maxima, the numbers
+  # of non-missing values in the blocks and the largest possible number of
+  # non-missing values in each block.
+  from_maxima_ts <- inherits(data, "block_maxima_ts") ||
+    inherits(data, "sliding_block_maxima_ts")
+  required <- c("maxima", "notNA", "n", "whereNA", "pseudo_maxima",
+                "full_maxima", "partial_maxima")
+  if (from_maxima_ts && inherits(data, "evmissing")) {
     maxima_notNA <- data
   } else if (is.list(data)) {
-    if (all(is.element(c("maxima", "notNA", "n", "whereNA"), names(data)))) {
+    if (all(is.element(required, names(data)))) {
       maxima_notNA <- as.list(data)
     } else {
       stop("List ''data'' does not contain the required named components.")
     }
   } else {
-    maxima_notNA <- block_maxima_ts(data, block_length, block)
+    if (sliding) {
+      print("Calculating sliding block maxima")
+      maxima_notNA <- sliding_block_maxima_ts(data, block_length)
+      print("Calculated sliding block maxima")
+    } else {
+      maxima_notNA <- block_maxima_ts(data, block_length, block)
+    }
   }
   # If there are maxima = NA, notNA = 0 entries in the data then remove them
   no_data <- which(maxima_notNA$notNA == 0)
@@ -166,6 +200,7 @@ gev_ts <- function(data, block_length, block, pseudo = TRUE,
       big_val <- 10 ^ 10
     }
   }
+  print("Calling optim()")
   fit <- try(stats::optim(par = init, fn = negated_gev_loglik_ts,
                           hessian = TRUE, ..., maxima_notNA = maxima_notNA,
                           pseudo = pseudo, big_val = big_val),
@@ -226,6 +261,7 @@ gev_ts <- function(data, block_length, block, pseudo = TRUE,
   fit$maxima <- maxima_notNA$maxima
   fit$notNA <- maxima_notNA$notNA
   fit$n <- maxima_notNA$n
+  fit$sliding <- sliding
   attr(fit, "call") <- match.call(expand.dots = TRUE)
   class(fit) <- c("evmissing", "mle", class(fit))
   return(fit)
