@@ -62,6 +62,11 @@ coef(fit2)
 usethis::use_data(PlymouthOzoneMaxima, overwrite = TRUE)
 usethis::use_data(PlymouthOzone, overwrite = TRUE)
 
+# Also create sliding maxima
+PlymouthOzoneSlidingMaxima <- sliding_block_maxima_ts(PlymouthOzone$Ozone, block_length = 365)
+usethis::use_data(PlymouthOzoneSlidingMaxima, overwrite = TRUE)
+
+
 # Explore the distribution of lengths of missing and non-missing episodes
 
 x <- rle(is.na(PlymouthOzone$Ozone))
