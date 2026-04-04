@@ -220,6 +220,41 @@
 #'      xlab = "proportion of non-missing days", pch = 16)
 "PlymouthOzoneMaxima"
 
+#' Sliding Maxima of Ozone Levels at Plymouth, UK
+#'
+#' Maxima of sliding (overlapping) block of length 365 days of daily maximum
+#' ozone levels at Plymouth in Devon (UK) for the years 1998-2024 inclusive.
+#'
+#' @format `PlymouthOzoneSlidingMaxima` is an object returned from
+#' [`sliding_block_maxima_ts`], a list inheriting from class
+#' `sliding_maxima_ts`. It was created using
+#' `sliding_block_maxima_ts(PlymouthOzone$Ozone, block_length = 365)`.
+#' This includes components
+#'
+#' * `full_maxima`: a numeric vector of 130 full-block maxima, all equal to 143
+#'   \eqn{\mu}g/m\eqn{^3}.
+#' * `partial_maxima`: a numeric vector of 9368 partial-block maxima.
+#' * `maxima`: a numeric vector of all maxima.
+#'
+#' See [`sliding_block_maxima_ts`] for a description of the other components.
+#'
+#' @source The Department for Environment Food and Rural Affair (DEFRA).
+#'   The Plymouth Centre monitoring site at
+#'   the [UK-AIR](https://uk-air.defra.gov.uk/) database
+#'   [Data Selector](https://uk-air.defra.gov.uk/data/data_selector).
+#' @seealso [`PlymouthOzone`] for the raw time series.
+#' @examples
+#' # Time series plots of sliding block maxima and
+#' t <- 1:length(PlymouthOzoneSlidingMaxima$maxima)
+#' plot(t, PlymouthOzoneSlidingMaxima$maxima, type = "l",
+#'      xlab = "block", ylab = "sliding block maximum")
+#'
+#' # Plot maxima against the proportion of non-missing daily values
+#' pNotNA <- PlymouthOzoneSlidingMaxima$notNA / PlymouthOzoneSlidingMaxima$n
+#' plot(pNotNA, PlymouthOzoneSlidingMaxima$maxima,
+#'      xlab = "proportion of non-missing daily values", ylab = "block maxima")
+"PlymouthOzoneSlidingMaxima"
+
 #' Ozone Levels at Plymouth, UK
 #'
 #' Daily maximum ozone levels at Plymouth in London (UK) for the years
