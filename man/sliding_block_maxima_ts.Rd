@@ -2,7 +2,7 @@
 % Please edit documentation in R/sliding_block_maxima_ts.R
 \name{sliding_block_maxima_ts}
 \alias{sliding_block_maxima_ts}
-\title{Sliding block maxima for a Time Series}
+\title{Sliding Block Maxima for a Time Series}
 \usage{
 sliding_block_maxima_ts(data, block_length)
 }
@@ -66,14 +66,7 @@ data <- rexp(15)
 data[c(5, 7:8)] <- NA
 # 5 blocks (columns), each with 3 observations
 matrix(data, ncol = 5)
-# Supplying block_length
-block_length <- 3
-block_maxima_ts(data, block_length = block_length)
 
-## Data with an incomplete block
-data <- c(data, 1:2)
-
-# Supplying block_length (the extra 2 observations are ignored)
 block_length <- 3
-sliding_block_maxima_ts(data, block_length = block_length)
+x <- sliding_block_maxima_ts(data, block_length = block_length)
 }
