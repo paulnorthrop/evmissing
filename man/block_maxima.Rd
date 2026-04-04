@@ -2,7 +2,7 @@
 % Please edit documentation in R/block_maxima.R
 \name{block_maxima}
 \alias{block_maxima}
-\title{Block maxima}
+\title{Block Maxima}
 \usage{
 block_maxima(data, block_length, block)
 }

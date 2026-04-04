@@ -1,4 +1,4 @@
-#' Block maxima
+#' Block Maxima
 #'
 #' Extracts block maxima and the number of non-missing observations per block.
 #'
