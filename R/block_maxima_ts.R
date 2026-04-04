@@ -155,7 +155,7 @@ block_maxima_ts <- function(data, block_length, block) {
   r$full_maxima <- r$maxima[as.numeric(rownames(r$pseudo_maxima))]
   r$partial_maxima <- r$maxima[as.numeric(colnames(r$pseudo_maxima))]
   # Give the returned object a class, so that we can detect block maxima data
-  # created by block_maxima()
+  # created by block_maxima_ts()
   class(r) <- c("list", "block_maxima_ts", "evmissing")
   return(r)
 }
