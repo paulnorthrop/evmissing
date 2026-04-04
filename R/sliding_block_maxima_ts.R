@@ -1,4 +1,4 @@
-#' Sliding block maxima for a Time Series
+#' Sliding Block Maxima for a Time Series
 #'
 #' Extracts sliding block maxima and missing value information for each block.
 #' Works like [`block_maxima_ts`] but returns information for sliding
@@ -52,16 +52,9 @@
 #' data[c(5, 7:8)] <- NA
 #' # 5 blocks (columns), each with 3 observations
 #' matrix(data, ncol = 5)
-#' # Supplying block_length
-#' block_length <- 3
-#' block_maxima_ts(data, block_length = block_length)
 #'
-#' ## Data with an incomplete block
-#' data <- c(data, 1:2)
-#'
-#' # Supplying block_length (the extra 2 observations are ignored)
 #' block_length <- 3
-#' sliding_block_maxima_ts(data, block_length = block_length)
+#' x <- sliding_block_maxima_ts(data, block_length = block_length)
 #' @export
 sliding_block_maxima_ts <- function(data, block_length) {
   # Check that data is a numeric vector
@@ -101,8 +94,9 @@ sliding_block_maxima_ts <- function(data, block_length) {
   # Create vectors that contain the full maxima and partial maxima
   r$full_maxima <- r$maxima[as.numeric(rownames(r$pseudo_maxima))]
   r$partial_maxima <- r$maxima[as.numeric(colnames(r$pseudo_maxima))]
+  #
   # Give the returned object a class, so that we can detect block maxima data
-  # created by block_maxima()
+  # created by sliding_block_maxima_ts()
   class(r) <- c("list", "sliding_block_maxima_ts", "evmissing")
   return(r)
 }
