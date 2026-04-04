@@ -1,4 +1,4 @@
-#' Block maxima for a Time Series
+#' Block Maxima for a Time Series
 #'
 #' Extracts block maxima and missing value information for each block.
 #' Works like [`block_maxima`] but returns extra components, including:

@@ -2,7 +2,7 @@
 % Please edit documentation in R/block_maxima_ts.R
 \name{block_maxima_ts}
 \alias{block_maxima_ts}
-\title{Block maxima for a Time Series}
+\title{Block Maxima for a Time Series}
 \usage{
 block_maxima_ts(data, block_length, block)
 }
