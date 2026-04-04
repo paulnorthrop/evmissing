@@ -14,8 +14,9 @@
 #'   until reaching the final block
 #'   `data[(length(data) - block_length + 1):length(data)]`.
 #'
-#' @return A list, with class `c("list", "block_maxima_ts", "evmissing")`,
-#'   containing the following components:
+#' @return A list, with class
+#'   `c("list", "sliding_block_maxima_ts", "evmissing")`, containing the
+#'   following components:
 #'
 #'  * `maxima`: the block maxima.
 #'  * `notNA`: the numbers of non-missing observations in each block.
@@ -94,6 +95,11 @@ sliding_block_maxima_ts <- function(data, block_length) {
   # Create vectors that contain the full maxima and partial maxima
   r$full_maxima <- r$maxima[as.numeric(rownames(r$pseudo_maxima))]
   r$partial_maxima <- r$maxima[as.numeric(colnames(r$pseudo_maxima))]
+  # Tabulate full_maxima and store in r
+  r$full_maxima_table <- table(r$full_maxima)
+  # In principle we could tabulate the partial maxima and pseudo maxima but
+  # (a) each partial maximum will have a different value of rhat and
+  # (b) it is more convenient to keep pseudo_maxima as a matrix to estimate r
   #
   # Give the returned object a class, so that we can detect block maxima data
   # created by sliding_block_maxima_ts()

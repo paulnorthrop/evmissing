@@ -13,8 +13,9 @@ sliding_block_maxima_ts(data, block_length)
 blocks of \code{block_length} contiguous values in the vector \code{data}.}
 }
 \value{
-A list, with class \code{c("list", "block_maxima_ts", "evmissing")},
-containing the following components:
+A list, with class
+\code{c("list", "sliding_block_maxima_ts", "evmissing")}, containing the
+following components:
 \itemize{
 \item \code{maxima}: the block maxima.
 \item \code{notNA}: the numbers of non-missing observations in each block.
