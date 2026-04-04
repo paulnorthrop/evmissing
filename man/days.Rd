@@ -4,7 +4,7 @@
 \alias{days}
 \alias{days_in_year}
 \alias{days_in_month}
-\title{Days in a year or in a month}
+\title{Days in a Year or in a Month}
 \usage{
 days_in_year(year)
 

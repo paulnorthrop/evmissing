@@ -1,4 +1,4 @@
-#' Days in a year or in a month
+#' Days in a Year or in a Month
 #'
 #' Returns the number of days in each of a vector of years or months.
 #'
