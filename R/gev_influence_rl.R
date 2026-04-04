@@ -1,4 +1,4 @@
-#' GEV influence curves for return levels
+#' GEV Influence Curves for Return Levels
 #'
 #' Calculates influence function curves for maximum likelihood estimators of
 #' 3 return levels based on Generalised Extreme Value (GEV) parameters.

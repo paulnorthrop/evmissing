@@ -3,7 +3,7 @@
 \name{gev_influence_rl}
 \alias{gev_influence_rl}
 \alias{plot.gev_influence_rl}
-\title{GEV influence curves for return levels}
+\title{GEV Influence Curves for Return Levels}
 \usage{
 gev_influence_rl(z, mu = 0, sigma = 1, xi = 0, m, npy = 1)
 
