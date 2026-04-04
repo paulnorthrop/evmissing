@@ -1,4 +1,4 @@
-#' GEV influence curves
+#' GEV Influence Curves
 #'
 #' Calculates influence function curves for maximum likelihood estimators of
 #' Generalised Extreme Value (GEV) parameters.

@@ -3,7 +3,7 @@
 \name{gev_influence}
 \alias{gev_influence}
 \alias{plot.gev_influence}
-\title{GEV influence curves}
+\title{GEV Influence Curves}
 \usage{
 gev_influence(z, mu = 0, sigma = 1, xi = 0)
 
