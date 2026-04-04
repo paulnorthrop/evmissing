@@ -3,7 +3,7 @@
 \docType{data}
 \name{BloomsburyOzoneMaxima}
 \alias{BloomsburyOzoneMaxima}
-\title{Annual maxima ozone levels at Bloomsbury, UK}
+\title{Annual Maxima Ozone Levels at Bloomsbury, UK}
 \format{
 \code{BloomsburyOzoneMaxima} is a data frame with 33 rows (years 1992 to
 2024) and the 4 variables:

@@ -1,4 +1,4 @@
-#' Annual maxima sea surge heights at Brest, France
+#' Annual Maxima Sea Surge Heights at Brest, France
 #'
 #' Annual maxima of sea surge heights near high tide at Brest tide gauge
 #' station (France) for the years 1846-2007 inclusive.
@@ -50,7 +50,7 @@
 #'      ylab = "surge (cm)", xlab = "proportion of non-missing days", pch = 16)
 "BrestSurgeMaxima"
 
-#' Missing values in sea surge heights at Brest, France
+#' Missing Values in Sea Surge Heights at Brest, France
 #'
 #' Numbers of missing values in each month of the Brest sea surge heights data
 #' [`BrestSurgeMaxima`].
@@ -94,7 +94,7 @@
 #' box()
 "BrestSurgeMissing"
 
-#' Number of days per month in 1846-2007
+#' Number of Days per Month in 1846-2007
 #'
 #' Number of days in each month relevant to the Brest sea surge heights data
 #' [`BrestSurgeMaxima`].
@@ -115,7 +115,7 @@
 #' head(BrestSurgeDays)
 "BrestSurgeDays"
 
-#' Annual maxima ozone levels at Bloomsbury, UK
+#' Annual Maxima Ozone Levels at Bloomsbury, UK
 #'
 #' Annual maxima of daily maximum ozone levels at Bloomsbury in London (UK)
 #' for the years 1992-2024 inclusive.
@@ -155,7 +155,7 @@
 #'      xlab = "proportion of non-missing days", pch = 16)
 "BloomsburyOzoneMaxima"
 
-#' Ozone levels at Bloomsbury, UK
+#' Ozone Levels at Bloomsbury, UK
 #'
 #' Daily maximum ozone levels at Bloomsbury in London (UK) for the years
 #' 1992-2024 inclusive.
@@ -180,7 +180,7 @@
 #'      ylab = "ozone (micrograms / metre cubed)", pch = 16)
 "BloomsburyOzone"
 
-#' Annual maxima ozone levels at Plymouth, UK
+#' Annual Maxima Ozone Levels at Plymouth, UK
 #'
 #' Annual maxima of daily maximum ozone levels at Plymouth in Devon (UK)
 #' for the years 1998-2024 inclusive.
@@ -220,7 +220,7 @@
 #'      xlab = "proportion of non-missing days", pch = 16)
 "PlymouthOzoneMaxima"
 
-#' Ozone levels at Plymouth, UK
+#' Ozone Levels at Plymouth, UK
 #'
 #' Daily maximum ozone levels at Plymouth in London (UK) for the years
 #' 1998-2024 inclusive.

@@ -3,7 +3,7 @@
 \docType{data}
 \name{BrestSurgeDays}
 \alias{BrestSurgeDays}
-\title{Number of days per month in 1846-2007}
+\title{Number of Days per Month in 1846-2007}
 \format{
 \code{BrestSurgeDays} is a data frame with 162 rows (years 1846 to
 2007) and the 12 variables (one for each month of the year). Each value

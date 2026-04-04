@@ -3,7 +3,7 @@
 \docType{data}
 \name{BrestSurgeMissing}
 \alias{BrestSurgeMissing}
-\title{Missing values in sea surge heights at Brest, France}
+\title{Missing Values in Sea Surge Heights at Brest, France}
 \format{
 \code{BrestSurgeMissing} is a data frame with 162 rows (years 1846 to
 2007) and the 12 variables (one for each month of the year). Each value

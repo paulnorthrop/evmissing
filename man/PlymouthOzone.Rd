@@ -3,7 +3,7 @@
 \docType{data}
 \name{PlymouthOzone}
 \alias{PlymouthOzone}
-\title{Ozone levels at Plymouth, UK}
+\title{Ozone Levels at Plymouth, UK}
 \format{
 \code{PlymouthOzone} is a data frame with 9862 rows and the 3 variables:
 \itemize{

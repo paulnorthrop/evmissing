@@ -3,7 +3,7 @@
 \docType{data}
 \name{BrestSurgeMaxima}
 \alias{BrestSurgeMaxima}
-\title{Annual maxima sea surge heights at Brest, France}
+\title{Annual Maxima Sea Surge Heights at Brest, France}
 \format{
 \code{BrestSurgeMaxima} is a data frame with 162 rows (years 1846 to
 2007) and the 4 variables:
