@@ -4,7 +4,7 @@
 \alias{sim_data}
 \alias{mcar}
 \alias{mcar2}
-\title{Simulate raw data}
+\title{Simulate Raw Data}
 \usage{
 sim_data(
   blocks = 50,

@@ -1,4 +1,4 @@
-#' Simulate raw data
+#' Simulate Raw Data
 #'
 #' Simulates data from a user-supplied distribution and creates missing values
 #' artificially. Functions `mcar` and `mcar2` provides an example mechanisms
