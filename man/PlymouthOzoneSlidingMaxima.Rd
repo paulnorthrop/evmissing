@@ -33,15 +33,11 @@ Maxima of sliding (overlapping) block of length 365 days of daily maximum
 ozone levels at Plymouth in Devon (UK) for the years 1998-2024 inclusive.
 }
 \examples{
-# Time series plots of sliding block maxima and
-t <- 1:length(PlymouthOzoneSlidingMaxima$maxima)
-plot(t, PlymouthOzoneSlidingMaxima$maxima, type = "l",
-     xlab = "block", ylab = "sliding block maximum")
+# Time series plots of sliding block maxima
+plot(PlymouthOzoneSlidingMaxima)
 
 # Plot maxima against the proportion of non-missing daily values
-pNotNA <- PlymouthOzoneSlidingMaxima$notNA / PlymouthOzoneSlidingMaxima$n
-plot(pNotNA, PlymouthOzoneSlidingMaxima$maxima,
-     xlab = "proportion of non-missing daily values", ylab = "block maxima")
+plot(PlymouthOzoneSlidingMaxima, which = 2)
 }
 \seealso{
 \code{\link{PlymouthOzone}} for the raw time series.

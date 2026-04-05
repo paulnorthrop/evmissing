@@ -244,15 +244,11 @@
 #'   [Data Selector](https://uk-air.defra.gov.uk/data/data_selector).
 #' @seealso [`PlymouthOzone`] for the raw time series.
 #' @examples
-#' # Time series plots of sliding block maxima and
-#' t <- 1:length(PlymouthOzoneSlidingMaxima$maxima)
-#' plot(t, PlymouthOzoneSlidingMaxima$maxima, type = "l",
-#'      xlab = "block", ylab = "sliding block maximum")
+#' # Time series plots of sliding block maxima
+#' plot(PlymouthOzoneSlidingMaxima)
 #'
 #' # Plot maxima against the proportion of non-missing daily values
-#' pNotNA <- PlymouthOzoneSlidingMaxima$notNA / PlymouthOzoneSlidingMaxima$n
-#' plot(pNotNA, PlymouthOzoneSlidingMaxima$maxima,
-#'      xlab = "proportion of non-missing daily values", ylab = "block maxima")
+#' plot(PlymouthOzoneSlidingMaxima, which = 2)
 "PlymouthOzoneSlidingMaxima"
 
 #' Ozone Levels at Plymouth, UK
