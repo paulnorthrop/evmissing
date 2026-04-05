@@ -20,7 +20,7 @@
 #' # Plot maxima against the proportion of non-missing daily values
 #' plot(PlymouthOzoneSlidingMaxima, which = 2)
 #' @export
-plot.sliding_block_maxima_ts <- function(x, which = 1, ...) {
+plot.sliding_block_maxima <- function(x, which = 1, ...) {
   # Create the data to plot
   yvals <- x$maxima
   the_ylab <- "sliding block maximum"
