@@ -20,7 +20,7 @@ of length \code{block_length} are discarded, without warning.}
 \code{block} could provide the year in which observation \code{i} was observed.}
 }
 \value{
-A list, with class \code{c("list", "block_maxima_ts", "evmissing")},
+A list, with class \code{c("list", "block_maxima", "evmissing")},
 containing the following components:
 \itemize{
 \item \code{maxima}: the block maxima.

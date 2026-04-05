@@ -1,8 +1,8 @@
-#' Plot method for objects of class `"sliding_block_maxima_ts"`
+#' Plot method for objects of class `"sliding_block_maxima"`
 #'
-#' Plot method for objects of class `"sliding_block_maxima_ts"` returned from
+#' Plot method for objects of class `"sliding_block_maxima"` returned from
 #'   [`sliding_block_maxima_ts`], for example [`PlymouthOzoneSlidingMaxima`].
-#' @param x An object inheriting from class `"sliding_block_maxima_ts"`, an
+#' @param x An object inheriting from class `"sliding_block_maxima"`, an
 #'   object from a call to [`sliding_block_maxima_ts`].
 #' @param which If `which = 1` then the sliding block maxima are plotted
 #'   against block number. If `which = 2` then the sliding block maxima are

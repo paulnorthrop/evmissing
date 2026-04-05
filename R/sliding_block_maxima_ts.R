@@ -15,7 +15,7 @@
 #'   `data[(length(data) - block_length + 1):length(data)]`.
 #'
 #' @return A list, with class
-#'   `c("list", "sliding_block_maxima_ts", "evmissing")`, containing the
+#'   `c("list", "sliding_block_maxima", "evmissing")`, containing the
 #'   following components:
 #'
 #'  * `maxima`: the block maxima.
@@ -103,6 +103,6 @@ sliding_block_maxima_ts <- function(data, block_length) {
   #
   # Give the returned object a class, so that we can detect block maxima data
   # created by sliding_block_maxima_ts()
-  class(r) <- c("list", "sliding_block_maxima_ts", "evmissing")
+  class(r) <- c("list", "sliding_block_maxima", "evmissing")
   return(r)
 }

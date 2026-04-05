@@ -23,7 +23,7 @@
 #'   occurs when `pseudo_maxima` are calculated, then the longer block is
 #'   trimmed, by discarding trailing values, so that the lengths match.
 #'
-#' @return A list, with class `c("list", "block_maxima_ts", "evmissing")`,
+#' @return A list, with class `c("list", "block_maxima", "evmissing")`,
 #'   containing the following components:
 #'
 #'  * `maxima`: the block maxima.
@@ -156,6 +156,6 @@ block_maxima_ts <- function(data, block_length, block) {
   r$partial_maxima <- r$maxima[as.numeric(colnames(r$pseudo_maxima))]
   # Give the returned object a class, so that we can detect block maxima data
   # created by block_maxima_ts()
-  class(r) <- c("list", "block_maxima_ts", "evmissing")
+  class(r) <- c("list", "block_maxima", "evmissing")
   return(r)
 }

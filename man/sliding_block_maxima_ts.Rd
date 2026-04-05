@@ -14,7 +14,7 @@ blocks of \code{block_length} contiguous values in the vector \code{data}.}
 }
 \value{
 A list, with class
-\code{c("list", "sliding_block_maxima_ts", "evmissing")}, containing the
+\code{c("list", "sliding_block_maxima", "evmissing")}, containing the
 following components:
 \itemize{
 \item \code{maxima}: the block maxima.

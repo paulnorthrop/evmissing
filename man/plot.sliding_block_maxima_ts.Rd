@@ -2,12 +2,12 @@
 % Please edit documentation in R/methods_sliding_block_maxima.R
 \name{plot.sliding_block_maxima_ts}
 \alias{plot.sliding_block_maxima_ts}
-\title{Plot method for objects of class \code{"sliding_block_maxima_ts"}}
+\title{Plot method for objects of class \code{"sliding_block_maxima"}}
 \usage{
 \method{plot}{sliding_block_maxima_ts}(x, which = 1, ...)
 }
 \arguments{
-\item{x}{An object inheriting from class \code{"sliding_block_maxima_ts"}, an
+\item{x}{An object inheriting from class \code{"sliding_block_maxima"}, an
 object from a call to \code{\link{sliding_block_maxima_ts}}.}
 
 \item{which}{If \code{which = 1} then the sliding block maxima are plotted
@@ -20,7 +20,7 @@ plotted against the proportion of non-missing raw values.}
 Nothing is returned.
 }
 \description{
-Plot method for objects of class \code{"sliding_block_maxima_ts"} returned from
+Plot method for objects of class \code{"sliding_block_maxima"} returned from
 \code{\link{sliding_block_maxima_ts}}, for example \code{\link{PlymouthOzoneSlidingMaxima}}.
 }
 \details{

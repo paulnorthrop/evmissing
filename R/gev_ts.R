@@ -142,14 +142,15 @@ gev_ts <- function(data, block_length, block, pseudo = TRUE, sliding = FALSE,
   # Otherwise, use block_maxima_ts() to calculate the block maxima, the numbers
   # of non-missing values in the blocks and the largest possible number of
   # non-missing values in each block.
-  from_maxima_ts <- inherits(data, "block_maxima_ts") ||
-    inherits(data, "sliding_block_maxima_ts")
+  from_maxima_ts <- inherits(data, "block_maxima") ||
+    inherits(data, "sliding_block_maxima")
   required <- c("maxima", "notNA", "n", "whereNA", "pseudo_maxima",
                 "full_maxima", "partial_maxima")
-  if (from_maxima_ts && inherits(data, "evmissing")) {
+  has_components <- all(is.element(required, names(data)))
+  if (from_maxima_ts && has_components && inherits(data, "evmissing")) {
     maxima_notNA <- data
   } else if (is.list(data)) {
-    if (all(is.element(required, names(data)))) {
+    if (has_components) {
       maxima_notNA <- as.list(data)
     } else {
       stop("List ''data'' does not contain the required named components.")
