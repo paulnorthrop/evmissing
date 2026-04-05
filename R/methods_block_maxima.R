@@ -1,9 +1,8 @@
-#' Plot method for objects of class `"sliding_block_maxima"`
+#' Plot method for objects inheriting from class `"block_maxima"`
 #'
-#' Plot method for objects of class `"sliding_block_maxima"` returned from
-#'   [`sliding_block_maxima_ts`], for example [`PlymouthOzoneSlidingMaxima`].
-#' @param x An object inheriting from class `"sliding_block_maxima"`, an
-#'   object from a call to [`sliding_block_maxima_ts`].
+#' Plot method for objects inheriting from `"block_maxima"` returned from
+#'   [`block_maxima`], [`block_maxima_ts`] or [`sliding_block_maxima_ts`].
+#' @param x An object inheriting from class `"block_maxima"`.
 #' @param which If `which = 1` then the sliding block maxima are plotted
 #'   against block number. If `which = 2` then the sliding block maxima are
 #'   plotted against the proportion of non-missing raw values.
@@ -14,13 +13,22 @@
 #'   larger proportionof missing values.
 #' @return Nothing is returned.
 #' @examples
+#' ### Plymouth Ozone Data
+#'
+#' ## Sliding maxima
 #' # Time series plots of sliding block maxima
 #' plot(PlymouthOzoneSlidingMaxima)
-#'
 #' # Plot maxima against the proportion of non-missing daily values
 #' plot(PlymouthOzoneSlidingMaxima, which = 2)
+#'
+#' ## Disjoint maxima
+#' bm <- block_maxima(PlymouthOzone$Ozone, block = PlymouthOzone$Year)
+#' # Time series plots of block maxima
+#' plot(bm)
+#' # Plot maxima against the proportion of non-missing daily values
+#' plot(bm, which = 2)
 #' @export
-plot.sliding_block_maxima <- function(x, which = 1, ...) {
+plot.block_maxima <- function(x, which = 1, ...) {
   # Create the data to plot
   yvals <- x$maxima
   the_ylab <- "sliding block maximum"
