@@ -227,7 +227,7 @@
 #'
 #' @format `PlymouthOzoneSlidingMaxima` is an object returned from
 #' [`sliding_block_maxima_ts`], a list inheriting from class
-#' `sliding_maxima_ts`. It was created using
+#' `sliding_block_maxima_ts`. It was created using
 #' `sliding_block_maxima_ts(PlymouthOzone$Ozone, block_length = 365)`.
 #' This includes components
 #'

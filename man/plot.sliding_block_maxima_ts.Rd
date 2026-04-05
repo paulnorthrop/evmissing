@@ -21,7 +21,7 @@ Nothing is returned.
 }
 \description{
 Plot method for objects of class \code{"sliding_block_maxima_ts"} returned from
-\code{\link{sliding_block_maxima_ts}}, for example \code{\link{PlymouthOzoneSlidingMaxima}}
+\code{\link{sliding_block_maxima_ts}}, for example \code{\link{PlymouthOzoneSlidingMaxima}}.
 }
 \details{
 When \code{which = 1} we obtain a time series plot in which there are

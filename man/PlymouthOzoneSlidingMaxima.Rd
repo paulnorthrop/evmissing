@@ -7,7 +7,7 @@
 \format{
 \code{PlymouthOzoneSlidingMaxima} is an object returned from
 \code{\link{sliding_block_maxima_ts}}, a list inheriting from class
-\code{sliding_maxima_ts}. It was created using
+\code{sliding_block_maxima_ts}. It was created using
 \code{sliding_block_maxima_ts(PlymouthOzone$Ozone, block_length = 365)}.
 This includes components
 \itemize{
