@@ -165,8 +165,7 @@ pseudo_maxima_block_length <- function(maxima_notNA, data, block_length,
   if (n_full == 0 || n_incomplete == 0) {
     return(NA)
   }
-  # Function to apply missing pattern from block i to full block j
-  # Set the
+  # Function to select data from a block
   if (sliding) {
     find_block_j <- function(j) {
       return(data[j:(j + block_length - 1)])
@@ -176,6 +175,7 @@ pseudo_maxima_block_length <- function(maxima_notNA, data, block_length,
       return(data[(1 + block_length * (j - 1)):(block_length * j)])
     }
   }
+  # Function to apply missing pattern from block i to full block j
   apply_missings_to_block_j <- function(j, i) {
     # Extract block j
     temp <- find_block_j(j)
@@ -1122,7 +1122,6 @@ gev_profile_init <- function(data, mu, sigma, xi) {
   names(val) <- c("mu", "sigma", "xi")
   return(val)
 }
-
 
 # ======================== Calling gev_profile_init() ======================= #
 
