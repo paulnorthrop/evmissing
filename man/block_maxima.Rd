@@ -4,12 +4,12 @@
 \alias{block_maxima}
 \title{Block Maxima}
 \usage{
-block_maxima(data, block_length, block)
+block_maxima(data, block_length, block, sliding = FALSE)
 }
 \arguments{
 \item{data}{A numeric vector containing a time series of raw data.}
 
-\item{block_length}{A numeric scalar. Used calculate the maxima of disjoint
+\item{block_length}{A numeric scalar. Used calculate the maxima of
 blocks of \code{block_length} contiguous values in the vector \code{data}.
 If \code{length(data)} is not an integer multiple of \code{block_length} then
 the values at the end of \code{data} that do not constitute a complete block
@@ -18,6 +18,10 @@ of length \code{block_length} are discarded, without warning.}
 \item{block}{A numeric vector with the same length as \code{data}. The value of
 \code{block[i]} indicates the block into which \code{data[i]} falls. For example,
 \code{block} could provide the year in which observation \code{i} was observed.}
+
+\item{sliding}{A logical scalar. This is only allowed if \code{block_length} is
+supplied. If \code{sliding = TRUE} then maxima are calculated for \strong{all}
+blocks of length \code{block_length}. See \strong{Details}.}
 }
 \value{
 A list, with class \code{c("list", "block_maxima", "evmissing")},
@@ -41,6 +45,12 @@ Extracts block maxima and the number of non-missing observations per block.
 \details{
 Exactly one of the arguments \code{block_length} or \code{block} must be
 supplied.
+
+If \code{block_length} is supplied and \code{sliding = TRUE} then the maxima are
+calculated for \strong{all} blocks of length \code{block_length} present in \code{data},
+starting with the first block \code{data[1:block_length]} and sliding the block
+repeatedly by one observation until reaching the final block
+\code{data[(length(data) - block_length + 1):length(data)]}.
 }
 \examples{
 ## Simulate example data
@@ -51,9 +61,13 @@ data <- rexp(15)
 data[c(5, 7:8)] <- NA
 # 5 blocks (columns), each with 3 observations
 matrix(data, ncol = 5)
-# Supplying block_length
+
+# Supplying block_length, disjoint maxima
 block_length <- 3
 block_maxima(data, block_length = block_length)
+# Supplying block_length, sliding maxima
+block_maxima(data, block_length = block_length, sliding = TRUE)
+
 # Supplying block
 block <- rep(1:5, each = 3)
 block_maxima(data, block = block)
@@ -67,4 +81,8 @@ block_maxima(data, block_length = block_length)
 # Supplying block (with an extra group indicator)
 block <- c(block, 7, 7)
 block_maxima(data, block = block)
+
+}
+\seealso{
+Plot method \code{\link{plot.block_maxima}}.
 }
