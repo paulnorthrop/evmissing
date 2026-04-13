@@ -10,7 +10,7 @@
 #' @details When `which = 1` we obtain a time series plot in which there are
 #'   periods where the value does not change. When `which = 2` we expect to
 #'   see that the sliding block maximum tends to be smaller for blocks with a
-#'   larger proportionof missing values.
+#'   larger proportion of missing values.
 #' @return Nothing is returned.
 #' @examples
 #' ### Plymouth Ozone Data
