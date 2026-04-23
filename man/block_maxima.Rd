@@ -2,9 +2,9 @@
 % Please edit documentation in R/block_maxima.R
 \name{block_maxima}
 \alias{block_maxima}
-\title{Block Maxima}
+\title{Block Maxima and missing information}
 \usage{
-block_maxima(data, block_length, block, sliding = FALSE)
+block_maxima(data, block_length, block, sliding = FALSE, pseudo = FALSE)
 }
 \arguments{
 \item{data}{A numeric vector containing a time series of raw data.}
@@ -22,6 +22,8 @@ of length \code{block_length} are discarded, without warning.}
 \item{sliding}{A logical scalar. This is only allowed if \code{block_length} is
 supplied. If \code{sliding = TRUE} then maxima are calculated for \strong{all}
 blocks of length \code{block_length}. See \strong{Details}.}
+
+\item{pseudo}{A logical scalar. If \code{pseudo = TRUE} then}
 }
 \value{
 A list, with class \code{c("list", "block_maxima", "evmissing")},
@@ -33,6 +35,27 @@ containing the following numeric vectors:
 could have been observed in each block.
 }
 
+If \code{pseudo = TRUE} then the returned list also contains the following:
+\itemize{
+\item \code{whereNA}: a named list containing, for each block, the positions of any
+missing values in the block. For example, if (only) the first and fifth
+observations in block 3 are missing then the third component (named
+\code{block3}) of \code{whereNA} is \code{c(1, 5)}. If a block has no missing values
+then its component in \code{whereNA} is \code{integer(0)}.
+\item \code{pseudo_maxima}: a numeric matrix containing (pseudo) block maxima
+created by applying the missing value patterns from incomplete blocks to
+all full blocks, that is, blocks without any missing values. Each column
+contains the pseudo-maxima resulting from a particular incomplete block.
+The columns are labelled by the number of the incomplete block and the
+columns by the number of the full block. If an incomplete block contains
+all missing values then its entry in \code{pseudo_maxima} is \code{NA}. If there
+are no full blocks or no incomplete blocks then \code{pseudo_maxima} is \code{NA}.
+\item \code{full_maxima}: a numeric vector of maxima from full blocks.
+\item \code{partial_maxima}: a numeric vector of maxima from partial blocks.
+}
+
+The input arguments \code{sliding} and \code{pseudo} are also included.
+
 If a block contains only missing values then its value of \code{maxima} is \code{NA}
 and its value of \code{notNA} is \code{0}.
 
@@ -40,7 +63,10 @@ If \code{block} is supplied then these vectors are named using the values in
 \code{block}. Otherwise, these vectors do not have names.
 }
 \description{
-Extracts block maxima and the number of non-missing observations per block.
+Extracts disjoint or sliding block maxima and information relating to the
+pattern of missing values. The (pseudo-)maxima created by applying blockwise
+missing value patterns in incomplete block to full blocks can be calculated.
+To be useful, the input data, \code{data} must contain at least one full block.
 }
 \details{
 Exactly one of the arguments \code{block_length} or \code{block} must be

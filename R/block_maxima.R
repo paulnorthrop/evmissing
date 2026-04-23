@@ -1,6 +1,9 @@
-#' Block Maxima
+#' Block Maxima and missing information
 #'
-#' Extracts block maxima and the number of non-missing observations per block.
+#' Extracts disjoint or sliding block maxima and information relating to the
+#' pattern of missing values. The (pseudo-)maxima created by applying blockwise
+#' missing value patterns in incomplete block to full blocks can be calculated.
+#' To be useful, the input data, `data` must contain at least one full block.
 #'
 #' @param data A numeric vector containing a time series of raw data.
 #' @param block_length A numeric scalar. Used calculate the maxima of
@@ -14,6 +17,7 @@
 #' @param sliding A logical scalar. This is only allowed if `block_length` is
 #'   supplied. If `sliding = TRUE` then maxima are calculated for **all**
 #'   blocks of length `block_length`. See **Details**.
+#' @param pseudo A logical scalar. If `pseudo = TRUE` then
 #' @details Exactly one of the arguments `block_length` or `block` must be
 #'   supplied.
 #'
@@ -30,6 +34,26 @@
 #'  * `notNA`: the numbers of non-missing observations in each block.
 #'  * `n`: the maximal block length, that is, the largest number of values that
 #'     could have been observed in each block.
+#'
+#' If `pseudo = TRUE` then the returned list also contains the following:
+#'
+#'  * `whereNA`: a named list containing, for each block, the positions of any
+#'    missing values in the block. For example, if (only) the first and fifth
+#'    observations in block 3 are missing then the third component (named
+#'    `block3`) of `whereNA` is `c(1, 5)`. If a block has no missing values
+#'    then its component in `whereNA` is `integer(0)`.
+#'  * `pseudo_maxima`: a numeric matrix containing (pseudo) block maxima
+#'    created by applying the missing value patterns from incomplete blocks to
+#'    all full blocks, that is, blocks without any missing values. Each column
+#'    contains the pseudo-maxima resulting from a particular incomplete block.
+#'    The columns are labelled by the number of the incomplete block and the
+#'    columns by the number of the full block. If an incomplete block contains
+#'    all missing values then its entry in `pseudo_maxima` is `NA`. If there
+#'    are no full blocks or no incomplete blocks then `pseudo_maxima` is `NA`.
+#'  * `full_maxima`: a numeric vector of maxima from full blocks.
+#'  * `partial_maxima`: a numeric vector of maxima from partial blocks.
+#'
+#' The input arguments `sliding` and `pseudo` are also included.
 #'
 #' If a block contains only missing values then its value of `maxima` is `NA`
 #' and its value of `notNA` is `0`.
@@ -68,7 +92,8 @@
 #'
 #' @seealso Plot method [`plot.block_maxima`].
 #' @export
-block_maxima <- function(data, block_length, block, sliding = FALSE) {
+block_maxima <- function(data, block_length, block, sliding = FALSE,
+                         pseudo = FALSE) {
   # Check that data is a numeric vector
   if (!is.numeric(data)) {
     stop("''data'' must be a numeric vector.")
@@ -103,7 +128,6 @@ block_maxima <- function(data, block_length, block, sliding = FALSE) {
     # Function to calculate the block maxima
     find_maxima_notNA <- function(i) {
       temp <- find_block_i(i)
-#      temp <- data[(1 + block_length * (i - 1)):(block_length * i)]
       not_na <- !is.na(temp)
       if (any(not_na)) {
          val <- c(max(temp, na.rm = TRUE), sum(not_na))
@@ -132,6 +156,9 @@ block_maxima <- function(data, block_length, block, sliding = FALSE) {
     r <- .mapply(c, r, NULL)
     names(r) <- c("maxima", "notNA", "n")
   }
+  # Add the input arguments sliding and pseudo
+  r$sliding <- sliding
+  r$pseudo <- pseudo
   # Give the returned object a class, so that we can detect block maxima data
   # created by block_maxima()
   class(r) <- c("list", "block_maxima", "evmissing")
