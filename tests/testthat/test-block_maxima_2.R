@@ -1,11 +1,5 @@
 # Check that block_maxima() works as intended
 
-# block_maxima() is data is a list, such as the sdata created in setup.R
-
-test_that("block_maxima_ts() when data is a list", {
-  testthat::expect_error(block_maxima_ts(sdata))
-})
-
 # A very simple example
 data <- c(1:10, 10:1)
 # Add some missing values
@@ -14,19 +8,6 @@ data[c(3, 8, 9, 19, 20)] <- NA
 # Call these a_block_length and a_block to avoid over-writing values in setup.R
 a_block_length <- 4
 a_block <- rep(1:5, each = 4)
-
-# block_maxima_ts() errors unless exactly one of block_length or block is supplied
-test_that("block_maxima_ts() errors when neither block_length or block are supplied", {
-  testthat::expect_error(block_maxima_ts(data))
-})
-test_that("block_maxima() errors when both block_length and block are supplied", {
-  testthat::expect_error(block_maxima_ts(data, a_block_length, a_block))
-})
-
-# block_maxima() errors when block does no have the same length as data
-test_that("block_maxima() errors when length(block) != length(data)", {
-  testthat::expect_error(block_maxima_ts(data, block = a_block[1:5]))
-})
 
 maxima <- c(4, 7, 10, 8, 4)
 notNA <- c(3, 3, 3, 4, 2)
@@ -39,16 +20,21 @@ rownames(pseudo_maxima) <- 4
 full_maxima <- c("4" = 8)
 partial_maxima <- c(4, 7, 10, 4)
 names(partial_maxima) <- c("1", "2", "3", "5")
+pseudo <- TRUE
+sliding <- FALSE
 results <- list(maxima = maxima, notNA = notNA, n = n,
                 whereNA = whereNA, pseudo_maxima = pseudo_maxima,
-                full_maxima = full_maxima, partial_maxima = partial_maxima)
+                full_maxima = full_maxima, partial_maxima = partial_maxima,
+                pseudo = pseudo, sliding = sliding)
 
-test_that("block_maxima_ts(): example data 1, block gives correct result", {
-  testthat::expect_equal(block_maxima_ts(data, block = a_block),
+test_that("block_maxima(): example data 1, block gives correct result", {
+  testthat::expect_equal(block_maxima(data, block = a_block,
+                                      pseudo = pseudo, sliding = sliding),
                          results, ignore_attr = TRUE)
 })
-test_that("block_maxima_ts(): example data 1, block_length gives correct result", {
-  testthat::expect_equal(block_maxima_ts(data, block_length = a_block_length),
+test_that("block_maxima(): example data 1, block_length gives correct result", {
+  testthat::expect_equal(block_maxima(data, block_length = a_block_length,
+                                      pseudo = pseudo, sliding = sliding),
                          results, ignore_attr = TRUE)
 })
 
@@ -86,10 +72,14 @@ colnames(pseudo_maxima) <- c(2, 5, 6)
 rownames(pseudo_maxima) <- c(1, 3, 4)
 full_maxima <- c(5, 10, 7)
 partial_maxima <- c(7, 3, NA)
+
+pseudo <- TRUE
+sliding <- FALSE
 block_length_results <- list(maxima = maxima, notNA = notNA, n = n,
                              whereNA = whereNA1, pseudo_maxima = pseudo_maxima,
                              full_maxima = full_maxima,
-                             partial_maxima = partial_maxima)
+                             partial_maxima = partial_maxima,
+                             pseudo = pseudo, sliding = sliding)
 
 maxima <- c(4, 7, 10, 8, 4, NA, 2)
 notNA <- c(3, 3, 3, 4, 2, 0, 2)
@@ -106,14 +96,17 @@ names(partial_maxima) <- c(2, 3, 5, 6, 7)
 block_results <- list(maxima = maxima, notNA = notNA, n = n,
                       whereNA = whereNA2, pseudo_maxima = pseudo_maxima,
                       full_maxima = full_maxima,
-                      partial_maxima = partial_maxima)
+                      partial_maxima = partial_maxima,
+                      pseudo = pseudo, sliding = sliding)
 
 test_that("block_maxima(): example data 2, block gives correct result", {
-  testthat::expect_equal(block_maxima_ts(data, block = a_new_block),
+  testthat::expect_equal(block_maxima(data, block = a_new_block,
+                                      pseudo = pseudo, sliding = sliding),
                          block_results, ignore_attr = TRUE)
 })
 test_that("block_maxima(): example data 2, block_length gives correct result", {
-  testthat::expect_equal(block_maxima_ts(data, block_length = a_block_length),
+  testthat::expect_equal(block_maxima(data, block_length = a_block_length,
+                                      pseudo = pseudo, sliding = sliding),
                          block_length_results, ignore_attr = TRUE)
 })
 
@@ -125,10 +118,12 @@ data <- stats::rexp(15)
 a_block_length <- 3
 a_block <- rep(1:5, each = 3)
 
-# block_maxima_ts() gives the same output for equivalent block_length and block
+# block_maxima() gives the same output for equivalent block_length and block
 
 test_that("block_maxima(): simulated data, block and block_length agree", {
-  testthat::expect_equal(block_maxima_ts(data, block = a_block),
-                         block_maxima_ts(data, block_length = a_block_length),
+  testthat::expect_equal(block_maxima(data, block = a_block,
+                                      pseudo = pseudo, sliding = sliding),
+                         block_maxima(data, block_length = a_block_length,
+                                      pseudo = pseudo, sliding = sliding),
                          ignore_attr = TRUE)
 })
