@@ -146,6 +146,112 @@ weighted_negated_gev_loglik_ret_levs <- function(parameters, maxima, weights,
   return(-sum(loglik))
 }
 
+# ============================= Maxima functions ============================ #
+
+#' @keywords internal
+#' @rdname evmissing-internal
+find_block_i_disjoint <- function(i, data, block_length) {
+  return(data[(1 + block_length * (i - 1)):(block_length * i)])
+}
+
+#' @keywords internal
+#' @rdname evmissing-internal
+find_maxima_notNA_disjoint_pseudo <- function(i, data, block_length) {
+  temp <- find_block_i_disjoint(i, data, block_length)
+  not_na <- !is.na(temp)
+  if (any(not_na)) {
+    val <- list(maxima = max(temp, na.rm = TRUE),
+                notNA = sum(not_na),
+                whereNA = which(!not_na))
+  } else {
+    val <- list(maxima = NA,
+                notNA = 0,
+                whereNA = seq_len(length(temp)))
+  }
+  return(val)
+}
+
+#' @keywords internal
+#' @rdname evmissing-internal
+find_maxima_notNA_disjoint <- function(i, data, block_length) {
+  temp <- find_block_i_disjoint(i, data, block_length)
+  not_na <- !is.na(temp)
+  if (any(not_na)) {
+    val <- c(max(temp, na.rm = TRUE), sum(not_na))
+  } else {
+    val <- c(NA, 0)
+  }
+  return(val)
+}
+
+#' @keywords internal
+#' @rdname evmissing-internal
+maxima_block_length <- function(data, block_length, pseudo) {
+  # Set the number of (disjoint) blocks
+  number_of_blocks <- floor(length(data) / block_length)
+  # Calculate the block maxima and missing value information
+  # If pseudo = TRUE then we also store the positions of missing values
+  if (pseudo) {
+    r <- sapply(seq_len(number_of_blocks), find_maxima_notNA_disjoint_pseudo,
+                data = data, block_length = block_length)
+    r <- list(maxima = unlist(r[1, ]), notNA = unlist(r[2, ]),
+              n = rep_len(block_length, number_of_blocks),
+              whereNA = r[3, ])
+    names(r[[4]]) <- paste0("block", 1:length(r[[4]]))
+  } else {
+    r <- vapply(seq_len(number_of_blocks), find_maxima_notNA_disjoint,
+                c(0.0, 0.0), data = data, block_length = block_length)
+    r <- list(maxima = r[1, ], notNA = r[2, ],
+              n = rep_len(block_length, number_of_blocks))
+  }
+  return(r)
+}
+
+#' @keywords internal
+#' @rdname evmissing-internal
+maxima_block <- function(data, block, pseudo) {
+  if (length(block) != length(data)) {
+    stop("''block'' must have the same length as ''data''.")
+  }
+  if (pseudo) {
+    FUN <- function(data) {
+      not_na <- !is.na(data)
+      if (any(not_na)) {
+        val <- list(maxima = max(data, na.rm = TRUE), notNA = sum(not_na),
+                    n = length(data),
+                    whereNA = which(!not_na))
+      } else {
+        val <- list(maxima = NA, notNA = 0, n = length(data),
+                    whereNA = seq_len(length(data)))
+      }
+      return(val)
+    }
+    r <- tapply(data, block, FUN = FUN)
+    # Extract all the whereNA components (4th in the list)
+    whereNA <- sapply(r, `[`, 4)
+    names(whereNA) <- paste0("block", 1:length(whereNA))
+    # Extract all the other components (1st, 2nd and 3rd in the list)
+    others <- sapply(r, `[`, 1:3)
+    r <- list(maxima = unlist(others[1, ]), notNA = unlist(others[2, ]),
+              n = unlist(others[3, ]), whereNA = whereNA)
+    names(r) <- c("maxima", "notNA", "n", "whereNA")
+  } else {
+    FUN <- function(data) {
+      not_na <- !is.na(data)
+      if (any(not_na)) {
+        val <- c(max(data, na.rm = TRUE), sum(not_na), length(data))
+      } else {
+        val <- c(NA, 0, length(data))
+      }
+      return(val)
+    }
+    r <- tapply(data, block, FUN = FUN)
+    r <- .mapply(c, r, NULL)
+    names(r) <- c("maxima", "notNA", "n")
+  }
+  return(r)
+}
+
 # ========================= Pseudo maxima functions ========================= #
 
 # 1. Identify full blocks and incomplete blocks

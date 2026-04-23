@@ -2,32 +2,57 @@
 % Please edit documentation in R/block_maxima.R
 \name{block_maxima}
 \alias{block_maxima}
-\title{Block Maxima and missing information}
+\title{Block Maxima and Missing Information}
 \usage{
-block_maxima(data, block_length, block, sliding = FALSE, pseudo = FALSE)
+block_maxima(
+  data,
+  block_length,
+  block,
+  pseudo = FALSE,
+  sliding = FALSE,
+  season = FALSE
+)
 }
 \arguments{
-\item{data}{A numeric vector containing a time series of raw data.}
+\item{data}{A numeric vector containing a time series of raw data. If
+\code{sliding = FALSE} then \code{data} must contain at least one full disjoint
+block. If \code{sliding = TRUE} then \code{data} must contain at least one full
+sliding block.}
 
 \item{block_length}{A numeric scalar. Used calculate the maxima of
-blocks of \code{block_length} contiguous values in the vector \code{data}.
+disjoint blocks of \code{block_length} contiguous values in the vector \code{data}.
 If \code{length(data)} is not an integer multiple of \code{block_length} then
 the values at the end of \code{data} that do not constitute a complete block
 of length \code{block_length} are discarded, without warning.}
 
 \item{block}{A numeric vector with the same length as \code{data}. The value of
 \code{block[i]} indicates the block into which \code{data[i]} falls. For example,
-\code{block} could provide the year in which observation \code{i} was observed.}
+\code{block} could provide the year in which observation \code{i} was observed.
+The block lengths implied by \code{block} should have similar values, for
+example, 366 for leap years and 365 for other years.}
 
-\item{sliding}{A logical scalar. This is only allowed if \code{block_length} is
-supplied. If \code{sliding = TRUE} then maxima are calculated for \strong{all}
-blocks of length \code{block_length}. See \strong{Details}.}
+\item{pseudo}{A logical scalar. If \code{pseudo = TRUE} then pseudo-maxima are
+calculated as the block maxima obtained by applying the missing value
+patterns from partial blocks to all full blocks.}
 
-\item{pseudo}{A logical scalar. If \code{pseudo = TRUE} then}
+\item{sliding}{A logical scalar. Only relevant if \code{pseudo = TRUE}. If
+\code{sliding = TRUE} then pseudo-maxima are calculated for \strong{all} full blocks
+of the relevant length, rather than only a set of disjoint blocks.
+See \strong{Details}.}
+
+\item{season}{A logical scalar. Only relevant if \code{pseudo = TRUE} and
+\code{sliding = TRUE}. If \code{season = TRUE} then the way in which the
+pseudo-maxima are calculated respects the seasonality that may be
+exhibited over the duration of a block. If, for example, a block covers a
+single year, then the missing values applied to a full block occur at the
+same time of year as in the originating partial block. If \code{season = FALSE}
+then the missing values applied have the same positions in the partial and
+full blocks with respect to the start of each block.}
 }
 \value{
-A list, with class \code{c("list", "block_maxima", "evmissing")},
-containing the following numeric vectors:
+A list, with class
+\code{c("list", "block_maxima", "disjoint", "evmissing")}, containing the
+following numeric vectors:
 \itemize{
 \item \code{maxima}: the block maxima.
 \item \code{notNA}: the numbers of non-missing observations in each block.
@@ -42,19 +67,19 @@ missing values in the block. For example, if (only) the first and fifth
 observations in block 3 are missing then the third component (named
 \code{block3}) of \code{whereNA} is \code{c(1, 5)}. If a block has no missing values
 then its component in \code{whereNA} is \code{integer(0)}.
-\item \code{pseudo_maxima}: a numeric matrix containing (pseudo) block maxima
-created by applying the missing value patterns from incomplete blocks to
-all full blocks, that is, blocks without any missing values. Each column
-contains the pseudo-maxima resulting from a particular incomplete block.
-The columns are labelled by the number of the incomplete block and the
-columns by the number of the full block. If an incomplete block contains
-all missing values then its entry in \code{pseudo_maxima} is \code{NA}. If there
-are no full blocks or no incomplete blocks then \code{pseudo_maxima} is \code{NA}.
+\item \code{pseudo_maxima}: a numeric matrix containing block maxima created by
+applying the missing value patterns from partial blocks to all full
+blocks. Each column contains the pseudo-maxima resulting from a
+particular partial block. The columns are labelled by the number of the
+partial block and the columns by the number of the full block. If a
+partial block contains all missing values then its entry in
+\code{pseudo_maxima} is \code{NA}. If there are no full blocks or no partial blocks
+then \code{pseudo_maxima} is \code{NA}.
 \item \code{full_maxima}: a numeric vector of maxima from full blocks.
 \item \code{partial_maxima}: a numeric vector of maxima from partial blocks.
 }
 
-The input arguments \code{sliding} and \code{pseudo} are also included.
+The input arguments \code{pseudo} and \code{sliding} are also included.
 
 If a block contains only missing values then its value of \code{maxima} is \code{NA}
 and its value of \code{notNA} is \code{0}.
@@ -63,10 +88,11 @@ If \code{block} is supplied then these vectors are named using the values in
 \code{block}. Otherwise, these vectors do not have names.
 }
 \description{
-Extracts disjoint or sliding block maxima and information relating to the
-pattern of missing values. The (pseudo-)maxima created by applying blockwise
-missing value patterns in incomplete block to full blocks can be calculated.
-To be useful, the input data, \code{data} must contain at least one full block.
+Extracts disjoint block maxima from a time series of raw data. Can also
+provide information about the effect of missing value patterns on block
+maxima via pseudo-maxima created by applying blockwise missing value
+patterns in partially-observed (partial) blocks to fully-observed (full)
+blocks.
 }
 \details{
 Exactly one of the arguments \code{block_length} or \code{block} must be
@@ -77,6 +103,8 @@ calculated for \strong{all} blocks of length \code{block_length} present in \cod
 starting with the first block \code{data[1:block_length]} and sliding the block
 repeatedly by one observation until reaching the final block
 \code{data[(length(data) - block_length + 1):length(data)]}.
+
+Also explain for \code{block}
 }
 \examples{
 ## Simulate example data
@@ -98,7 +126,7 @@ block_maxima(data, block_length = block_length, sliding = TRUE)
 block <- rep(1:5, each = 3)
 block_maxima(data, block = block)
 
-## Data with an incomplete block
+## Data with a partially-observed block
 data <- c(data, 1:2)
 
 # Supplying block_length (the extra 2 observations are ignored)

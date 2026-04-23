@@ -7,6 +7,11 @@
 \alias{discard_maxima}
 \alias{negated_gev_loglik_ret_levs}
 \alias{weighted_negated_gev_loglik_ret_levs}
+\alias{find_block_i_disjoint}
+\alias{find_maxima_notNA_disjoint_pseudo}
+\alias{find_maxima_notNA_disjoint}
+\alias{maxima_block_length}
+\alias{maxima_block}
 \alias{rhat}
 \alias{negated_gev_loglik_ts}
 \alias{faster_profile_ci}
@@ -53,6 +58,16 @@ weighted_negated_gev_loglik_ret_levs(
   npy,
   big_val = Inf
 )
+
+find_block_i_disjoint(i, data, block_length)
+
+find_maxima_notNA_disjoint_pseudo(i, data, block_length)
+
+find_maxima_notNA_disjoint(i, data, block_length)
+
+maxima_block_length(data, block_length, pseudo)
+
+maxima_block(data, block, pseudo)
 
 rhat(parameters, maxima_notNA)
 
