@@ -1,6 +1,6 @@
 # Check that block_maxima() works as intended
 
-# block_maxima() is data is a list, such as the sdata created in setup.R
+# block_maxima() when data is a list, such as the sdata created in setup.R
 
 test_that("block_maxima() when data is a list", {
   testthat::expect_error(block_maxima(sdata))
@@ -22,7 +22,7 @@ test_that("block_maxima() errors when neither block_length or block are supplied
 test_that("block_maxima() errors when both block_length and block are supplied", {
   testthat::expect_error(block_maxima(data, a_block_length, a_block))
 })
-# block_maxima() errors when block does no have the same length as data
+# block_maxima() errors when block does not have the same length as data
 test_that("block_maxima() errors when length(block) != length(data)", {
   testthat::expect_error(block_maxima(data, block = a_block[1:5]))
 })
@@ -30,14 +30,19 @@ test_that("block_maxima() errors when length(block) != length(data)", {
 maxima <- c(4, 7, 10, 8, 4)
 notNA <- c(3, 3, 3, 4, 2)
 n <- c(4, 4, 4, 4, 4)
-results <- list(maxima = maxima, notNA = notNA, n = n)
+pseudo <- FALSE
+sliding <- FALSE
+results <- list(maxima = maxima, notNA = notNA, n = n,
+                pseudo = pseudo, sliding = sliding)
 
 test_that("block_maxima(): example data 1, block gives correct result", {
-  testthat::expect_equal(block_maxima(data, block = a_block),
+  testthat::expect_equal(block_maxima(data, block = a_block,
+                                      pseudo = pseudo, sliding = sliding),
                          results, ignore_attr = TRUE)
 })
 test_that("block_maxima(): example data 1, block_length gives correct result", {
-  testthat::expect_equal(block_maxima(data, block_length = a_block_length),
+  testthat::expect_equal(block_maxima(data, block_length = a_block_length,
+                                      pseudo = pseudo, sliding = sliding),
                          results, ignore_attr = TRUE)
 })
 
@@ -45,20 +50,27 @@ test_that("block_maxima(): example data 1, block_length gives correct result", {
 #   One with all (4) NA
 #   Another with an incomplete block of length 3
 data <- c(data, rep(NA, 4), c(1, 2, NA))
+
+pseudo <- FALSE
+sliding <- FALSE
 # If block_length is supplied then the incomplete block should be ignored
 block_length_results <- list(maxima = c(maxima, NA), notNA = c(notNA, 0),
-                             n = c(n, 4))
+                             n = c(n, 4),
+                             pseudo = pseudo, sliding = sliding)
 # If block is supplied (correctly) then the incomplete block is not ignored
 a_new_block <- c(a_block, rep(6, 4), rep(7, 3))
 block_results <- list(maxima = c(maxima, NA, 2), notNA = c(notNA, 0, 2),
-                      n = c(n, 4, 3))
+                      n = c(n, 4, 3),
+                      pseudo = pseudo, sliding = sliding)
 
 test_that("block_maxima(): example data 2, block gives correct result", {
-  testthat::expect_equal(block_maxima(data, block = a_new_block),
+  testthat::expect_equal(block_maxima(data, block = a_new_block,
+                                      pseudo = pseudo, sliding = sliding),
                          block_results, ignore_attr = TRUE)
 })
 test_that("block_maxima(): example data 2, block_length gives correct result", {
-  testthat::expect_equal(block_maxima(data, block_length = a_block_length),
+  testthat::expect_equal(block_maxima(data, block_length = a_block_length,
+                                      pseudo = pseudo, sliding = sliding),
                          block_length_results, ignore_attr = TRUE)
 })
 
