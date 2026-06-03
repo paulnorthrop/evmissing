@@ -66,7 +66,8 @@ points are coloured black in all plots, which cannot be changed.
 \item{digits}{An integer. Passed to \code{\link{signif}} to round the
 values in the summary.}
 
-\item{x}{An object returned by \code{summary.evmissing}.}
+\item{x}{An object returned by \code{summary.evmissing} or (for \code{plot.evmissing})
+an object inheriting from class \code{"evmissing"}.}
 
 \item{parm}{A character vector specifying the parameters for which
 confidence intervals are to be calculated. The default, \code{which = "all"},

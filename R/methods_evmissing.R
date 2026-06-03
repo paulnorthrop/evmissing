@@ -3,7 +3,8 @@
 #' Methods for objects of class `"evmissing"` returned from [`gev_mle`].
 #' @param object An object inheriting from class `"evmissing"`, a result of a
 #'   call to [`gev_mle`].
-#' @param x An object returned by `summary.evmissing`.
+#' @param x An object returned by `summary.evmissing` or (for `plot.evmissing`)
+#'   an object inheriting from class `"evmissing"`.
 #' @param ... Further arguments. Only used in the following cases.
 #'
 #'   * `plot.evmissing`: to pass graphical parameters to the graphical functions
