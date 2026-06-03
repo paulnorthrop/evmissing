@@ -1,4 +1,4 @@
-#' GEV ML Inference with Adjustment for Missing Data
+#' GEV ML Inference with Adjustment for Missing Data (Independent Sequences)
 #'
 #' Fits a GEV distribution to block maxima using maximum likelihood estimation,
 #' with the option to make an adjustment for the numbers of non-missing raw

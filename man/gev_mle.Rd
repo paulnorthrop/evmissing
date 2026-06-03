@@ -2,7 +2,7 @@
 % Please edit documentation in R/gev_mle.R
 \name{gev_mle}
 \alias{gev_mle}
-\title{GEV ML Inference with Adjustment for Missing Data}
+\title{GEV ML Inference with Adjustment for Missing Data (Independent Sequences)}
 \usage{
 gev_mle(
   data,
