@@ -51,8 +51,11 @@ full blocks with respect to the start of each block.}
 }
 \value{
 A list, with class
-\code{c("list", "block_maxima", "disjoint", "evmissing")}, containing the
-following numeric vectors:
+\code{c("list", "block_maxima", "disjoint", "evmissing")},
+if \code{sliding = FALSE}, or
+\code{c("list", "block_maxima", "sliding", "evmissing")},
+if \code{sliding = TRUE},
+containing the following numeric vectors:
 \itemize{
 \item \code{maxima}: the block maxima.
 \item \code{notNA}: the numbers of non-missing observations in each block.

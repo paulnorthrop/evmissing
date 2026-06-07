@@ -50,8 +50,11 @@
 #'   contained in the pseudo-maxima**
 #'
 #' @return A list, with class
-#'   `c("list", "block_maxima", "disjoint", "evmissing")`, containing the
-#'   following numeric vectors:
+#'   `c("list", "block_maxima", "disjoint", "evmissing")`,
+#'   if `sliding = FALSE`, or
+#'   `c("list", "block_maxima", "sliding", "evmissing")`,
+#'   if `sliding = TRUE`,
+#'   containing the following numeric vectors:
 #'
 #'  * `maxima`: the block maxima.
 #'  * `notNA`: the numbers of non-missing observations in each block.
@@ -170,6 +173,10 @@ block_maxima <- function(data, block_length, block, pseudo = FALSE,
   r$sliding <- sliding
   # Give the returned object a class, so that we can detect block maxima data
   # created by block_maxima()
-  class(r) <- c("list", "block_maxima", "disjoint", "evmissing")
+  if (sliding) {
+    class(r) <- c("list", "block_maxima", "sliding", "evmissing")
+  } else {
+    class(r) <- c("list", "block_maxima", "disjoint", "evmissing")
+  }
   return(r)
 }
