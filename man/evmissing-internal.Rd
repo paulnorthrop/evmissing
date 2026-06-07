@@ -10,8 +10,11 @@
 \alias{find_block_i_disjoint}
 \alias{find_maxima_notNA_disjoint_pseudo}
 \alias{find_maxima_notNA_disjoint}
+\alias{find_full_sliding_block_starts}
 \alias{maxima_block_length}
 \alias{maxima_block}
+\alias{pseudo_maxima_block_length}
+\alias{pseudo_maxima_block}
 \alias{rhat}
 \alias{negated_gev_loglik_ts}
 \alias{faster_profile_ci}
@@ -65,9 +68,15 @@ find_maxima_notNA_disjoint_pseudo(i, data, block_length)
 
 find_maxima_notNA_disjoint(i, data, block_length)
 
+find_full_sliding_block_starts(x, n)
+
 maxima_block_length(data, block_length, pseudo)
 
 maxima_block(data, block, pseudo)
+
+pseudo_maxima_block_length(maxima_notNA, data, block_length, sliding, season)
+
+pseudo_maxima_block(maxima_notNA, data, block)
 
 rhat(parameters, maxima_notNA)
 
