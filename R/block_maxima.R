@@ -58,6 +58,9 @@
 #'  * `n`: the maximal block length, that is, the largest number of values that
 #'     could have been observed in each block.
 #'
+#' If `block` is supplied then these vectors are named using the values in
+#' `block`. Otherwise, they do not have names.
+#'
 #' If `pseudo = TRUE` then the returned list also contains the following:
 #'
 #'  * `whereNA`: a named list containing, for each block, the positions of any
@@ -80,9 +83,6 @@
 #'
 #' If a block contains only missing values then its value of `maxima` is `NA`
 #' and its value of `notNA` is `0`.
-#'
-#' If `block` is supplied then these vectors are named using the values in
-#' `block`. Otherwise, these vectors do not have names.
 #' @examples
 #' ## Simulate example data
 #' set.seed(7032025)
@@ -96,8 +96,18 @@
 #' # Supplying block_length, disjoint maxima
 #' block_length <- 3
 #' block_maxima(data, block_length = block_length)
+#'
 #' # Supplying block_length, sliding maxima
-#' block_maxima(data, block_length = block_length, sliding = TRUE)
+#' res1 <- block_maxima(data, block_length = block_length, pseudo = TRUE)
+#' res2 <- block_maxima(data, block_length = block_length, pseudo = TRUE,
+#'                      sliding = TRUE)
+#' # res1 and res2 have the same missing positions, full and partial maxima
+#' res1$whereNA
+#' res1$full_maxima
+#' res1$partial_maxima
+#' # res2 has more pseudo maxima than res1
+#' res1$pseudo_maxima
+#' res2$pseudo_maxima
 #'
 #' # Supplying block
 #' block <- rep(1:5, each = 3)
@@ -112,7 +122,6 @@
 #' # Supplying block (with an extra group indicator)
 #' block <- c(block, 7, 7)
 #' block_maxima(data, block = block)
-#'
 #' @seealso Plot method [`plot.block_maxima`].
 #' @export
 block_maxima <- function(data, block_length, block, pseudo = FALSE,
