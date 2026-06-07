@@ -10,7 +10,7 @@ block_maxima(
   block,
   pseudo = FALSE,
   sliding = FALSE,
-  season = FALSE
+  season = TRUE
 )
 }
 \arguments{

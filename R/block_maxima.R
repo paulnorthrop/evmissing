@@ -113,7 +113,7 @@
 #' @seealso Plot method [`plot.block_maxima`].
 #' @export
 block_maxima <- function(data, block_length, block, pseudo = FALSE,
-                         sliding = FALSE, season = FALSE) {
+                         sliding = FALSE, season = TRUE) {
   # Check that data is a numeric vector
   if (!is.numeric(data)) {
     stop("''data'' must be a numeric vector.")
@@ -128,6 +128,7 @@ block_maxima <- function(data, block_length, block, pseudo = FALSE,
     stop("''block_length'' or ''block'' must be supplied.")
   }
   # Find block maxima depending on whether block_length or block is supplied
+  # If pseudo = TRUE then we also find the positions of missing values
   if (block_length_supplied) {
     r <- maxima_block_length(data = data, block_length = block_length,
                              pseudo = pseudo)
@@ -140,7 +141,9 @@ block_maxima <- function(data, block_length, block, pseudo = FALSE,
   if (pseudo) {
     if (block_length_supplied) {
       pseudo_maxima <- pseudo_maxima_block_length(maxima_notNA = r, data = data,
-                                                  block_length = block_length)
+                                                  block_length = block_length,
+                                                  sliding = sliding,
+                                                  season = season)
     } else {
       pseudo_maxima <- pseudo_maxima_block(maxima_notNA = r, data = data,
                                            block = block)
