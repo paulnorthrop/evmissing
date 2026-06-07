@@ -150,8 +150,8 @@ block_maxima <- function(data, block_length, block, pseudo = FALSE,
     }
     r <- c(r, list(pseudo_maxima = pseudo_maxima))
     # Create vectors that contain the full maxima and partial maxima
-    r$full_maxima <- r$maxima[as.numeric(rownames(r$pseudo_maxima))]
-    r$partial_maxima <- r$maxima[as.numeric(colnames(r$pseudo_maxima))]
+    r$full_maxima <- r$maxima[r$notNA == r$n]
+    r$partial_maxima <- r$maxima[r$notNA < r$n]
   }
   # Add the input arguments sliding and pseudo
   r$pseudo <- pseudo
