@@ -38,13 +38,16 @@
 #' @details Exactly one of the arguments `block_length` or `block` must be
 #'   supplied.
 #'
-#'   If `block_length` is supplied and `sliding = TRUE` then the maxima are
-#'   calculated for **all** blocks of length `block_length` present in `data`,
-#'   starting with the first block `data[1:block_length]` and sliding the block
-#'   repeatedly by one observation until reaching the final block
+#'   If `block_length` is supplied and `sliding = TRUE` then the pseudo-maxima
+#'   are calculated for **all** blocks of length `block_length` present in
+#'   `data`, starting with the first block `data[1:block_length]` and sliding
+#'   the block repeatedly by one observation until reaching the final block
 #'   `data[(length(data) - block_length + 1):length(data)]`.
 #'
-#'   Also explain for `block`
+#'   **Also explain for `block`**
+#'
+#'   **Also refer to a function that explains what is done with the information
+#'   contained in the pseudo-maxima**
 #'
 #' @return A list, with class
 #'   `c("list", "block_maxima", "disjoint", "evmissing")`, containing the

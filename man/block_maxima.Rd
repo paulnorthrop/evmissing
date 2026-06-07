@@ -98,13 +98,16 @@ blocks.
 Exactly one of the arguments \code{block_length} or \code{block} must be
 supplied.
 
-If \code{block_length} is supplied and \code{sliding = TRUE} then the maxima are
-calculated for \strong{all} blocks of length \code{block_length} present in \code{data},
-starting with the first block \code{data[1:block_length]} and sliding the block
-repeatedly by one observation until reaching the final block
+If \code{block_length} is supplied and \code{sliding = TRUE} then the pseudo-maxima
+are calculated for \strong{all} blocks of length \code{block_length} present in
+\code{data}, starting with the first block \code{data[1:block_length]} and sliding
+the block repeatedly by one observation until reaching the final block
 \code{data[(length(data) - block_length + 1):length(data)]}.
 
-Also explain for \code{block}
+\strong{Also explain for \code{block}}
+
+\strong{Also refer to a function that explains what is done with the information
+contained in the pseudo-maxima}
 }
 \examples{
 ## Simulate example data
