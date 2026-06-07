@@ -1,4 +1,9 @@
-# Check that block_maxima() works as intended
+# Check that block_maxima() works as intended in cases where pseudo = TRUE and
+# sliding = FALSE or sliding = TRUE, and
+# season = FALSE or season = TRUE
+
+# Uses argument block_length
+# To do: argument block
 
 # A very simple example
 data <- c(1:10, 10:1)
@@ -17,113 +22,81 @@ names(whereNA) <- paste0("block", 1:5)
 pseudo_maxima <- matrix(c(8, 8, 7, 8), ncol = 4, nrow = 1)
 colnames(pseudo_maxima) <- c(1, 2, 3, 5)
 rownames(pseudo_maxima) <- 4
-full_maxima <- c("4" = 8)
+full_maxima <- c(8)
 partial_maxima <- c(4, 7, 10, 4)
 names(partial_maxima) <- c("1", "2", "3", "5")
 pseudo <- TRUE
+
+# ============================= sliding = FALSE ============================= #
+
 sliding <- FALSE
-results <- list(maxima = maxima, notNA = notNA, n = n,
-                whereNA = whereNA, pseudo_maxima = pseudo_maxima,
-                full_maxima = full_maxima, partial_maxima = partial_maxima,
-                pseudo = pseudo, sliding = sliding)
+correctSlidingFALSE <- list(maxima = maxima, notNA = notNA, n = n,
+                            whereNA = whereNA, pseudo_maxima = pseudo_maxima,
+                            full_maxima = full_maxima,
+                            partial_maxima = partial_maxima, pseudo = pseudo,
+                            sliding = sliding)
+resultSlidingFALSE <- block_maxima(data, block_length = a_block_length,
+                                   pseudo = pseudo, sliding = sliding,
+                                   season = FALSE)
 
-test_that("block_maxima(): example data 1, block gives correct result", {
-  testthat::expect_equal(block_maxima(data, block = a_block,
-                                      pseudo = pseudo, sliding = sliding),
-                         results, ignore_attr = TRUE)
-})
-test_that("block_maxima(): example data 1, block_length gives correct result", {
-  testthat::expect_equal(block_maxima(data, block_length = a_block_length,
-                                      pseudo = pseudo, sliding = sliding),
-                         results, ignore_attr = TRUE)
+test_that("block_maxima(): example data 1, pseudo = TRUE, block_length", {
+  testthat::expect_equal(resultSlidingFALSE,
+                         correctSlidingFALSE, ignore_attr = TRUE)
 })
 
-# Start again with the same example data but modify them
+# ============================= sliding = TRUE ============================== #
 
-# A simple example
-data <- c(1:10, 10:1)
-# Add some missing values
-data[c(3, 8, 9, 19, 20)] <- NA
-# Create data with 2 extra blocks:
-#   One with all (4) NA
-#   Another with an incomplete block of length 3
-#data <- c(data, rep(NA, 4), c(1, 2, NA))
-data <- c(data, rep(NA, 4), c(NA, 1, 2))
-# Remove data[3] and set block so that the first block full and length 3
-data <- data[-3]
-# If block is supplied (correctly) then the incomplete block is not ignored
-a_new_block <- c(rep(1, 3),
-                 rep(2, 4), rep(3, 4), rep(4, 4), rep(5, 4), rep(6, 4),
-                 rep(7, 3))
+sliding <- TRUE
 
-# (a) the final block is incomplete and shorter (length 3) than the
-# lengths (4) of many other blocks, including the full block (block 4)
-# (b) the first block is full and shorter (length 3) than the
-# lengths (4) of many of the other blocks, including some incomplete blocks
+#------------------------------- season = TRUE ------------------------------ #
 
-# If block_length is supplied then the final block should be ignored
-maxima <- c(5, 7, 10, 7, 3, NA)
-notNA <- c(4, 2, 4, 4, 1, 0)
-n <- rep(4, 6)
-whereNA1 <- list(integer(0), 3:4, integer(0), integer(0), 2:4, 1:4)
-names(whereNA1) <- paste0("block", 1:6)
-pseudo_maxima <- matrix(c(2, 10, 7, 1, 10, 7, NA, NA, NA), ncol = 3, nrow = 3)
-colnames(pseudo_maxima) <- c(2, 5, 6)
-rownames(pseudo_maxima) <- c(1, 3, 4)
-full_maxima <- c(5, 10, 7)
-partial_maxima <- c(7, 3, NA)
+season <- TRUE
+row4 <- c(6, 7, 7, 6)
+row10 <- c(10, 10, 10, 10)
+row11 <- c(9, 10, 10, 8)
+row12 <- c(9, 8, 9, 8)
+row13 <- c(8, 8, 7, 8)
+row14 <- c(7, 7, 7, 7)
+row15 <- c(5, 6, 6, 4)
+pmSeasonTRUE <- matrix(c(row4, row10, row11, row12, row13, row14, row15),
+                       ncol = 4, nrow = 7, byrow = TRUE)
 
-pseudo <- TRUE
-sliding <- FALSE
-block_length_results <- list(maxima = maxima, notNA = notNA, n = n,
-                             whereNA = whereNA1, pseudo_maxima = pseudo_maxima,
-                             full_maxima = full_maxima,
-                             partial_maxima = partial_maxima,
-                             pseudo = pseudo, sliding = sliding)
+correctSeasonTRUE <- list(maxima = maxima, notNA = notNA, n = n,
+                          whereNA = whereNA, pseudo_maxima = pmSeasonTRUE,
+                          full_maxima = full_maxima,
+                          partial_maxima = partial_maxima, pseudo = pseudo,
+                          sliding = sliding)
+resultSeasonTRUE <- block_maxima(data, block_length = a_block_length,
+                                 pseudo = pseudo, sliding = sliding)
 
-maxima <- c(4, 7, 10, 8, 4, NA, 2)
-notNA <- c(3, 3, 3, 4, 2, 0, 2)
-n <- c(3, 4, 4, 4, 4, 4, 3)
-whereNA2 <- list(integer(0), 4, 1, integer(0), 3:4, 1:4, 1)
-names(whereNA2) <- paste0("block", 1:7)
-pseudo_maxima <- matrix(c(4, 8, 4, 7, 2, 8, NA, NA, 4, 7), ncol = 5, nrow = 2)
-colnames(pseudo_maxima) <- c(2, 3, 5, 6, 7)
-rownames(pseudo_maxima) <- c(1, 4)
-full_maxima <- c(4, 8)
-names(full_maxima) <- c(1, 4)
-partial_maxima <- c(7, 10, 4, NA, 2)
-names(partial_maxima) <- c(2, 3, 5, 6, 7)
-block_results <- list(maxima = maxima, notNA = notNA, n = n,
-                      whereNA = whereNA2, pseudo_maxima = pseudo_maxima,
-                      full_maxima = full_maxima,
-                      partial_maxima = partial_maxima,
-                      pseudo = pseudo, sliding = sliding)
-
-test_that("block_maxima(): example data 2, block gives correct result", {
-  testthat::expect_equal(block_maxima(data, block = a_new_block,
-                                      pseudo = pseudo, sliding = sliding),
-                         block_results, ignore_attr = TRUE)
-})
-test_that("block_maxima(): example data 2, block_length gives correct result", {
-  testthat::expect_equal(block_maxima(data, block_length = a_block_length,
-                                      pseudo = pseudo, sliding = sliding),
-                         block_length_results, ignore_attr = TRUE)
+test_that("block_maxima(): example data 1, pseudo = TRUE, block_length", {
+  testthat::expect_equal(resultSeasonTRUE,
+                         correctSeasonTRUE, ignore_attr = TRUE)
 })
 
-# Simulate some example data
-set.seed(7032025)
-data <- stats::rexp(15)
-# Set block_length and block to give the same output (5 blocks of 3 values)
-# Call these a_block_length and a_block to avoid over-writing values in setup.R
-a_block_length <- 3
-a_block <- rep(1:5, each = 3)
+#------------------------------- season = FALSE ----------------------------- #
 
-# block_maxima() gives the same output for equivalent block_length and block
+season <- FALSE
+row4 <- c(7, 6, 7, 5)
+row10 <- c(10, 10, 10, 10)
+row11 <- c(10, 10, 9, 10)
+row12 <- c(9, 9, 8, 9)
+row13 <- c(8, 8, 7, 8)
+row14 <- c(7, 7, 6, 7)
+row15 <- c(6, 6, 5, 6)
+pmSeasonFALSE <- matrix(c(row4, row10, row11, row12, row13, row14, row15),
+                        ncol = 4, nrow = 7, byrow = TRUE)
 
-test_that("block_maxima(): simulated data, block and block_length agree", {
-  testthat::expect_equal(block_maxima(data, block = a_block,
-                                      pseudo = pseudo, sliding = sliding),
-                         block_maxima(data, block_length = a_block_length,
-                                      pseudo = pseudo, sliding = sliding),
-                         ignore_attr = TRUE)
+correctSeasonFALSE <- list(maxima = maxima, notNA = notNA, n = n,
+                          whereNA = whereNA, pseudo_maxima = pmSeasonFALSE,
+                          full_maxima = full_maxima,
+                          partial_maxima = partial_maxima, pseudo = pseudo,
+                          sliding = sliding)
+resultSeasonFALSE <- block_maxima(data, block_length = a_block_length,
+                                 pseudo = pseudo, sliding = sliding,
+                                 season = FALSE)
+
+test_that("block_maxima(): example data 1, pseudo = TRUE, block_length", {
+  testthat::expect_equal(resultSeasonFALSE,
+                         correctSeasonFALSE, ignore_attr = TRUE)
 })
