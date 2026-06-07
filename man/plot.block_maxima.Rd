@@ -29,15 +29,8 @@ see that the sliding block maximum tends to be smaller for blocks with a
 larger proportion of missing values.
 }
 \examples{
-### Plymouth Ozone Data
+## Plymouth Ozone Data
 
-## Sliding maxima
-# Time series plots of sliding block maxima
-plot(PlymouthOzoneSlidingMaxima)
-# Plot maxima against the proportion of non-missing daily values
-plot(PlymouthOzoneSlidingMaxima, which = 2)
-
-## Disjoint maxima
 bm <- block_maxima(PlymouthOzone$Ozone, block = PlymouthOzone$Year)
 # Time series plots of block maxima
 plot(bm)
