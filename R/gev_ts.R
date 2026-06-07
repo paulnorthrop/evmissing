@@ -8,13 +8,12 @@
 #' @param data Either
 #'
 #'   * a numeric vector containing a time series of raw data,
-#'   * an object returned from [`block_maxima_ts`] or
-#'     [`sliding_block_maxima_ts`], a list with components `maxima`, `notNA`,
-#'     `n`, `whereNA`, `pseudo_maxima`, `full_maxima` and `partial_maxima`,
+#'   * an object returned from [`block_maxima`], a list with components
+#'     `maxima`, `notNA`, `n`, `whereNA`, `pseudo_maxima`, `full_maxima` and
+#'     `partial_maxima`,
 #'   * a named list containing the same information, that is, the variables
 #'     `maxima`, `notNA`, `n`, `whereNA`, `pseudo_maxima`, `full_maxima` and
-#'     `partial_maxima` as an object returned from [`block_maxima_ts`] or
-#'     [`sliding_block_maxima_ts`].
+#'     `partial_maxima` as an object returned from [`block_maxima`].
 #'
 #'   There must be at least one full block of data, that is, at least one block
 #'   for which no data are missing.
@@ -29,14 +28,14 @@
 #'   Not applicable if `sliding = TRUE`. If `sliding = TRUE`, then
 #'   `block_length` must be supplied.
 #' @param pseudo A logical scalar. If `pseudo = TRUE` then the pseudo-maxima
-#'   returned from [`block_maxima_ts`] are used to estimate the value of
+#'   returned from [`block_maxima`] are used to estimate the value of
 #'   \eqn{r_i} for an incomplete, partially-observed block. See **Details**.
 #'   If `pseudo = FALSE` then the ratio \eqn{n_i/n} is used, as in
 #'   [`gev_mle()`].
-#' @param sliding A logical scalar. If `sliding = TRUE` then inferences are
-#'   based on sliding block maxima returned by [`sliding_block_maxima_ts`]
-#'   and `block_length` must be supplied. If `sliding = FALSE` then they are
-#'   based on disjoint block maxima returned from [`block_maxima_ts`].
+#' @param sliding A logical scalar passed to [`block_maxima`]. If
+#'   `sliding = TRUE` then estimates of \eqn{r_i} are based on sliding
+#'   pseudo-maxima. If `sliding = FALSE` then these estimates are based on
+#'   disjoint pseudo-maxima.
 #' @param init Either a character scalar, one of `"quartiles"` or `"moments"`,
 #'   or a numeric vector of length 3 giving initial estimates of the GEV
 #'   location, scale and shape parameters: \eqn{\mu}, \eqn{\sigma} and
@@ -66,7 +65,7 @@
 #'
 #' For a full block, \eqn{r_i = 1}. If `pseudo = TRUE`, then, for an
 #' incomplete, partially-observed block, the value of \eqn{r_i} is estimated
-#' using the pseudo-maxima returned from [`block_maxima_ts`] and the GEV
+#' using the pseudo-maxima returned from [`block_maxima`] and the GEV
 #' distribution function based on the current value of \eqn{(\mu, \sigma, \xi)}
 #' in the optimisation routine. Suppose that we have a vector \eqn{M_i} of
 #' pseudo-maxima resulting from a particular incomplete block \eqn{i}.  It can
@@ -137,9 +136,9 @@ gev_ts <- function(data, block_length, block, pseudo = TRUE, sliding = FALSE,
   if (sliding && (block_supplied || !block_length_supplied)) {
     stop("If ''sliding = TRUE'' then (only) ''block_length'' must be supplied")
   }
-  # If data was created by block_maxima_ts() or sliding_block_maxima_ts() or is
-  # a data frame that contains the correct information then use it.
-  # Otherwise, use block_maxima_ts() to calculate the block maxima, the numbers
+  # If data was created by block_maxima() or is a data frame that contains the
+  # correct information then use it.
+  # Otherwise, use block_maxima() to calculate the block maxima, the numbers
   # of non-missing values in the blocks and the largest possible number of
   # non-missing values in each block.
   from_maxima <- inherits(data, "block_maxima") || inherits(data, "sliding")
@@ -155,13 +154,12 @@ gev_ts <- function(data, block_length, block, pseudo = TRUE, sliding = FALSE,
       stop("List ''data'' does not contain the required named components.")
     }
   } else {
-    if (sliding) {
-      print("Calculating sliding block maxima")
-      maxima_notNA <- sliding_block_maxima_ts(data, block_length)
-      print("Calculated sliding block maxima")
-    } else {
-      maxima_notNA <- block_maxima_ts(data, block_length, block)
-    }
+    #
+    # PJN: Need to adjust to use block argument when this is available
+    #
+    print("Calculating block maxima")
+    maxima_notNA <- block_maxima(data, block_length, sliding = sliding)
+    print("Calculated block maxima")
   }
   # If there are maxima = NA, notNA = 0 entries in the data then remove them
   no_data <- which(maxima_notNA$notNA == 0)

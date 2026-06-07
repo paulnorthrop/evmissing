@@ -18,13 +18,12 @@ gev_ts(
 \item{data}{Either
 \itemize{
 \item a numeric vector containing a time series of raw data,
-\item an object returned from \code{\link{block_maxima_ts}} or
-\code{\link{sliding_block_maxima_ts}}, a list with components \code{maxima}, \code{notNA},
-\code{n}, \code{whereNA}, \code{pseudo_maxima}, \code{full_maxima} and \code{partial_maxima},
+\item an object returned from \code{\link{block_maxima}}, a list with components
+\code{maxima}, \code{notNA}, \code{n}, \code{whereNA}, \code{pseudo_maxima}, \code{full_maxima} and
+\code{partial_maxima},
 \item a named list containing the same information, that is, the variables
 \code{maxima}, \code{notNA}, \code{n}, \code{whereNA}, \code{pseudo_maxima}, \code{full_maxima} and
-\code{partial_maxima} as an object returned from \code{\link{block_maxima_ts}} or
-\code{\link{sliding_block_maxima_ts}}.
+\code{partial_maxima} as an object returned from \code{\link{block_maxima}}.
 }
 
 There must be at least one full block of data, that is, at least one block
@@ -43,15 +42,15 @@ Not applicable if \code{sliding = TRUE}. If \code{sliding = TRUE}, then
 \code{block_length} must be supplied.}
 
 \item{pseudo}{A logical scalar. If \code{pseudo = TRUE} then the pseudo-maxima
-returned from \code{\link{block_maxima_ts}} are used to estimate the value of
+returned from \code{\link{block_maxima}} are used to estimate the value of
 \eqn{r_i} for an incomplete, partially-observed block. See \strong{Details}.
 If \code{pseudo = FALSE} then the ratio \eqn{n_i/n} is used, as in
 \code{\link[=gev_mle]{gev_mle()}}.}
 
-\item{sliding}{A logical scalar. If \code{sliding = TRUE} then inferences are
-based on sliding block maxima returned by \code{\link{sliding_block_maxima_ts}}
-and \code{block_length} must be supplied. If \code{sliding = FALSE} then they are
-based on disjoint block maxima returned from \code{\link{block_maxima_ts}}.}
+\item{sliding}{A logical scalar passed to \code{\link{block_maxima}}. If
+\code{sliding = TRUE} then estimates of \eqn{r_i} are based on sliding
+pseudo-maxima. If \code{sliding = FALSE} then these estimates are based on
+disjoint pseudo-maxima.}
 
 \item{init}{Either a character scalar, one of \code{"quartiles"} or \code{"moments"},
 or a numeric vector of length 3 giving initial estimates of the GEV
@@ -115,7 +114,7 @@ GEV distribution with distribution function \eqn{G(x)^{r_i}}.
 
 For a full block, \eqn{r_i = 1}. If \code{pseudo = TRUE}, then, for an
 incomplete, partially-observed block, the value of \eqn{r_i} is estimated
-using the pseudo-maxima returned from \code{\link{block_maxima_ts}} and the GEV
+using the pseudo-maxima returned from \code{\link{block_maxima}} and the GEV
 distribution function based on the current value of \eqn{(\mu, \sigma, \xi)}
 in the optimisation routine. Suppose that we have a vector \eqn{M_i} of
 pseudo-maxima resulting from a particular incomplete block \eqn{i}.  It can
