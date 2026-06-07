@@ -1,7 +1,7 @@
 #' Plot method for objects inheriting from class `"block_maxima"`
 #'
 #' Plot method for objects inheriting from `"block_maxima"` returned from
-#'   [`block_maxima`], [`block_maxima_ts`] or [`sliding_block_maxima_ts`].
+#'   [`block_maxima`].
 #' @param x An object inheriting from class `"block_maxima"`.
 #' @param which If `which = 1` then the sliding block maxima are plotted
 #'   against block number. If `which = 2` then the sliding block maxima are

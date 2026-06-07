@@ -20,7 +20,7 @@ Nothing is returned.
 }
 \description{
 Plot method for objects inheriting from \code{"block_maxima"} returned from
-\code{\link{block_maxima}}, \code{\link{block_maxima_ts}} or \code{\link{sliding_block_maxima_ts}}.
+\code{\link{block_maxima}}.
 }
 \details{
 When \code{which = 1} we obtain a time series plot in which there are
