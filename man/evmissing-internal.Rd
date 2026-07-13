@@ -10,6 +10,7 @@
 \alias{find_block_i_disjoint}
 \alias{find_maxima_notNA_disjoint_pseudo}
 \alias{find_maxima_notNA_disjoint}
+\alias{not_more_missing}
 \alias{find_full_sliding_block_starts}
 \alias{maxima_block_length}
 \alias{maxima_block}
@@ -67,6 +68,8 @@ find_block_i_disjoint(i, data, block_length)
 find_maxima_notNA_disjoint_pseudo(i, data, block_length)
 
 find_maxima_notNA_disjoint(i, data, block_length)
+
+not_more_missing(less, more)
 
 find_full_sliding_block_starts(x, n)
 

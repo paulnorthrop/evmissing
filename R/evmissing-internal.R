@@ -186,6 +186,13 @@ find_maxima_notNA_disjoint <- function(i, data, block_length) {
 
 #' @keywords internal
 #' @rdname evmissing-internal
+x_can_replicate_y <- function(x, y) {
+  # x can replicate y if there are no elements for which x == NA and y != NA
+  return(!any(is.na(x) - is.na(y) > 0))
+}
+
+#' @keywords internal
+#' @rdname evmissing-internal
 find_full_sliding_block_starts <- function(x, n) {
   # A function that returns TRUE if value i starts a run of n non-NAs
   full_block <- function(i) {
