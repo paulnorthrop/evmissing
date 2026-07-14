@@ -12,7 +12,6 @@
 \alias{find_maxima_notNA_disjoint}
 \alias{x_donates_to_y}
 \alias{x_donates_to_y_seasonal}
-\alias{x_can_replicate_y}
 \alias{fullish_blocks}
 \alias{find_full_sliding_block_starts}
 \alias{maxima_block_length}
@@ -72,13 +71,11 @@ find_maxima_notNA_disjoint_pseudo(i, data, block_length)
 
 find_maxima_notNA_disjoint(i, data, block_length)
 
-x_donates_to_y(x, y)
+x_donates_to_y(x, y, full)
 
-x_donates_to_y_seasonal(x, y)
+x_donates_to_y_seasonal(x, y, full)
 
-x_can_replicate_y(x, y)
-
-fullish_blocks(data, block_length, sliding, seasonal)
+fullish_blocks(data, block_length, full, sliding, seasonal)
 
 find_full_sliding_block_starts(x, n)
 
