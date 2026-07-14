@@ -8,7 +8,7 @@ data[c(3, 8, 9, 19, 20)] <- NA
 # Call these a_block_length and a_block to avoid over-writing values in setup.R
 a_block_length <- 4
 
-# 1. sliding = TRUE, seasonal = FALSE
+# 1. full = FALSE, sliding = TRUE, seasonal = FALSE
 
 correct1 <- matrix(NA, nrow = 17, ncol = 4)
 correct1[1, ] <- c(NA, NA, NA, 2)
@@ -29,14 +29,13 @@ correct1[15, ] <- c(6, 6, 5, 6)
 correct1[16, ] <- c(NA, 5, NA, 5)
 correct1[17, ] <- c(NA, NA, NA, NA)
 
-results1 <- fullish_blocks(data, block_length = a_block_length, sliding = TRUE,
-                           seasonal = FALSE)
-
-test_that("fullish_maxima(): sliding = TRUE, seasonal = FALSE", {
+results1 <- fullish_blocks(data, block_length = a_block_length,
+                           full = FALSE, sliding = TRUE, seasonal = FALSE)
+test_that("fullish_maxima(): full = FALSE, sliding = TRUE, seasonal = FALSE", {
   testthat::expect_equal(results1, correct1, ignore_attr = TRUE)
 })
 
-# 2. sliding = TRUE, seasonal = TRUE
+# 2. full = FALSE, sliding = TRUE, seasonal = TRUE
 
 correct2 <- matrix(NA, nrow = 17, ncol = 4)
 correct2[1, ] <- c(NA, NA, NA, 2)
@@ -57,23 +56,51 @@ correct2[15, ] <- c(5, 6, 6, 4)
 correct2[16, ] <- c(5, NA, NA, 4)
 correct2[17, ] <- c(NA, NA, NA, NA)
 
-results2 <- fullish_blocks(data, block_length = a_block_length, sliding = TRUE,
-                           seasonal = TRUE)
-
-test_that("fullish_maxima(): sliding = TRUE, seasonal = TRUE", {
+results2 <- fullish_blocks(data, block_length = a_block_length,
+                           full = FALSE, sliding = TRUE, seasonal = TRUE)
+test_that("fullish_maxima(): full = FALSE, sliding = TRUE, seasonal = TRUE", {
   testthat::expect_equal(results2, correct2, ignore_attr = TRUE)
 })
 
-# 3. sliding = FALSE (seasonal = FALSE)
+# 3. full = FALSE, sliding = FALSE (seasonal = FALSE)
 
-correct3 <- correct1[c(1, 5, 9, 13, 17), ]
-correct4 <- correct2[c(1, 5, 9, 13, 17), ]
+correct3a <- correct1[c(1, 5, 9, 13, 17), ]
+correct3b <- correct2[c(1, 5, 9, 13, 17), ]
 results3 <- fullish_blocks(data, block_length = a_block_length,
-                           sliding = FALSE, seasonal = FALSE)
-
-test_that("fullish_maxima(): sliding = FALSE check 1", {
-  testthat::expect_equal(results3, correct3, ignore_attr = TRUE)
+                           full = FALSE, sliding = FALSE, seasonal = FALSE)
+test_that("fullish_maxima(): full = FALSE, sliding = FALSE check 1", {
+  testthat::expect_equal(results3, correct3a, ignore_attr = TRUE)
 })
-test_that("fullish_maxima(): sliding = FALSE check 2", {
-  testthat::expect_equal(results3, correct4, ignore_attr = TRUE)
+test_that("fullish_maxima(): full = FALSE, sliding = FALSE check 2", {
+  testthat::expect_equal(results3, correct3b, ignore_attr = TRUE)
+})
+
+# 4. full = TRUE, sliding = TRUE, seasonal = FALSE
+
+results4 <- fullish_blocks(data, block_length = a_block_length,
+                           full = TRUE, sliding = TRUE, seasonal = FALSE)
+correct4 <- correct1
+correct4[c(1:3, 5:9, 16:17), ] <- NA
+test_that("fullish_maxima(): full = TRUE, sliding = TRUE, seasonal = FALSE", {
+  testthat::expect_equal(results4, correct4, ignore_attr = TRUE)
+})
+
+# 5. full = TRUE, sliding = TRUE, seasonal = TRUE
+
+results5 <- fullish_blocks(data, block_length = a_block_length,
+                           full = TRUE, sliding = TRUE, seasonal = TRUE)
+correct5 <- correct2
+correct5[c(1:3, 5:9, 16:17), ] <- NA
+test_that("fullish_maxima(): full = TRUE, sliding = TRUE, seasonal = TRUE", {
+  testthat::expect_equal(results5, correct5, ignore_attr = TRUE)
+})
+
+# 6. full = FALSE, sliding = FALSE (seasonal = FALSE)
+
+results6 <- fullish_blocks(data, block_length = a_block_length,
+                           full = TRUE, sliding = FALSE, seasonal = FALSE)
+correct6 <- correct3
+correct6[c(1:3, 5), ] <- NA
+test_that("fullish_maxima(): full = TRUE, sliding = FALSE, seasonal = FALSE", {
+  testthat::expect_equal(results6, correct6, ignore_attr = TRUE)
 })
