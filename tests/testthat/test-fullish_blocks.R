@@ -99,7 +99,7 @@ test_that("fullish_maxima(): full = TRUE, sliding = TRUE, seasonal = TRUE", {
 
 results6 <- fullish_blocks(data, block_length = a_block_length,
                            full = TRUE, sliding = FALSE, seasonal = FALSE)
-correct6 <- correct3
+correct6 <- correct3a
 correct6[c(1:3, 5), ] <- NA
 test_that("fullish_maxima(): full = TRUE, sliding = FALSE, seasonal = FALSE", {
   testthat::expect_equal(results6, correct6, ignore_attr = TRUE)
