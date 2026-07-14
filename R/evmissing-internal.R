@@ -186,9 +186,113 @@ find_maxima_notNA_disjoint <- function(i, data, block_length) {
 
 #' @keywords internal
 #' @rdname evmissing-internal
-x_can_replicate_y <- function(x, y) {
-  # x can replicate y if there are no elements for which x == NA and y != NA
-  return(!any(is.na(x) - is.na(y) > 0))
+x_donates_to_y <- function(x, y) {
+  # Calculate the block maximum for donor block x using only the positions for
+  # which the corresponding value in the receiving block y is not NA.
+  # If x has any NA values in these positions then NA is returned.
+  return(max(x[!is.na(y)]))
+}
+
+#' @keywords internal
+#' @rdname evmissing-internal
+x_donates_to_y_seasonal <- function(x, y) {
+  # Calculate the block maximum for donor block x using only the positions for
+  # which the corresponding value in the receiving block y is not NA.
+  # If x has any NA values in these positions then NA is returned.
+  yy <- y[as.numeric(names(x))]
+  return(max(x[!is.na(yy)]))
+}
+
+#' @keywords internal
+#' @rdname evmissing-internal
+fullish_blocks <- function(data, block_length, sliding, seasonal) {
+
+  # The seasonal option is only relevant if sliding = TRUE
+  if (!sliding && seasonal) {
+    stop("If sliding = FALSE is then seasonal = TRUE has no relevance")
+  }
+
+  # Set the number of disjoint blocks
+  n_disjoint <- floor(length(data) / block_length)
+  # Function to find the disjoint blocks
+  find_disjoint_block_j <- function(j) {
+    return(data[(1 + block_length * (j - 1)):(block_length * j)])
+  }
+  # Set the number of sliding blocks
+  n_sliding <- length(data) - block_length + 1
+  # Function to find the sliding blocks
+  find_sliding_block_j <- function(j) {
+    return(data[j:(j + block_length - 1)])
+  }
+  # Extract the disjoint blocks
+  disjoint_blocks <- vapply(X = seq_len(n_disjoint),
+                            FUN = find_disjoint_block_j,
+                            FUN.VALUE = rep(0, block_length))
+  # Extract the sliding blocks
+  sliding_blocks <- vapply(X = seq_len(n_sliding),
+                           FUN = find_sliding_block_j,
+                           FUN.VALUE = rep(0, block_length))
+  # Convert the sliding_blocks matrix into a list containing its columns
+  sliding_blocks_list <- split(sliding_blocks,
+                               rep(1:ncol(sliding_blocks),
+                                   each = nrow(sliding_blocks)))
+  # Create a list of  the indices of the positions within disjoint blocks
+  block_positions <- function(j, b) {
+    start <- 1 + (j - 1) %% b
+    return(1 + ((b - 1) + start:(start + b - 1)) %% b)
+  }
+  positions_as_names <- lapply(seq_len(length(sliding_blocks_list)),
+                              block_positions, b = block_length)
+  # Add the positions as names of the vectors in sliding_blocks_list
+  for (i in seq_len(length(sliding_blocks_list))) {
+    names(sliding_blocks_list[[i]]) <- positions_as_names[[i]]
+  }
+
+  # Function to apply the missing value patterns in disjoint blocks to all
+  # suitable sliding blocks, ignoring seasonality
+  sliding_donating_to_disjoint <- function(y) {
+    sliding_donating_to_y <- function(x) {
+      return(x_donates_to_y(x = x, y = y))
+    }
+    return(apply(X = sliding_blocks, MARGIN = 2,
+                 FUN = sliding_donating_to_y))
+  }
+  # Function to apply the missing value patterns in disjoint blocks to all
+  # suitable sliding blocks, respecting seasonality
+  sliding_donating_to_disjoint_seasonal <- function(y) {
+    sliding_donating_to_y_seasonal <- function(x) {
+      return(x_donates_to_y_seasonal(x = x, y = y))
+    }
+    return(lapply(X = sliding_blocks_list,
+                  FUN = sliding_donating_to_y_seasonal))
+  }
+  if (seasonal) {
+    fuller_maxima <- apply(X = disjoint_blocks, MARGIN = 2,
+                           FUN = sliding_donating_to_disjoint_seasonal)
+    # This is a list, so make it into a matrix
+    fuller_maxima <- matrix(unlist(fuller_maxima, use.names = FALSE),
+                            ncol = length(fuller_maxima), byrow = FALSE)
+  } else {
+    fuller_maxima <- apply(X = disjoint_blocks, MARGIN = 2,
+                           FUN = sliding_donating_to_disjoint)
+  }
+  # Remove trivial TRUEs (disjoint block = sliding block)
+  disjoint_number <- seq_len(n_disjoint)
+  sliding_number <- 1 + block_length * (0:(n_disjoint - 1))
+  fuller_maxima[cbind(sliding_number, disjoint_number)] <- NA
+
+  # Remove columns relating to full disjoint blocks
+  not_full <- apply(disjoint_blocks, 2, function(x) any(is.na(x)))
+  fuller_maxima <- fuller_maxima[, not_full]
+
+  # If sliding = FALSE then we use only the disjoint blocks as donors
+  if (!sliding) {
+    disjoint_block_starts <- seq(from = 1, by = block_length,
+                                 length.out = n_disjoint)
+    fuller_maxima <- fuller_maxima[disjoint_block_starts, ]
+  }
+
+  return(fuller_maxima)
 }
 
 #' @keywords internal
