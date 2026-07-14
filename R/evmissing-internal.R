@@ -186,7 +186,11 @@ find_maxima_notNA_disjoint <- function(i, data, block_length) {
 
 #' @keywords internal
 #' @rdname evmissing-internal
-x_donates_to_y <- function(x, y) {
+x_donates_to_y <- function(x, y, full) {
+  # If full = TRUE (full donor blocks only) then return NA
+  if (full && anyNA(x)) {
+    return(NA)
+  }
   # Calculate the block maximum for donor block x using only the positions for
   # which the corresponding value in the receiving block y is not NA.
   # If x has any NA values in these positions then NA is returned.
@@ -195,7 +199,11 @@ x_donates_to_y <- function(x, y) {
 
 #' @keywords internal
 #' @rdname evmissing-internal
-x_donates_to_y_seasonal <- function(x, y) {
+x_donates_to_y_seasonal <- function(x, y, full) {
+  # If full = TRUE (full donor blocks only) then return NA
+  if (full && anyNA(x)) {
+    return(NA)
+  }
   # Calculate the block maximum for donor block x using only the positions for
   # which the corresponding value in the receiving block y is not NA.
   # If x has any NA values in these positions then NA is returned.
@@ -205,7 +213,7 @@ x_donates_to_y_seasonal <- function(x, y) {
 
 #' @keywords internal
 #' @rdname evmissing-internal
-fullish_blocks <- function(data, block_length, sliding, seasonal) {
+fullish_blocks <- function(data, block_length, full, sliding, seasonal) {
 
   # The seasonal option is only relevant if sliding = TRUE
   if (!sliding && seasonal) {
@@ -252,7 +260,7 @@ fullish_blocks <- function(data, block_length, sliding, seasonal) {
   # suitable sliding blocks, ignoring seasonality
   sliding_donating_to_disjoint <- function(y) {
     sliding_donating_to_y <- function(x) {
-      return(x_donates_to_y(x = x, y = y))
+      return(x_donates_to_y(x = x, y = y, full = full))
     }
     return(apply(X = sliding_blocks, MARGIN = 2,
                  FUN = sliding_donating_to_y))
@@ -261,7 +269,7 @@ fullish_blocks <- function(data, block_length, sliding, seasonal) {
   # suitable sliding blocks, respecting seasonality
   sliding_donating_to_disjoint_seasonal <- function(y) {
     sliding_donating_to_y_seasonal <- function(x) {
-      return(x_donates_to_y_seasonal(x = x, y = y))
+      return(x_donates_to_y_seasonal(x = x, y = y, full = full))
     }
     return(lapply(X = sliding_blocks_list,
                   FUN = sliding_donating_to_y_seasonal))
@@ -282,7 +290,7 @@ fullish_blocks <- function(data, block_length, sliding, seasonal) {
   fuller_maxima[cbind(sliding_number, disjoint_number)] <- NA
 
   # Remove columns relating to full disjoint blocks
-  not_full <- apply(disjoint_blocks, 2, function(x) any(is.na(x)))
+  not_full <- apply(disjoint_blocks, 2, function(x) anyNA(x))
   fuller_maxima <- fuller_maxima[, not_full]
 
   # If sliding = FALSE then we use only the disjoint blocks as donors
