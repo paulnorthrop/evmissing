@@ -12,7 +12,7 @@
 \alias{find_maxima_notNA_disjoint}
 \alias{x_donates_to_y}
 \alias{x_donates_to_y_seasonal}
-\alias{fullish_blocks}
+\alias{find_pseudo_maxima_block_length}
 \alias{find_full_sliding_block_starts}
 \alias{maxima_block_length}
 \alias{maxima_block}
@@ -75,7 +75,7 @@ x_donates_to_y(x, y, full)
 
 x_donates_to_y_seasonal(x, y, full)
 
-fullish_blocks(data, block_length, full, sliding, seasonal)
+find_pseudo_maxima_block_length(data, block_length, full, sliding, seasonal)
 
 find_full_sliding_block_starts(x, n)
 

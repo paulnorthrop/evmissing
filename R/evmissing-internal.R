@@ -213,7 +213,8 @@ x_donates_to_y_seasonal <- function(x, y, full) {
 
 #' @keywords internal
 #' @rdname evmissing-internal
-fullish_blocks <- function(data, block_length, full, sliding, seasonal) {
+find_pseudo_maxima_block_length <- function(data, block_length, full, sliding,
+                                            seasonal) {
 
   # The seasonal option is only relevant if sliding = TRUE
   if (!sliding && seasonal) {
