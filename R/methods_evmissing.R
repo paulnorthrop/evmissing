@@ -63,7 +63,8 @@
 #'   `summary.evmissing`: an object with class `"summary.evmissing"` containing
 #'   the original function call and a matrix of estimates and estimated
 #'   standard errors with row names `c("mu", "sigma", "xi")`.  The object is
-#'   printed by [`print.summary.evmissing`].
+#'   printed by [`print.summary.evmissing`]. If [`stats::optim`] threw an error
+#'   when fitting the model, then this is included in the summary.
 #'
 #'   `print.summary.evmissing`: the argument `x` is returned, invisibly.
 #'
@@ -192,6 +193,9 @@ logLik.evmissing <- function(object, ...) {
 summary.evmissing <- function(object,
                               digits = max(3, getOption("digits") - 3L), ...) {
   res <- list()
+  if (!is.null(object$optim_error)) {
+    res$optim_error <- object$optim_error
+  }
   res$call <- attr(object, "call")
   mles <- signif(coef(object), digits = digits)
   ses <- signif(sqrt(diag(vcov(object))), digits = digits)
@@ -210,6 +214,9 @@ summary.evmissing <- function(object,
 print.summary.evmissing <- function(x, ...) {
   cat("\nCall:\n", paste(deparse(x$call), sep = "\n", collapse = "\n"),
       "\n\n", sep = "")
+  if (!is.null(x$optim_error)) {
+    cat("stats::optim error:", as.character(x$optim_error), "\n")
+  }
   print(x$matrix, ...)
   return(invisible(x))
 }

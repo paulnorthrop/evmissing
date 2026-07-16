@@ -158,7 +158,8 @@ number of parameters estimated (3).
 \code{summary.evmissing}: an object with class \code{"summary.evmissing"} containing
 the original function call and a matrix of estimates and estimated
 standard errors with row names \code{c("mu", "sigma", "xi")}.  The object is
-printed by \code{\link{print.summary.evmissing}}.
+printed by \code{\link{print.summary.evmissing}}. If \code{\link[stats:optim]{stats::optim}} threw an error
+when fitting the model, then this is included in the summary.
 
 \code{print.summary.evmissing}: the argument \code{x} is returned, invisibly.
 
