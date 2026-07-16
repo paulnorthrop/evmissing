@@ -560,7 +560,7 @@ rhat <- function(parameters, maxima_notNA) {
                      loc = mu, scale = sigma, shape = xi, log.p = TRUE)
   # Treat column i of exp_data as a random sample from an exp(r_i) distribution
   # The MLE in this situation is the reciprocal of the sample mean
-  rhats <- apply(exp_data, 2, function(x) 1 / mean(x))
+  rhats <- apply(exp_data, 2, function(x) 1 / mean(x, na.rm = TRUE))
   # Save the unconstrained estimates as an attribute
   attr(rhats, "unconstrained") <- rhats
   # We know that the true r_i cannot exceed 1, so set rhats > 1 to 1
@@ -601,9 +601,10 @@ negated_gev_loglik_ts <- function(parameters, maxima_notNA, pseudo, fixed_r,
   # Hessian appropriately
   # If pseudo = FALSE, use the proportions of non-NA values, as in gev_mle()
   if (missing(fixed_r)) {
-    rhats <- rhat(parameters = parameters, maxima_notNA = maxima_notNA)
     if (!pseudo) {
-      rhats <- attr(rhats, "propn_notNA")
+      rhats <- maxima_notNA$notNA / maxima_notNA$n
+    } else {
+      rhats <- rhat(parameters = parameters, maxima_notNA = maxima_notNA)
     }
   } else {
     rhats <- fixed_r
