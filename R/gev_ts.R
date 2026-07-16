@@ -128,8 +128,9 @@
 #'               sliding = TRUE)
 #' }
 #' @export
-gev_ts <- function(data, block_length, block, pseudo = TRUE, sliding = FALSE,
-                   init = "quartiles", ...) {
+gev_ts <- function(data, block_length, block, pseudo = TRUE, full = FALSE,
+                   sliding = TRUE, seasonal = sliding, init = "quartiles",
+                   ...) {
   # If sliding = TRUE then check that only block_length is supplied
   block_length_supplied <- !missing(block_length)
   block_supplied <- !missing(block)
@@ -158,7 +159,9 @@ gev_ts <- function(data, block_length, block, pseudo = TRUE, sliding = FALSE,
     # PJN: Need to adjust to use block argument when this is available
     #
     print("Calculating block maxima")
-    maxima_notNA <- block_maxima(data, block_length, sliding = sliding)
+    maxima_notNA <- block_maxima(data = data, block_length = block_length,
+                                 pseudo = pseudo, full = full,
+                                 sliding = sliding, seasonal = seasonal)
     print("Calculated block maxima")
   }
   # If there are maxima = NA, notNA = 0 entries in the data then remove them

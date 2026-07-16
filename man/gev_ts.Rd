@@ -9,7 +9,9 @@ gev_ts(
   block_length,
   block,
   pseudo = TRUE,
-  sliding = FALSE,
+  full = FALSE,
+  sliding = TRUE,
+  seasonal = sliding,
   init = "quartiles",
   ...
 )
