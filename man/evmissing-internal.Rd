@@ -39,6 +39,7 @@
 \alias{uniform_confidence_bands}
 \alias{gev_confidence_bands}
 \alias{merge_two_lists}
+\alias{rm_NA_rows}
 \title{Internal evmissing functions}
 \usage{
 negated_gev_loglik(parameters, maxima_notNA, adjust, big_val = Inf)
@@ -159,6 +160,8 @@ uniform_confidence_bands(b, k, level)
 gev_confidence_bands(b, k, level, mle)
 
 merge_two_lists(list1, list2)
+
+rm_NA_rows(x)
 }
 \description{
 Internal evmissing functions

@@ -285,6 +285,7 @@ find_pseudo_maxima_block_length <- function(data, block_length, full, sliding,
     fuller_maxima <- apply(X = disjoint_blocks, MARGIN = 2,
                            FUN = sliding_donating_to_disjoint)
   }
+
   # Remove trivial TRUEs (disjoint block = sliding block)
   disjoint_number <- seq_len(n_disjoint)
   sliding_number <- 1 + block_length * (0:(n_disjoint - 1))
@@ -300,6 +301,12 @@ find_pseudo_maxima_block_length <- function(data, block_length, full, sliding,
                                  length.out = n_disjoint)
     fuller_maxima <- fuller_maxima[disjoint_block_starts, ]
   }
+
+  # Name columns and rows according to the positions of block in the raw data
+  #   columns: index of the disjoint receiver block
+  #   rows: index of the (disjoint or sliding) donor block
+  colnames(fuller_maxima) <- seq_len(ncol(fuller_maxima))
+  rownames(fuller_maxima) <- seq_len(nrow(fuller_maxima))
 
   return(fuller_maxima)
 }
@@ -1841,4 +1848,10 @@ merge_two_lists <- function(list1, list2) {
   merged_list[names(list2)[!names(list2) %in% names(list1)]] <-
     list2[!names(list2) %in% names(list1)]
   return(merged_list)
+}
+
+#' @keywords internal
+#' @rdname evmissing-internal
+rm_NA_rows <- function(x) {
+  return(x[!apply(is.na(x), 1, all), , drop = FALSE])
 }
