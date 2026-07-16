@@ -3,13 +3,11 @@
 #' Extracts disjoint block maxima from a time series of raw data. Can also
 #' provide information about the effect of missing value patterns on block
 #' maxima via pseudo-maxima created by applying blockwise missing value
-#' patterns in partially-observed (partial) blocks to fully-observed (full)
+#' patterns in partially-observed (partial) disjoint blocks to fully-observed
+#' (full) blocks or to full blocks and other suitable partially-observed
 #' blocks.
 #'
-#' @param data A numeric vector containing a time series of raw data. If
-#'   `sliding = FALSE` then `data` must contain at least one full disjoint
-#'   block. If `sliding = TRUE` then `data` must contain at least one full
-#'   sliding block.
+#' @param data A numeric vector containing a time series of raw data.
 #' @param block_length A numeric scalar. Used calculate the maxima of
 #'   disjoint blocks of `block_length` contiguous values in the vector `data`.
 #'   If `length(data)` is not an integer multiple of `block_length` then
@@ -22,20 +20,28 @@
 #'   example, 366 for leap years and 365 for other years.
 #' @param pseudo A logical scalar. If `pseudo = TRUE` then pseudo-maxima are
 #'   calculated as the block maxima obtained by applying the missing value
-#'   patterns from partial blocks to all full blocks.
-#' @param full Explain vs fullish!
+#'   patterns from partial disjoint blocks to all suitable other blocks, which
+#'   we call **donor** blocks. See `full`.
+#' @param full If `full = FALSE` then a donor block for a given partial
+#'   disjoint block is any block that has non-missing values in all the
+#'   comparable positions where the partial block has non-missing values.
+#'   The comparable positions depend on whether we respect the seasonality that
+#'   may be exhibited within a block. See `seasonal`.
+#'   If `full = TRUE` then only full blocks are used as donor blocks:
+#'   if `sliding = FALSE` then `data` must contain at least one full disjoint
+#'   block and if `sliding = TRUE` then `data` must contain at least one full
+#'   sliding block.
 #' @param sliding A logical scalar. Only relevant if `pseudo = TRUE`. If
-#'   `sliding = TRUE` then pseudo-maxima are calculated for **all** full blocks
-#'   of the relevant length, rather than only a set of disjoint blocks.
-#'   See **Details**.
+#'   `sliding = TRUE` then pseudo-maxima are calculated for **all** donor blocks
+#'   of the relevant length, rather than only a set of disjoint donor blocks.
 #' @param seasonal A logical scalar. Only relevant if `pseudo = TRUE` and
 #'   `sliding = TRUE`. If `seasonal = TRUE` then the way in which the
 #'   pseudo-maxima are calculated respects the seasonality that may be
 #'   exhibited over the duration of a block. If, for example, a block covers a
-#'   single year, then the missing values applied to a full block occur at the
+#'   single year, then the missing values applied to a donor block occur at the
 #'   same time of year as in the originating partial block. If
 #'   `seasonal = FALSE` then the missing values applied have the same positions
-#'   in the partial and full blocks with respect to the start of each block.
+#'   in the partial and donor blocks with respect to the start of each block.
 #' @details Exactly one of the arguments `block_length` or `block` must be
 #'   supplied.
 #'
@@ -46,6 +52,8 @@
 #'   `data[(length(data) - block_length + 1):length(data)]`.
 #'
 #'   **Also explain for `block`**
+#'
+#'   Provide examples to illustrate `full`, `sliding` and `seasonal`.
 #'
 #'   **Also refer to a function that explains what is done with the information
 #'   contained in the pseudo-maxima**
