@@ -10,7 +10,7 @@ data[c(5, 7:8)] <- NA
 block <- rep(1:5, each = 3)
 
 # Calculate the block maxima and missing value information
-maxima_notNA <- block_maxima(data, block = block, pseudo = TRUE)
+maxima_notNA <- block_maxima(data, block = block, pseudo = TRUE, full = TRUE)
 
 # Set some default GEV parameters
 # Use different values of mu to create estimates of p_i that are inside and

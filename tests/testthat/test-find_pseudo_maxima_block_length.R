@@ -1,4 +1,5 @@
-# Check that fuller_maxima() works as intended
+# Check that find_pseudo_maxima_block_length() works as intended
+# Also check against block_maxima()$pseudo_maxima
 
 # A very simple example
 data <- c(1:10, 10:1)
@@ -37,6 +38,13 @@ test_that(
   "find_pseudo_maxima_block_length(): not full, sliding, not seasonal", {
   testthat::expect_equal(results1, correct1, ignore_attr = TRUE)
 })
+bm1 <- block_maxima(data, block_length = a_block_length, pseudo = TRUE,
+                    full = FALSE, sliding = TRUE, seasonal = FALSE)
+test_that(
+  "block_maxima(): not full, sliding, not seasonal", {
+    testthat::expect_equal(bm1$pseudo_maxima, rm_NA_rows(results1),
+                           ignore_attr = TRUE)
+  })
 
 # 2. full = FALSE, sliding = TRUE, seasonal = TRUE
 
@@ -67,6 +75,13 @@ test_that(
   "find_pseudo_maxima_block_length(): not full, sliding, seasonal", {
   testthat::expect_equal(results2, correct2, ignore_attr = TRUE)
 })
+bm2 <- block_maxima(data, block_length = a_block_length, pseudo = TRUE,
+                    full = FALSE, sliding = TRUE, seasonal = TRUE)
+test_that(
+  "block_maxima(): not full, sliding, seasonal", {
+    testthat::expect_equal(bm2$pseudo_maxima, rm_NA_rows(results2),
+                           ignore_attr = TRUE)
+  })
 
 # 3. full = FALSE, sliding = FALSE (seasonal = FALSE)
 

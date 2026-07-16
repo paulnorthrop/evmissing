@@ -33,16 +33,19 @@ n <- c(4, 4, 4, 4, 4)
 pseudo <- FALSE
 sliding <- FALSE
 results <- list(maxima = maxima, notNA = notNA, n = n,
-                pseudo = pseudo, sliding = sliding)
+                pseudo = pseudo, full = TRUE,
+                sliding = sliding, seasonal = FALSE)
 
 test_that("block_maxima(): example data 1, block gives correct result", {
   testthat::expect_equal(block_maxima(data, block = a_block,
-                                      pseudo = pseudo, sliding = sliding),
+                                      pseudo = pseudo, full = TRUE,
+                                      sliding = sliding),
                          results, ignore_attr = TRUE)
 })
 test_that("block_maxima(): example data 1, block_length gives correct result", {
   testthat::expect_equal(block_maxima(data, block_length = a_block_length,
-                                      pseudo = pseudo, sliding = sliding),
+                                      pseudo = pseudo, full = TRUE,
+                                      sliding = sliding),
                          results, ignore_attr = TRUE)
 })
 
@@ -56,21 +59,25 @@ sliding <- FALSE
 # If block_length is supplied then the incomplete block should be ignored
 block_length_results <- list(maxima = c(maxima, NA), notNA = c(notNA, 0),
                              n = c(n, 4),
-                             pseudo = pseudo, sliding = sliding)
+                             pseudo = pseudo, full = TRUE, sliding = sliding,
+                             seasonal = FALSE)
 # If block is supplied (correctly) then the incomplete block is not ignored
 a_new_block <- c(a_block, rep(6, 4), rep(7, 3))
 block_results <- list(maxima = c(maxima, NA, 2), notNA = c(notNA, 0, 2),
                       n = c(n, 4, 3),
-                      pseudo = pseudo, sliding = sliding)
+                      pseudo = pseudo, full = TRUE, sliding = sliding,
+                      seasonal = FALSE)
 
 test_that("block_maxima(): example data 2, block gives correct result", {
   testthat::expect_equal(block_maxima(data, block = a_new_block,
-                                      pseudo = pseudo, sliding = sliding),
+                                      pseudo = pseudo, full = TRUE,
+                                      sliding = sliding),
                          block_results, ignore_attr = TRUE)
 })
 test_that("block_maxima(): example data 2, block_length gives correct result", {
   testthat::expect_equal(block_maxima(data, block_length = a_block_length,
-                                      pseudo = pseudo, sliding = sliding),
+                                      pseudo = pseudo, full = TRUE,
+                                      sliding = sliding),
                          block_length_results, ignore_attr = TRUE)
 })
 

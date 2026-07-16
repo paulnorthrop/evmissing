@@ -1,6 +1,6 @@
 # Check that block_maxima() works as intended in cases where pseudo = TRUE and
 # sliding = FALSE or sliding = TRUE, and
-# season = FALSE or season = TRUE
+# seasonal = FALSE or seasonal = TRUE
 
 # Uses argument block_length
 # To do: argument block
@@ -26,6 +26,7 @@ full_maxima <- c(8)
 partial_maxima <- c(4, 7, 10, 4)
 names(partial_maxima) <- c("1", "2", "3", "5")
 pseudo <- TRUE
+full <- TRUE
 
 # ============================= sliding = FALSE ============================= #
 
@@ -34,10 +35,10 @@ correctSlidingFALSE <- list(maxima = maxima, notNA = notNA, n = n,
                             whereNA = whereNA, pseudo_maxima = pseudo_maxima,
                             full_maxima = full_maxima,
                             partial_maxima = partial_maxima, pseudo = pseudo,
-                            sliding = sliding)
+                            full = full, sliding = sliding, seasonal = FALSE)
 resultSlidingFALSE <- block_maxima(data, block_length = a_block_length,
-                                   pseudo = pseudo, sliding = sliding,
-                                   season = FALSE)
+                                   pseudo = pseudo, full = full,
+                                   sliding = sliding, seasonal = FALSE)
 
 test_that("block_maxima(): example data 1, pseudo = TRUE, block_length", {
   testthat::expect_equal(resultSlidingFALSE,
@@ -48,9 +49,9 @@ test_that("block_maxima(): example data 1, pseudo = TRUE, block_length", {
 
 sliding <- TRUE
 
-#------------------------------- season = TRUE ------------------------------ #
+#------------------------------ seasonal = TRUE ----------------------------- #
 
-season <- TRUE
+seasonal <- TRUE
 row4 <- c(6, 7, 7, 6)
 row10 <- c(10, 10, 10, 10)
 row11 <- c(9, 10, 10, 8)
@@ -65,18 +66,19 @@ correctSeasonTRUE <- list(maxima = maxima, notNA = notNA, n = n,
                           whereNA = whereNA, pseudo_maxima = pmSeasonTRUE,
                           full_maxima = full_maxima,
                           partial_maxima = partial_maxima, pseudo = pseudo,
-                          sliding = sliding)
+                          ful = full, sliding = sliding, seasonal = TRUE)
 resultSeasonTRUE <- block_maxima(data, block_length = a_block_length,
-                                 pseudo = pseudo, sliding = sliding)
+                                 pseudo = pseudo, full = full,
+                                 sliding = sliding, seasonal = seasonal)
 
 test_that("block_maxima(): example data 1, pseudo = TRUE, block_length", {
   testthat::expect_equal(resultSeasonTRUE,
                          correctSeasonTRUE, ignore_attr = TRUE)
 })
 
-#------------------------------- season = FALSE ----------------------------- #
+#------------------------------ seasonal = FALSE ---------------------------- #
 
-season <- FALSE
+seasonal <- FALSE
 row4 <- c(7, 6, 7, 5)
 row10 <- c(10, 10, 10, 10)
 row11 <- c(10, 10, 9, 10)
@@ -91,10 +93,10 @@ correctSeasonFALSE <- list(maxima = maxima, notNA = notNA, n = n,
                           whereNA = whereNA, pseudo_maxima = pmSeasonFALSE,
                           full_maxima = full_maxima,
                           partial_maxima = partial_maxima, pseudo = pseudo,
-                          sliding = sliding)
+                          full = full, sliding = sliding, seasonal = FALSE)
 resultSeasonFALSE <- block_maxima(data, block_length = a_block_length,
-                                 pseudo = pseudo, sliding = sliding,
-                                 season = FALSE)
+                                  pseudo = pseudo, full = full, sliding = sliding,
+                                  seasonal = FALSE)
 
 test_that("block_maxima(): example data 1, pseudo = TRUE, block_length", {
   testthat::expect_equal(resultSeasonFALSE,
