@@ -9,8 +9,9 @@ block_maxima(
   block_length,
   block,
   pseudo = FALSE,
+  full = FALSE,
   sliding = FALSE,
-  season = TRUE
+  seasonal = sliding
 )
 }
 \arguments{
@@ -35,19 +36,21 @@ example, 366 for leap years and 365 for other years.}
 calculated as the block maxima obtained by applying the missing value
 patterns from partial blocks to all full blocks.}
 
+\item{full}{Explain vs fullish!}
+
 \item{sliding}{A logical scalar. Only relevant if \code{pseudo = TRUE}. If
 \code{sliding = TRUE} then pseudo-maxima are calculated for \strong{all} full blocks
 of the relevant length, rather than only a set of disjoint blocks.
 See \strong{Details}.}
 
-\item{season}{A logical scalar. Only relevant if \code{pseudo = TRUE} and
-\code{sliding = TRUE}. If \code{season = TRUE} then the way in which the
+\item{seasonal}{A logical scalar. Only relevant if \code{pseudo = TRUE} and
+\code{sliding = TRUE}. If \code{seasonal = TRUE} then the way in which the
 pseudo-maxima are calculated respects the seasonality that may be
 exhibited over the duration of a block. If, for example, a block covers a
 single year, then the missing values applied to a full block occur at the
-same time of year as in the originating partial block. If \code{season = FALSE}
-then the missing values applied have the same positions in the partial and
-full blocks with respect to the start of each block.}
+same time of year as in the originating partial block. If
+\code{seasonal = FALSE} then the missing values applied have the same positions
+in the partial and full blocks with respect to the start of each block.}
 }
 \value{
 A list, with class
@@ -85,7 +88,8 @@ then \code{pseudo_maxima} is \code{NA}.
 \item \code{partial_maxima}: a numeric vector of maxima from partial blocks.
 }
 
-The input arguments \code{pseudo} and \code{sliding} are also included.
+The input arguments \code{pseudo}, \code{full}, \code{sliding} and \code{seasonal} are also
+included.
 
 If a block contains only missing values then its value of \code{maxima} is \code{NA}
 and its value of \code{notNA} is \code{0}.

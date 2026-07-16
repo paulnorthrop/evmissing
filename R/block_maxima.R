@@ -23,18 +23,19 @@
 #' @param pseudo A logical scalar. If `pseudo = TRUE` then pseudo-maxima are
 #'   calculated as the block maxima obtained by applying the missing value
 #'   patterns from partial blocks to all full blocks.
+#' @param full Explain vs fullish!
 #' @param sliding A logical scalar. Only relevant if `pseudo = TRUE`. If
 #'   `sliding = TRUE` then pseudo-maxima are calculated for **all** full blocks
 #'   of the relevant length, rather than only a set of disjoint blocks.
 #'   See **Details**.
-#' @param season A logical scalar. Only relevant if `pseudo = TRUE` and
-#'   `sliding = TRUE`. If `season = TRUE` then the way in which the
+#' @param seasonal A logical scalar. Only relevant if `pseudo = TRUE` and
+#'   `sliding = TRUE`. If `seasonal = TRUE` then the way in which the
 #'   pseudo-maxima are calculated respects the seasonality that may be
 #'   exhibited over the duration of a block. If, for example, a block covers a
 #'   single year, then the missing values applied to a full block occur at the
-#'   same time of year as in the originating partial block. If `season = FALSE`
-#'   then the missing values applied have the same positions in the partial and
-#'   full blocks with respect to the start of each block.
+#'   same time of year as in the originating partial block. If
+#'   `seasonal = FALSE` then the missing values applied have the same positions
+#'   in the partial and full blocks with respect to the start of each block.
 #' @details Exactly one of the arguments `block_length` or `block` must be
 #'   supplied.
 #'
@@ -82,7 +83,8 @@
 #'  * `full_maxima`: a numeric vector of maxima from full blocks.
 #'  * `partial_maxima`: a numeric vector of maxima from partial blocks.
 #'
-#' The input arguments `pseudo` and `sliding` are also included.
+#' The input arguments `pseudo`, `full`, `sliding` and `seasonal` are also
+#' included.
 #'
 #' If a block contains only missing values then its value of `maxima` is `NA`
 #' and its value of `notNA` is `0`.
@@ -128,7 +130,7 @@
 #' @seealso Plot method [`plot.block_maxima`].
 #' @export
 block_maxima <- function(data, block_length, block, pseudo = FALSE,
-                         sliding = FALSE, season = TRUE) {
+                         full = FALSE, sliding = FALSE, seasonal = sliding) {
   # Check that data is a numeric vector
   if (!is.numeric(data)) {
     stop("''data'' must be a numeric vector.")
@@ -151,26 +153,54 @@ block_maxima <- function(data, block_length, block, pseudo = FALSE,
     r <- maxima_block(data = data, block = block,
                       pseudo = pseudo)
   }
+  # Identify full and incomplete blocks
+  nmissing <- r$n - r$notNA
+  full_blocks <- which(nmissing == 0)
+  incomplete_blocks <- which(nmissing > 0)
+  n_full <- length(full_blocks)
+  n_incomplete <- length(incomplete_blocks)
+  # If full = TRUE and there are no full blocks, or if there are no incomplete
+  # blocks then return NA
+  if ((full && n_full == 0) || n_incomplete == 0) {
+    pseudo_maxima <- NA
+  }
   # If pseudo = TRUE then, for each partial block, apply its missing value
   # pattern to each full block and calculate the resulting pseudo maxima
   if (pseudo) {
     if (block_length_supplied) {
-      pseudo_maxima <- pseudo_maxima_block_length(maxima_notNA = r, data = data,
-                                                  block_length = block_length,
-                                                  sliding = sliding,
-                                                  season = season)
+#      pseudo_maxima <- pseudo_maxima_block_length(maxima_notNA = r, data = data,
+#                                                  block_length = block_length,
+#                                                  sliding = sliding,
+#                                                  season = seasonal)
+      pseudo_maxima <- find_pseudo_maxima_block_length(data = data,
+                                                       block_length =
+                                                         block_length,
+                                      full = full, sliding = sliding,
+                                      seasonal = seasonal)
     } else {
+      # To do ...
       pseudo_maxima <- pseudo_maxima_block(maxima_notNA = r, data = data,
                                            block = block)
     }
+#    # Name columns and rows according to the positions of block in the raw data
+#    #   columns: index of the disjoint receiver block
+#    #   rows: index of the (disjoint or sliding) donor block
+#    colnames(pseudo_maxima) <- incomplete_blocks
+#    rownames(pseudo_maxima) <- seq_len(nrow(pseudo_maxima))
+    # Remove rows of all NA from pseudo_maxima
+    pseudo_maxima <- rm_NA_rows(pseudo_maxima)
+    # How we create the row names depends on whether sliding = TRUE or FALSE
+
     r <- c(r, list(pseudo_maxima = pseudo_maxima))
     # Create vectors that contain the full maxima and partial maxima
     r$full_maxima <- r$maxima[r$notNA == r$n]
     r$partial_maxima <- r$maxima[r$notNA < r$n]
   }
-  # Add the input arguments sliding and pseudo
+  # Add the input arguments pseudo, full, sliding and seasonal
   r$pseudo <- pseudo
+  r$full <- full
   r$sliding <- sliding
+  r$seasonal <- seasonal
   # Give the returned object a class, so that we can detect block maxima data
   # created by block_maxima()
   if (sliding) {
