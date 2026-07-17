@@ -44,7 +44,7 @@ test_that(
   "block_maxima(): not full, sliding, not seasonal", {
     testthat::expect_equal(bm1$pseudo_maxima, rm_NA_rows(results1),
                            ignore_attr = TRUE)
-  })
+    })
 
 # 2. full = FALSE, sliding = TRUE, seasonal = TRUE
 
@@ -99,6 +99,13 @@ test_that(
   "find_pseudo_maxima_block_length(): not full, not sliding, check 2", {
   testthat::expect_equal(results3, correct3b, ignore_attr = TRUE)
 })
+bm3 <- block_maxima(data, block_length = a_block_length, pseudo = TRUE,
+                    full = FALSE, sliding = FALSE, seasonal = FALSE)
+test_that(
+  "block_maxima(): not full, not sliding, not seasonal", {
+    testthat::expect_equal(bm3$pseudo_maxima, rm_NA_rows(results3),
+                           ignore_attr = TRUE)
+  })
 
 # 4. full = TRUE, sliding = TRUE, seasonal = FALSE
 
@@ -112,6 +119,13 @@ test_that(
   "find_pseudo_maxima_block_length(): full, sliding, not seasonal", {
   testthat::expect_equal(results4, correct4, ignore_attr = TRUE)
 })
+bm4 <- block_maxima(data, block_length = a_block_length, pseudo = TRUE,
+                    full = TRUE, sliding = TRUE, seasonal = FALSE)
+test_that(
+  "block_maxima(): full, sliding, not seasonal", {
+    testthat::expect_equal(bm4$pseudo_maxima, rm_NA_rows(results4),
+                           ignore_attr = TRUE)
+  })
 
 # 5. full = TRUE, sliding = TRUE, seasonal = TRUE
 
@@ -125,6 +139,13 @@ test_that(
   "find_pseudo_maxima_block_length(): full, sliding, seasonal", {
   testthat::expect_equal(results5, correct5, ignore_attr = TRUE)
 })
+bm5 <- block_maxima(data, block_length = a_block_length, pseudo = TRUE,
+                    full = TRUE, sliding = TRUE, seasonal = TRUE)
+test_that(
+  "block_maxima(): full, sliding, seasonal", {
+    testthat::expect_equal(bm5$pseudo_maxima, rm_NA_rows(results5),
+                           ignore_attr = TRUE)
+  })
 
 # 6. full = FALSE, sliding = FALSE (seasonal = FALSE)
 
@@ -138,3 +159,10 @@ test_that(
   "find_pseudo_maxima_block_length(): full, not sliding", {
   testthat::expect_equal(results6, correct6, ignore_attr = TRUE)
 })
+bm6 <- block_maxima(data, block_length = a_block_length, pseudo = TRUE,
+                    full = TRUE, sliding = FALSE, seasonal = FALSE)
+test_that(
+  "block_maxima(): full, not sliding, not seasonal", {
+    testthat::expect_equal(bm6$pseudo_maxima, rm_NA_rows(results6),
+                           ignore_attr = TRUE)
+  })
