@@ -53,10 +53,48 @@
 #'
 #'   **Also explain for `block`**
 #'
-#'   Provide examples to illustrate `full`, `sliding` and `seasonal`.
+#'   ## Calculation of pseudo-maxima
 #'
-#'   **Also refer to a function that explains what is done with the information
-#'   contained in the pseudo-maxima**
+#'   Consider example data `c(1, 2, NA, 3, 6, 5, 8, 7, 4, 3, NA, NA)` and a
+#'   block length of 4. There are 3 disjoint blocks, with block maxima
+#'   `c(3, 8, 4)`. Blocks 1 and 3 are partially-observed. We consider the 6
+#'   valid combinations of `full`, `sliding` and `seasonal`.
+#'
+#'   ### Full donor blocks only
+#'
+#'   * `sliding = FALSE`. Disjoint block 2, `c(6, 5, 8, 7)`, is the only donor
+#'     block. Applying the missing value patterns from disjoint blocks 1 and 3
+#'     to block 2 leads to respective pseudo-maxima `c(7, 6)`.
+#'   * `sliding = TRUE` and `seasonal = FALSE`. There are 4 full sliding donor
+#'     blocks. For example, sliding block 4, `c(3, 6, 5, 8)`, leads to
+#'     pseudo-maxima `c(8, 6)` for disjoint blocks 1 and 3. The full sets of
+#'     pseudo-maxima are `c(8, 7, 8, 8)` for block 1 and `c(6, 6, 8, 8)` for
+#'     block 3.
+#'   * `sliding = TRUE` and `seasonal = TRUE`. The vector of seasons is
+#'     `c(1:4, 1;4, 1:4)`. Sliding block 4, `c(3, 6, 5, 8)` has season vector
+#'     `c(4, 1, 2, 3)` leads to pseudo-maxima `c(6, 6)` for disjoint blocks 1
+#'     and 3 because the `8` becomes `NA` for block 1 and both `3` and `8`
+#'     become `NA` for block 3. The full sets of pseudo-maxima are
+#'     `c(6, 6, 6, 7)` for block 1 and `c(6, 6, 5, 4)` for block 3.
+#'
+#'   ### All suitable donor blocks
+#'
+#'   * `sliding = FALSE`. Disjoint block 1, `c(1, 2, NA, 3)`, can donate to
+#'     disjoint block 3, `c(4, 3, NA, NA)`, leading to a pseudo-maximum of
+#'     `2`. The full sets of pseudo-maxima are `c(7)` for block 1 and `c(2, 6)`
+#'     for block 3.
+#'   * `sliding = TRUE` and `seasonal = FALSE`. In addition to the full sliding
+#'     blocks, sliding blocks 1 `c(1, 2, NA, 3)` and 8, `c(7, 4, 3, NA)`, can
+#'     donate to disjoint block 3, `c(4, 3, NA, NA)`. The full sets of
+#'     pseudo-maxima are `c(8, 7, 8, 7, 8)` for block 1 and
+#'     `c(2, 6, 6, 8, 8, 7)` for block 3.
+#'   * `sliding = TRUE` and `seasonal = TRUE`. In addition to the full sliding
+#'     blocks, sliding block 1 can donate to disjoint block 3 and sliding
+#'     blocks 2, 3 and 8 donate to both disjoint blocks 1 and 3. The full sets
+#'     of pseudo-maxima are `c(6, 6, 6, 7, 7, 7, 7)` for block 1 and
+#'     `c(2, 6, 6, 6, 6, 5, 4, 4)` for block 3.
+#'
+#'   See [`gev_ts`] for an explanation of how the pseudo-maxima are used.
 #'
 #' @return A list, with class
 #'   `c("list", "block_maxima", "disjoint", "evmissing")`,
@@ -84,10 +122,10 @@
 #'    applying the missing value patterns from partial blocks to all full
 #'    blocks. Each column contains the pseudo-maxima resulting from a
 #'    particular partial block. The columns are labelled by the number of the
-#'    partial block and the columns by the number of the full block. If a
-#'    partial block contains all missing values then its entry in
-#'    `pseudo_maxima` is `NA`. If there are no full blocks or no partial blocks
-#'    then `pseudo_maxima` is `NA`.
+#'    partial block and the rows by the number of the full (disjoint or
+#'    sliding) block. If a partial block contains all missing values then its
+#'    entry in `pseudo_maxima` is `NA`. If there are no full blocks or no
+#'    partial blocks then `pseudo_maxima` is `NA`.
 #'  * `full_maxima`: a numeric vector of maxima from full blocks.
 #'  * `partial_maxima`: a numeric vector of maxima from partial blocks.
 #'

@@ -85,10 +85,10 @@ then its component in \code{whereNA} is \code{integer(0)}.
 applying the missing value patterns from partial blocks to all full
 blocks. Each column contains the pseudo-maxima resulting from a
 particular partial block. The columns are labelled by the number of the
-partial block and the columns by the number of the full block. If a
-partial block contains all missing values then its entry in
-\code{pseudo_maxima} is \code{NA}. If there are no full blocks or no partial blocks
-then \code{pseudo_maxima} is \code{NA}.
+partial block and the rows by the number of the full (disjoint or
+sliding) block. If a partial block contains all missing values then its
+entry in \code{pseudo_maxima} is \code{NA}. If there are no full blocks or no
+partial blocks then \code{pseudo_maxima} is \code{NA}.
 \item \code{full_maxima}: a numeric vector of maxima from full blocks.
 \item \code{partial_maxima}: a numeric vector of maxima from partial blocks.
 }
@@ -118,11 +118,53 @@ the block repeatedly by one observation until reaching the final block
 \code{data[(length(data) - block_length + 1):length(data)]}.
 
 \strong{Also explain for \code{block}}
+\subsection{Calculation of pseudo-maxima}{
 
-Provide examples to illustrate \code{full}, \code{sliding} and \code{seasonal}.
+Consider example data \code{c(1, 2, NA, 3, 6, 5, 8, 7, 4, 3, NA, NA)} and a
+block length of 4. There are 3 disjoint blocks, with block maxima
+\code{c(3, 8, 4)}. Blocks 1 and 3 are partially-observed. We consider the 6
+valid combinations of \code{full}, \code{sliding} and \code{seasonal}.
+\subsection{Full donor blocks only}{
+\itemize{
+\item \code{sliding = FALSE}. Disjoint block 2, \code{c(6, 5, 8, 7)}, is the only donor
+block. Applying the missing value patterns from disjoint blocks 1 and 3
+to block 2 leads to respective pseudo-maxima \code{c(7, 6)}.
+\item \code{sliding = TRUE} and \code{seasonal = FALSE}. There are 4 full sliding donor
+blocks. For example, sliding block 4, \code{c(3, 6, 5, 8)}, leads to
+pseudo-maxima \code{c(8, 6)} for disjoint blocks 1 and 3. The full sets of
+pseudo-maxima are \code{c(8, 7, 8, 8)} for block 1 and \code{c(6, 6, 8, 8)} for
+block 3.
+\item \code{sliding = TRUE} and \code{seasonal = TRUE}. The vector of seasons is
+\verb{c(1:4, 1;4, 1:4)}. Sliding block 4, \code{c(3, 6, 5, 8)} has season vector
+\code{c(4, 1, 2, 3)} leads to pseudo-maxima \code{c(6, 6)} for disjoint blocks 1
+and 3 because the \code{8} becomes \code{NA} for block 1 and both \code{3} and \code{8}
+become \code{NA} for block 3. The full sets of pseudo-maxima are
+\code{c(6, 6, 6, 7)} for block 1 and \code{c(6, 6, 5, 4)} for block 3.
+}
+}
 
-\strong{Also refer to a function that explains what is done with the information
-contained in the pseudo-maxima}
+\subsection{All suitable donor blocks}{
+\itemize{
+\item \code{sliding = FALSE}. Disjoint block 1, \code{c(1, 2, NA, 3)}, can donate to
+disjoint block 3, \code{c(4, 3, NA, NA)}, leading to a pseudo-maximum of
+\code{2}. The full sets of pseudo-maxima are \code{c(7)} for block 1 and \code{c(2, 6)}
+for block 3.
+\item \code{sliding = TRUE} and \code{seasonal = FALSE}. In addition to the full sliding
+blocks, sliding blocks 1 \code{c(1, 2, NA, 3)} and 8, \code{c(7, 4, 3, NA)}, can
+donate to disjoint block 3, \code{c(4, 3, NA, NA)}. The full sets of
+pseudo-maxima are \code{c(8, 7, 8, 7, 8)} for block 1 and
+\code{c(2, 6, 6, 8, 8, 7)} for block 3.
+\item \code{sliding = TRUE} and \code{seasonal = TRUE}. In addition to the full sliding
+blocks, sliding block 1 can donate to disjoint block 3 and sliding
+blocks 2, 3 and 8 donate to both disjoint blocks 1 and 3. The full sets
+of pseudo-maxima are \code{c(6, 6, 6, 7, 7, 7, 7)} for block 1 and
+\code{c(2, 6, 6, 6, 6, 5, 4, 4)} for block 3.
+}
+
+See \code{\link{gev_ts}} for an explanation of how the pseudo-maxima are used.
+}
+
+}
 }
 \examples{
 ## Simulate example data
