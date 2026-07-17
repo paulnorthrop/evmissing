@@ -49,10 +49,8 @@ returned from \code{\link{block_maxima}} are used to estimate the value of
 If \code{pseudo = FALSE} then the ratio \eqn{n_i/n} is used, as in
 \code{\link[=gev_mle]{gev_mle()}}.}
 
-\item{sliding}{A logical scalar passed to \code{\link{block_maxima}}. If
-\code{sliding = TRUE} then estimates of \eqn{r_i} are based on sliding
-pseudo-maxima. If \code{sliding = FALSE} then these estimates are based on
-disjoint pseudo-maxima.}
+\item{full, sliding, seasonal}{Arguments passed to \code{\link{block_maxima}} to
+determine how the pseudo-maxima are calculated.}
 
 \item{init}{Either a character scalar, one of \code{"quartiles"} or \code{"moments"},
 or a numeric vector of length 3 giving initial estimates of the GEV

@@ -32,10 +32,8 @@
 #'   \eqn{r_i} for an incomplete, partially-observed block. See **Details**.
 #'   If `pseudo = FALSE` then the ratio \eqn{n_i/n} is used, as in
 #'   [`gev_mle()`].
-#' @param sliding A logical scalar passed to [`block_maxima`]. If
-#'   `sliding = TRUE` then estimates of \eqn{r_i} are based on sliding
-#'   pseudo-maxima. If `sliding = FALSE` then these estimates are based on
-#'   disjoint pseudo-maxima.
+#' @param full,sliding,seasonal Arguments passed to [`block_maxima`] to
+#'   determine how the pseudo-maxima are calculated.
 #' @param init Either a character scalar, one of `"quartiles"` or `"moments"`,
 #'   or a numeric vector of length 3 giving initial estimates of the GEV
 #'   location, scale and shape parameters: \eqn{\mu}, \eqn{\sigma} and
