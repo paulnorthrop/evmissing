@@ -306,6 +306,7 @@ find_pseudo_maxima_block_length <- function(data, block_length, full, sliding,
     disjoint_block_starts <- seq(from = 1, by = block_length,
                                  length.out = n_disjoint)
     fuller_maxima <- fuller_maxima[disjoint_block_starts, ]
+    rownames(fuller_maxima) <- seq_len(n_disjoint)
   }
 
   return(fuller_maxima)
