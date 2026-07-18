@@ -216,11 +216,6 @@ x_donates_to_y_seasonal <- function(x, y, full) {
 find_pseudo_maxima_block_length <- function(data, block_length, full, sliding,
                                             seasonal) {
 
-  # The seasonal option is only relevant if sliding = TRUE
-  if (!sliding && seasonal) {
-    stop("If sliding = FALSE is then seasonal = TRUE has no relevance")
-  }
-
   # Set the number of disjoint blocks
   n_disjoint <- floor(length(data) / block_length)
   # Function to find the disjoint blocks

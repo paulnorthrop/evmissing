@@ -190,6 +190,10 @@ block_maxima <- function(data, block_length, block, pseudo = FALSE,
   if (!block_length_supplied && !block_supplied) {
     stop("''block_length'' or ''block'' must be supplied.")
   }
+  # The seasonal option is only relevant if sliding = TRUE
+  if (pseudo && !sliding && seasonal) {
+    stop("If sliding = FALSE is then seasonal = TRUE has no relevance")
+  }
   # Find block maxima depending on whether block_length or block is supplied
   # If pseudo = TRUE then we also find the positions of missing values
   if (block_length_supplied) {
