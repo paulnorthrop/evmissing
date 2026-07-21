@@ -187,7 +187,7 @@ find_maxima_notNA_disjoint <- function(i, data, block_length) {
 #' @keywords internal
 #' @rdname evmissing-internal
 x_donates_to_y <- function(x, y, full) {
-  # If full = TRUE (full donor blocks only) then return NA
+  # If full = TRUE (full donor blocks only) then return NA if x has any NA
   if (full && anyNA(x)) {
     return(NA)
   }
@@ -200,15 +200,16 @@ x_donates_to_y <- function(x, y, full) {
 #' @keywords internal
 #' @rdname evmissing-internal
 x_donates_to_y_seasonal <- function(x, y, full) {
-  # If full = TRUE (full donor blocks only) then return NA
+  # If full = TRUE (full donor blocks only) then return NA if x has any NA
   if (full && anyNA(x)) {
     return(NA)
   }
   # Calculate the block maximum for donor block x using only the positions for
   # which the corresponding value in the receiving block y is not NA.
   # If x has any NA values in these positions then NA is returned.
-  yy <- y[as.numeric(names(x))]
-  return(max(x[!is.na(yy)]))
+  # Reorder the receiving block y so that seasonal positions agree.
+  y <- y[as.numeric(names(x))]
+  return(max(x[!is.na(y)]))
 }
 
 #' @keywords internal
@@ -281,7 +282,7 @@ find_pseudo_maxima_block_length <- function(data, block_length, full, sliding,
                            FUN = sliding_donating_to_disjoint)
   }
 
-  # Remove trivial TRUEs (disjoint block = sliding block)
+  # Remove trivial cases (disjoint block = sliding block)
   disjoint_number <- seq_len(n_disjoint)
   sliding_number <- 1 + block_length * (0:(n_disjoint - 1))
   fuller_maxima[cbind(sliding_number, disjoint_number)] <- NA
@@ -305,6 +306,196 @@ find_pseudo_maxima_block_length <- function(data, block_length, full, sliding,
   }
 
   return(fuller_maxima)
+}
+
+#' @keywords internal
+#' @rdname evmissing-internal
+x_donates_to_y_block <- function(x, y, full, sliding) {
+  # If full = TRUE (full donor blocks only) then return NA if x has any NA
+  if (full && anyNA(x)) {
+    return(NA)
+  }
+  # If donor and receiver have different lengths then if
+  #   sliding = TRUE, return NA
+  #   sliding = FALSE, truncate the longer vector to match the shorter vector
+  if (sliding) {
+    if (length(x) != length(y)) {
+      return(NA)
+    }
+  } else {
+    m <- min(length(x), length(y))
+    x <- x[1:m]
+    y <- y[1:m]
+  }
+  # Calculate the block maximum for donor block x using only the positions for
+  # which the corresponding value in the receiving block y is not NA.
+  # If x has any NA values in these positions then NA is returned.
+  return(max(x[!is.na(y)]))
+}
+
+#' @keywords internal
+#' @rdname evmissing-internal
+x_donates_to_y_seasonal_block <- function(x, y, full, sliding) {
+  # If full = TRUE (full donor blocks only) then return NA if x has any NA
+  if (full && anyNA(x)) {
+    return(NA)
+  }
+  # If donor and receiver have different lengths then if
+  #   sliding = TRUE, return NA
+  #   sliding = FALSE, truncate the longer vector to match the shorter vector
+  if (sliding) {
+    if (length(x) != length(y)) {
+      return(NA)
+    }
+  } else {
+    m <- min(length(x), length(y))
+    x <- x[1:m]
+    y <- y[1:m]
+  }
+  # Calculate the block maximum for donor block x using only the positions for
+  # which the corresponding value in the receiving block y is not NA.
+  # If x has any NA values in these positions then NA is returned.
+  # If necessary, adjust the names (seasonal positions) of the donor block x
+  # to account for differing block lengths
+  x <- adjust_seasonal_positions(x, y)
+  # Reorder the receiving block y so that seasonal positions agree.
+  y <- y[as.numeric(names(x))]
+  return(max(x[!is.na(y)]))
+}
+
+#' @keywords internal
+#' @rdname evmissing-internal
+adjust_seasonal_positions <- function(x, y) {
+  # Set the block length of the receiver disjoint block
+  b <- length(y)
+  if (max(names(x)) > b) {
+    from <- which.max(names(x))
+    names(x)[from:b] <- seq_len(b - from + 1)
+  } else if (max(names(x)) < b) {
+    from <- which.max(names(x)) + 1
+    names(x)[from:b] <- c(b, seq_len(b - from))
+  }
+  return(x)
+}
+
+#' @keywords internal
+#' @rdname evmissing-internal
+find_pseudo_maxima_block <- function(data, block, full, sliding, seasonal) {
+  # Set the number of disjoint blocks
+  n_disjoint <- length(unique(block))
+  # Function to find the disjoint blocks
+  find_disjoint_block_j <- function(j) {
+    return(data[block == j])
+  }
+  # Function to find the sliding blocks
+  find_sliding_block_j <- function(j, block_length) {
+    return(data[j:(j + block_length - 1)])
+  }
+  # create information about all the block lengths represented in block
+  table_block <- table(block)
+  block_lengths <- unique(table(block))
+  block_list <- sapply(X = block_lengths,
+                       FUN = function(x) which(table_block == x),
+                       simplify = FALSE)
+  block_order <- unlist(block_list)
+  disjoint_block_starts <- which(!duplicated(block))
+  # create a function that does all this once for each block length in block_lengths
+  # call this function for each block length
+  # merge the results
+
+  by_block_length <- function(block_length_number) {
+    # Extract the block length
+    block_length <- block_lengths[block_length_number]
+    # Set the number of sliding blocks
+    n_sliding <- length(data) - block_length + 1
+    # Extract the disjoint blocks
+    disjoint_blocks <- vapply(X = block_list[[block_length_number]],
+                              FUN = find_disjoint_block_j,
+                              FUN.VALUE = rep(0, block_length))
+    # Extract the sliding blocks
+    sliding_blocks <- vapply(X = seq_len(n_sliding),
+                             FUN = find_sliding_block_j,
+                             FUN.VALUE = rep(0, block_length),
+                             block_length = block_length)
+    # Convert the sliding_blocks matrix into a list containing its columns
+    sliding_blocks_list <- split(sliding_blocks,
+                                 rep(1:ncol(sliding_blocks),
+                                     each = nrow(sliding_blocks)))
+    # Create a list of  the indices of the positions within disjoint blocks
+    positions_as_names <- make_seasonal_positions(block = block,
+                                                  block_length = block_length)
+    # Add the positions as names of the vectors in sliding_blocks_list
+    for (i in seq_len(length(sliding_blocks_list))) {
+      names(sliding_blocks_list[[i]]) <- positions_as_names[[i]]
+    }
+    # Function to apply the missing value patterns in disjoint blocks to all
+    # suitable sliding blocks, ignoring seasonality
+    sliding_donating_to_disjoint <- function(y) {
+      sliding_donating_to_y <- function(x) {
+        return(x_donates_to_y_block(x = x, y = y,
+                                    full = full, sliding = sliding))
+      }
+      return(apply(X = sliding_blocks, MARGIN = 2,
+                   FUN = sliding_donating_to_y))
+    }
+    # Function to apply the missing value patterns in disjoint blocks to all
+    # suitable sliding blocks, respecting seasonality
+    sliding_donating_to_disjoint_seasonal <- function(y) {
+      sliding_donating_to_y_seasonal <- function(x) {
+        return(x_donates_to_y_seasonal_block(x = x, y = y,
+                                             full = full, sliding = sliding))
+      }
+      return(lapply(X = sliding_blocks_list,
+                    FUN = sliding_donating_to_y_seasonal))
+    }
+    if (seasonal) {
+      fuller_maxima <- apply(X = disjoint_blocks, MARGIN = 2,
+                             FUN = sliding_donating_to_disjoint_seasonal)
+      # This is a list, so make it into a matrix
+      fuller_maxima <- matrix(unlist(fuller_maxima, use.names = FALSE),
+                              ncol = length(fuller_maxima), byrow = FALSE)
+    } else {
+      fuller_maxima <- apply(X = disjoint_blocks, MARGIN = 2,
+                             FUN = sliding_donating_to_disjoint)
+    }
+
+    return(fuller_maxima)
+  }
+
+  # Call by_block_length() for each block length
+  res_list <- sapply(X = seq_along(block_lengths), FUN = by_block_length,
+                     simplify = FALSE)
+  # Combine results for different block lengths
+  res_matrix <- cbind_na_for_list_of_matrices(res_list)
+  # Put the blocks back in order across the columns
+  colnames(res_matrix) <- block_order
+  res_matrix <- res_matrix[, order(colnames(res_matrix))]
+
+  # Remove trivial cases (disjoint block = sliding block)
+  disjoint_number <- seq_len(n_disjoint)
+  sliding_number <- disjoint_block_starts
+  res_matrix[cbind(sliding_number, disjoint_number)] <- NA
+
+  # Name columns and rows according to the positions of block in the raw data
+  #   columns: index of the disjoint receiver block (already done)
+  #   rows: index of the (disjoint or sliding) donor block
+  rownames(res_matrix) <- seq_len(nrow(res_matrix))
+
+  # Remove columns relating to full disjoint blocks
+  not_full <- tapply(data, block, FUN = anyNA)
+  res_matrix <- res_matrix[, not_full]
+
+  # If sliding = FALSE then we use only the disjoint blocks as donors
+  # If donor and receiver blocks are of different lengths then the longer block
+  # is truncated to the length of the shorter block by removing the data from
+  # the end of the block
+  # This is coded in x_donates_to_y_block() and x_donates_to_y_seasonal_block()
+  if (!sliding) {
+    res_matrix <- res_matrix[disjoint_block_starts, ]
+    rownames(res_matrix) <- seq_len(n_disjoint)
+  }
+
+  return(res_matrix)
 }
 
 #' @keywords internal
@@ -1851,4 +2042,34 @@ merge_two_lists <- function(list1, list2) {
 #' @rdname evmissing-internal
 rm_NA_rows <- function(x) {
   return(x[!apply(is.na(x), 1, all), , drop = FALSE])
+}
+
+#' @keywords internal
+#' @rdname evmissing-internal
+cbind_na_for_list_of_matrices <- function(mat_list) {
+  # Find the largest number of rows
+  max_rows <- max(sapply(mat_list, nrow))
+  # Pad each matrix with NA to match max_rows
+  pad_fn <- function(mat) {
+    if (nrow(mat) < max_rows) {
+      pad <- matrix(NA, nrow = max_rows - nrow(mat), ncol = ncol(mat))
+      mat <- rbind(mat, pad)
+    }
+    return(mat)
+  }
+  mat_list <- lapply(mat_list, pad_fn)
+  return(do.call(cbind, mat_list))
+}
+
+#' @keywords internal
+#' @rdname evmissing-internal
+make_seasonal_positions <- function(block, block_length) {
+  # Vector of seasonal positions for each observation
+  position_vector <- as.numeric(unlist(sapply(table(block), function(x) 1:x)))
+  # Create list of sliding ...
+  index <- 1:(length(position_vector) - block_length + 1)
+  fun <- function(i) {
+    position_vector[i:(i + block_length - 1)]
+  }
+  return(lapply(X = index, FUN = fun))
 }

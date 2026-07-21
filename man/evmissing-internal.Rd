@@ -13,6 +13,10 @@
 \alias{x_donates_to_y}
 \alias{x_donates_to_y_seasonal}
 \alias{find_pseudo_maxima_block_length}
+\alias{x_donates_to_y_block}
+\alias{x_donates_to_y_seasonal_block}
+\alias{adjust_seasonal_positions}
+\alias{find_pseudo_maxima_block}
 \alias{find_full_sliding_block_starts}
 \alias{maxima_block_length}
 \alias{maxima_block}
@@ -40,6 +44,8 @@
 \alias{gev_confidence_bands}
 \alias{merge_two_lists}
 \alias{rm_NA_rows}
+\alias{cbind_na_for_list_of_matrices}
+\alias{make_seasonal_positions}
 \title{Internal evmissing functions}
 \usage{
 negated_gev_loglik(parameters, maxima_notNA, adjust, big_val = Inf)
@@ -77,6 +83,14 @@ x_donates_to_y(x, y, full)
 x_donates_to_y_seasonal(x, y, full)
 
 find_pseudo_maxima_block_length(data, block_length, full, sliding, seasonal)
+
+x_donates_to_y_block(x, y, full, sliding)
+
+x_donates_to_y_seasonal_block(x, y, full, sliding)
+
+adjust_seasonal_positions(x, y)
+
+find_pseudo_maxima_block(data, block, full, sliding, seasonal)
 
 find_full_sliding_block_starts(x, n)
 
@@ -162,6 +176,10 @@ gev_confidence_bands(b, k, level, mle)
 merge_two_lists(list1, list2)
 
 rm_NA_rows(x)
+
+cbind_na_for_list_of_matrices(mat_list)
+
+make_seasonal_positions(block, block_length)
 }
 \description{
 Internal evmissing functions
