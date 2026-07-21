@@ -14,10 +14,10 @@
 #'   the values at the end of `data` that do not constitute a complete block
 #'   of length `block_length` are discarded, without warning.
 #' @param block A numeric vector with the same length as `data`. The value of
-#'   `block[i]` indicates the block into which `data[i]` falls. For example,
-#'   `block` could provide the year in which observation `i` was observed.
-#'   The block lengths implied by `block` should have similar values, for
-#'   example, 366 for leap years and 365 for other years.
+#'   `block[i]` indicates the block into which `data[i]` falls. The block
+#'   lengths implied by `block` may differ by at most 1. For example,
+#'   `block[i]` could give the block in which observation `i` was observed,
+#'   with block lengths of 366 for leap years and 365 for other years.
 #' @param pseudo A logical scalar. If `pseudo = TRUE` then pseudo-maxima are
 #'   calculated as the block maxima obtained by applying the missing value
 #'   patterns from partial disjoint blocks to all suitable other blocks, which
@@ -190,6 +190,13 @@ block_maxima <- function(data, block_length, block, pseudo = FALSE,
   if (!block_length_supplied && !block_supplied) {
     stop("''block_length'' or ''block'' must be supplied.")
   }
+  # Check that the block lengths in block differ by at most 1
+  if (block_supplied) {
+    block_length_range <- diff(range(table(block)))
+    if (block_length_range > 1) {
+      stop("The block lengths in ''block'' my differ by at most 1")
+    }
+  }
   # The seasonal option is only relevant if sliding = TRUE
   if (pseudo && !sliding && seasonal) {
     stop("If sliding = FALSE is then seasonal = TRUE has no relevance")
@@ -228,9 +235,11 @@ block_maxima <- function(data, block_length, block, pseudo = FALSE,
                                       full = full, sliding = sliding,
                                       seasonal = seasonal)
     } else {
-      # To do ...
-      pseudo_maxima <- pseudo_maxima_block(maxima_notNA = r, data = data,
-                                           block = block)
+#      pseudo_maxima <- pseudo_maxima_block(maxima_notNA = r, data = data,
+#                                           block = block)
+      pseudo_maxima <- find_pseudo_maxima_block(data = data, block = block,
+                                                full = full, sliding = sliding,
+                                                seasonal = seasonal)
     }
 #    # Name columns and rows according to the positions of block in the raw data
 #    #   columns: index of the disjoint receiver block

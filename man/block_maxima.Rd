@@ -24,10 +24,10 @@ the values at the end of \code{data} that do not constitute a complete block
 of length \code{block_length} are discarded, without warning.}
 
 \item{block}{A numeric vector with the same length as \code{data}. The value of
-\code{block[i]} indicates the block into which \code{data[i]} falls. For example,
-\code{block} could provide the year in which observation \code{i} was observed.
-The block lengths implied by \code{block} should have similar values, for
-example, 366 for leap years and 365 for other years.}
+\code{block[i]} indicates the block into which \code{data[i]} falls. The block
+lengths implied by \code{block} may differ by at most 1. For example,
+\code{block[i]} could give the block in which observation \code{i} was observed,
+with block lengths of 366 for leap years and 365 for other years.}
 
 \item{pseudo}{A logical scalar. If \code{pseudo = TRUE} then pseudo-maxima are
 calculated as the block maxima obtained by applying the missing value
