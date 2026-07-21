@@ -1,5 +1,13 @@
 # Check that block_maxima() works as intended
 
+# block_maxima() when block contains more than 2 block lengths
+too_many_block_lengths <- c(rep(1, 4), rep(2, 6), rep(3, 5))
+data <- seq_along(too_many_block_lengths)
+test_that("block_maxima() when block has too may block lengths", {
+  testthat::expect_error(block_maxima(data = data,
+                                      block = too_many_block_lengths))
+})
+
 # block_maxima() when data is a list, such as the sdata created in setup.R
 
 test_that("block_maxima() when data is a list", {
