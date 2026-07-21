@@ -184,6 +184,8 @@ find_maxima_notNA_disjoint <- function(i, data, block_length) {
   return(val)
 }
 
+# ========================= Pseudo maxima functions ========================= #
+
 #' @keywords internal
 #' @rdname evmissing-internal
 x_donates_to_y <- function(x, y, full) {
@@ -409,6 +411,8 @@ find_pseudo_maxima_block <- function(data, block, full, sliding, seasonal) {
     # Set the number of sliding blocks
     n_sliding <- length(data) - block_length + 1
     # Extract the disjoint blocks
+    print(block_list)
+    print(block_list[[block_length_number]])
     disjoint_blocks <- vapply(X = block_list[[block_length_number]],
                               FUN = find_disjoint_block_j,
                               FUN.VALUE = rep(0, block_length))
@@ -500,16 +504,6 @@ find_pseudo_maxima_block <- function(data, block, full, sliding, seasonal) {
 
 #' @keywords internal
 #' @rdname evmissing-internal
-find_full_sliding_block_starts <- function(x, n) {
-  # A function that returns TRUE if value i starts a run of n non-NAs
-  full_block <- function(i) {
-    return(!anyNA(x[i:(i + n - 1L)]))
-  }
-  return(which(vapply(seq_len(length(x)), full_block, TRUE)))
-}
-
-#' @keywords internal
-#' @rdname evmissing-internal
 maxima_block_length <- function(data, block_length, pseudo) {
   # Set the number of (disjoint) blocks
   number_of_blocks <- floor(length(data) / block_length)
@@ -573,160 +567,6 @@ maxima_block <- function(data, block, pseudo) {
     r <- .mapply(c, r, NULL)
     names(r) <- c("maxima", "notNA", "n")
   }
-  return(r)
-}
-
-# ========================= Pseudo maxima functions ========================= #
-
-# 1. Identify full blocks and incomplete blocks
-# 2. For each incomplete block
-#   (a) Apply its missingness pattern to each full block of data
-#   (b) Store the resulting pseudo maxima
-
-#' @keywords internal
-#' @rdname evmissing-internal
-pseudo_maxima_block_length <- function(maxima_notNA, data, block_length,
-                                       sliding, season) {
-  # Identify full and incomplete blocks
-  nmissing <- maxima_notNA$n - maxima_notNA$notNA
-  full_blocks <- which(nmissing == 0)
-  incomplete_blocks <- which(nmissing > 0)
-  n_full <- length(full_blocks)
-  n_incomplete <- length(incomplete_blocks)
-  # If there are no full blocks or no incomplete blocks then return NA
-  if (n_full == 0 || n_incomplete == 0) {
-    return(NA)
-  }
-  # Function to select data from a block
-  if (sliding) {
-    find_block_j <- function(j) {
-      return(data[j:(j + block_length - 1)])
-    }
-  } else {
-    find_block_j <- function(j) {
-      return(data[(1 + block_length * (j - 1)):(block_length * j)])
-    }
-  }
-  # Function to apply missing pattern from block i to full block j
-  apply_missings_to_block_j <- function(j, i) {
-    # Extract block j
-    temp <- find_block_j(j)
-    # Create missings in the pattern observed in block i
-    temp[maxima_notNA$whereNA[[i]]] <- NA
-    # Return the block maximum, or NA if all values are missing
-    if (any(!is.na(temp))) {
-      val <- max(temp, na.rm = TRUE)
-    } else {
-      val <- NA
-    }
-    return(val)
-  }
-  # Function to apply missing pattern from block i to full block j, respecting
-  # seasonality
-  apply_missings_to_block_j_seasonal <- function(j, i) {
-    # Extract block j
-    temp <- find_block_j(full_blocks[j])
-    wNA <- (maxima_notNA$whereNA[[i]] - within_block_start[j]) %% block_length + 1
-    # Create missings in the pattern observed in block i
-    temp[wNA] <- NA
-    # Return the block maximum, or NA if all values are missing
-    if (any(!is.na(temp))) {
-      val <- max(temp, na.rm = TRUE)
-    } else {
-      val <- NA
-    }
-    return(val)
-  }
-  # If sliding = TRUE then we need to replace the current object full_blocks,
-  # which is an indicator of the block numbers of disjoint full blocks, with
-  # a vector of the indices in the data that each start a full block of length
-  # block_length
-  if (sliding) {
-    # Positions of sliding block starts in the data, in 1:length(data)
-    full_blocks <- find_full_sliding_block_starts(x = data, n = block_length)
-    # If season = TRUE then we need to adjust the positions of the missing
-    # values to be applied to the full sliding blocks so that these missing
-    # values in each sliding block occur at the same times of the year as in
-    # the respective originating disjoint blocks
-    if (season) {
-      # Positions of sliding block starts in a disjoint block, in 1:block_length
-      within_block_start <- (full_blocks - 1) %% block_length + 1
-    }
-  }
-  # season is only relevant if sliding = TRUE
-  # If sliding = FALSE or sliding = TRUE and season = FALSE then use the
-  # non-seasonal function
-  if (sliding && season) {
-    apply_missing_pattern_from_block_i <- function(i) {
-      passj <- seq_len(length(full_blocks))
-      sapply(passj, FUN = apply_missings_to_block_j_seasonal, i = i)
-    }
-  } else {
-    apply_missing_pattern_from_block_i <- function(i) {
-      sapply(full_blocks, FUN = apply_missings_to_block_j, i = i)
-    }
-  }
-  r <- sapply(incomplete_blocks, FUN = apply_missing_pattern_from_block_i)
-  # If there is only 1 full block or 1 incomplete block then we need to
-  # force a matrix return and get the dimensions correct.
-  r <- matrix(r, ncol = length(incomplete_blocks), nrow = length(full_blocks))
-  # If a block contains only missing values then the pseudo
-  colnames(r) <- incomplete_blocks
-  rownames(r) <- full_blocks
-  return(r)
-}
-
-#' @keywords internal
-#' @rdname evmissing-internal
-pseudo_maxima_block <- function(maxima_notNA, data, block) {
-  # Identify full and incomplete blocks
-  nmissing <- maxima_notNA$n - maxima_notNA$notNA
-  full_blocks <- which(nmissing == 0)
-  incomplete_blocks <- which(nmissing > 0)
-  n_full <- length(full_blocks)
-  n_incomplete <- length(incomplete_blocks)
-  # If there are no full blocks or no incomplete blocks then return NA
-  if (n_full == 0 || n_incomplete == 0) {
-    return(NA)
-  }
-
-  # A full block and an incomplete block may have different lengths.
-  # Annual maxima in leap years are based on more raw data than other years.
-  # To account for this we trim the longer block length to match the shorter
-  # block length by dropping extra values at the end of the longer block.
-
-  # Function to apply missing pattern from block i to full block j
-  apply_missings_to_block_j <- function(j, i) {
-    # Calculate the minimum length of full block j and incomplete block i
-    min_length <- min(maxima_notNA$n[c(i, j)])
-    # Extract block j
-    temp <- data[block == j]
-    # Trim the raw block data to length min_length
-    temp <- temp[seq_len(min_length)]
-    # Extract the missing value pattern from incomplete block i
-    missing_pattern <- maxima_notNA$whereNA[[i]]
-    # Trim to remove any missing locations outside the trimmed block
-    missing_pattern <- missing_pattern[missing_pattern <= min_length]
-    # Create missings in the pattern observed in block i
-    temp[missing_pattern] <- NA
-    # Return the block maximum, or NA if all values are missing
-    if (any(!is.na(temp))) {
-      val <- max(temp, na.rm = TRUE)
-    } else {
-      val <- NA
-    }
-    return(val)
-  }
-  apply_missing_pattern_from_block_i <- function(i) {
-    sapply(full_blocks, FUN = apply_missings_to_block_j, i = i)
-  }
-  r <- sapply(incomplete_blocks, FUN = apply_missing_pattern_from_block_i)
-  # If there is only 1 full block or 1 incomplete block then we need to
-  # force a matrix return and get the dimensions correct.
-  r <- matrix(r, ncol = length(incomplete_blocks), nrow = length(full_blocks))
-  # If a block contains only missing values then the pseudo
-  colnames(r) <- incomplete_blocks
-  rownames(r) <- full_blocks
   return(r)
 }
 

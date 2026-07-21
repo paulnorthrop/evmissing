@@ -17,11 +17,8 @@
 \alias{x_donates_to_y_seasonal_block}
 \alias{adjust_seasonal_positions}
 \alias{find_pseudo_maxima_block}
-\alias{find_full_sliding_block_starts}
 \alias{maxima_block_length}
 \alias{maxima_block}
-\alias{pseudo_maxima_block_length}
-\alias{pseudo_maxima_block}
 \alias{rhat}
 \alias{negated_gev_loglik_ts}
 \alias{faster_profile_ci}
@@ -92,15 +89,9 @@ adjust_seasonal_positions(x, y)
 
 find_pseudo_maxima_block(data, block, full, sliding, seasonal)
 
-find_full_sliding_block_starts(x, n)
-
 maxima_block_length(data, block_length, pseudo)
 
 maxima_block(data, block, pseudo)
-
-pseudo_maxima_block_length(maxima_notNA, data, block_length, sliding, season)
-
-pseudo_maxima_block(maxima_notNA, data, block)
 
 rhat(parameters, maxima_notNA)
 

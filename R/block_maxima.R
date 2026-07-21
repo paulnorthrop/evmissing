@@ -225,27 +225,14 @@ block_maxima <- function(data, block_length, block, pseudo = FALSE,
   # pattern to each full block and calculate the resulting pseudo maxima
   if (pseudo) {
     if (block_length_supplied) {
-#      pseudo_maxima <- pseudo_maxima_block_length(maxima_notNA = r, data = data,
-#                                                  block_length = block_length,
-#                                                  sliding = sliding,
-#                                                  season = seasonal)
-      pseudo_maxima <- find_pseudo_maxima_block_length(data = data,
-                                                       block_length =
-                                                         block_length,
-                                      full = full, sliding = sliding,
-                                      seasonal = seasonal)
+      pseudo_maxima <- find_pseudo_maxima_block_length(
+        data = data, block_length = block_length, full = full,
+        sliding = sliding, seasonal = seasonal)
     } else {
-#      pseudo_maxima <- pseudo_maxima_block(maxima_notNA = r, data = data,
-#                                           block = block)
-      pseudo_maxima <- find_pseudo_maxima_block(data = data, block = block,
-                                                full = full, sliding = sliding,
-                                                seasonal = seasonal)
+      pseudo_maxima <- find_pseudo_maxima_block(
+        data = data, block = block, full = full,
+        sliding = sliding, seasonal = seasonal)
     }
-#    # Name columns and rows according to the positions of block in the raw data
-#    #   columns: index of the disjoint receiver block
-#    #   rows: index of the (disjoint or sliding) donor block
-#    colnames(pseudo_maxima) <- incomplete_blocks
-#    rownames(pseudo_maxima) <- seq_len(nrow(pseudo_maxima))
     # Remove rows of all NA from pseudo_maxima
     pseudo_maxima <- rm_NA_rows(pseudo_maxima)
     # How we create the row names depends on whether sliding = TRUE or FALSE
