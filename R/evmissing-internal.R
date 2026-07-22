@@ -411,9 +411,9 @@ find_pseudo_maxima_block <- function(data, block, full, sliding, seasonal) {
     # Set the number of sliding blocks
     n_sliding <- length(data) - block_length + 1
     # Extract the disjoint blocks
-    print(block_list)
-    print(block_list[[block_length_number]])
-    disjoint_blocks <- vapply(X = block_list[[block_length_number]],
+    # Note the use of names() to deal with cases where the block indicators
+    # are not 1, 2, 3, ... but are perhaps, 1990, 1991, 1992 ...
+    disjoint_blocks <- vapply(X = names(block_list[[block_length_number]]),
                               FUN = find_disjoint_block_j,
                               FUN.VALUE = rep(0, block_length))
     # Extract the sliding blocks
