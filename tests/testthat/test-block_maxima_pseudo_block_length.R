@@ -3,7 +3,6 @@
 # seasonal = FALSE or seasonal = TRUE
 
 # Uses argument block_length
-# To do: argument block
 
 # A very simple example
 data <- c(1:10, 10:1)
