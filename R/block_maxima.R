@@ -96,11 +96,7 @@
 #'
 #'   See [`gev_ts`] for an explanation of how the pseudo-maxima are used.
 #'
-#' @return A list, with class
-#'   `c("list", "block_maxima", "disjoint", "evmissing")`,
-#'   if `sliding = FALSE`, or
-#'   `c("list", "block_maxima", "sliding", "evmissing")`,
-#'   if `sliding = TRUE`,
+#' @return A list, with class `c("list", "block_maxima", "evmissing")`
 #'   containing the following numeric vectors:
 #'
 #'  * `maxima`: the block maxima.
@@ -176,7 +172,7 @@
 #' @seealso Plot method [`plot.block_maxima`].
 #' @export
 block_maxima <- function(data, block_length, block, pseudo = FALSE,
-                         full = FALSE, sliding = FALSE, seasonal = sliding) {
+                         full = FALSE, sliding = pseudo, seasonal = sliding) {
   # Check that data is a numeric vector
   if (!is.numeric(data)) {
     stop("''data'' must be a numeric vector.")
@@ -249,10 +245,6 @@ block_maxima <- function(data, block_length, block, pseudo = FALSE,
   r$seasonal <- seasonal
   # Give the returned object a class, so that we can detect block maxima data
   # created by block_maxima()
-  if (sliding) {
-    class(r) <- c("list", "block_maxima", "sliding", "evmissing")
-  } else {
-    class(r) <- c("list", "block_maxima", "disjoint", "evmissing")
-  }
+  class(r) <- c("list", "block_maxima", "evmissing")
   return(r)
 }

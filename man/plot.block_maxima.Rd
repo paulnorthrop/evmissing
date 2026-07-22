@@ -9,9 +9,9 @@
 \arguments{
 \item{x}{An object inheriting from class \code{"block_maxima"}.}
 
-\item{which}{If \code{which = 1} then the sliding block maxima are plotted
-against block number. If \code{which = 2} then the sliding block maxima are
-plotted against the proportion of non-missing raw values.}
+\item{which}{If \code{which = 1} then the block maxima are plotted against block
+number. If \code{which = 2} then the block maxima are plotted against the
+proportion of non-missing raw values.}
 
 \item{...}{Further arguments to \code{\link[graphics:plot.default]{plot}}.}
 }
@@ -25,8 +25,8 @@ Plot method for objects inheriting from \code{"block_maxima"} returned from
 \details{
 When \code{which = 1} we obtain a time series plot in which there are
 periods where the value does not change. When \code{which = 2} we expect to
-see that the sliding block maximum tends to be smaller for blocks with a
-larger proportion of missing values.
+see that the block maximum tends to be smaller for blocks with a larger
+proportion of missing values.
 }
 \examples{
 ## Plymouth Ozone Data

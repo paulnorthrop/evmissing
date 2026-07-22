@@ -3,14 +3,14 @@
 #' Plot method for objects inheriting from `"block_maxima"` returned from
 #'   [`block_maxima`].
 #' @param x An object inheriting from class `"block_maxima"`.
-#' @param which If `which = 1` then the sliding block maxima are plotted
-#'   against block number. If `which = 2` then the sliding block maxima are
-#'   plotted against the proportion of non-missing raw values.
+#' @param which If `which = 1` then the block maxima are plotted against block
+#'   number. If `which = 2` then the block maxima are plotted against the
+#'   proportion of non-missing raw values.
 #' @param ... Further arguments to [`plot`][graphics::plot].
 #' @details When `which = 1` we obtain a time series plot in which there are
 #'   periods where the value does not change. When `which = 2` we expect to
-#'   see that the sliding block maximum tends to be smaller for blocks with a
-#'   larger proportion of missing values.
+#'   see that the block maximum tends to be smaller for blocks with a larger
+#'   proportion of missing values.
 #' @return Nothing is returned.
 #' @examples
 #' ## Plymouth Ozone Data
@@ -24,9 +24,13 @@
 plot.block_maxima <- function(x, which = 1, ...) {
   # Create the data to plot
   yvals <- x$maxima
-  the_ylab <- "sliding block maximum"
+  the_ylab <- "block maximum"
   if (which == 1) {
-    xvals <- 1:length(x$maxima)
+    if (is.null(names(x$maxima))) {
+      xvals <- 1:length(x$maxima)
+    } else {
+      xvals <- names(x$maxima)
+    }
     the_type <- "l"
     the_xlab <- "block"
     the_pch <- 1

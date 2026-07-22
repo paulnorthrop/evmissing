@@ -10,7 +10,7 @@ block_maxima(
   block,
   pseudo = FALSE,
   full = FALSE,
-  sliding = FALSE,
+  sliding = pseudo,
   seasonal = sliding
 )
 }
@@ -58,11 +58,7 @@ same time of year as in the originating partial block. If
 in the partial and donor blocks with respect to the start of each block.}
 }
 \value{
-A list, with class
-\code{c("list", "block_maxima", "disjoint", "evmissing")},
-if \code{sliding = FALSE}, or
-\code{c("list", "block_maxima", "sliding", "evmissing")},
-if \code{sliding = TRUE},
+A list, with class \code{c("list", "block_maxima", "evmissing")}
 containing the following numeric vectors:
 \itemize{
 \item \code{maxima}: the block maxima.
