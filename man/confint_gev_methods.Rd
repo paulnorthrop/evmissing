@@ -16,7 +16,7 @@ after a call to \code{\link{confint.evmissing}}.}
 
 \item{...}{Further arguments. For \code{print.confint_gev} to pass arguments to
 \code{\link{print}}. For \code{plot.confint_gev} to pass graphical parameters to
-\code{\link[graphics:plot.default]{plot}} to create the initial plot of the profile
+\code{\link[graphics:plot]{plot}} to create the initial plot of the profile
 log-likelihood.}
 
 \item{parm}{A character scalar specifying the parameter for which

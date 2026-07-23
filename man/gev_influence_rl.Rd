@@ -37,7 +37,7 @@ horizontal axis. This might be used to indicate the values of certain
 observations in a dataset.}
 
 \item{...}{For \code{plot.gev_influence_rl}: to pass graphical parameters to the
-graphical functions \code{\link[graphics:plot.default]{matplot}} and
+graphical functions \code{\link[graphics:plot]{matplot}} and
 \code{\link[graphics:legend]{legend}}. The parameters \verb{col, lty} and \code{lwd} can be
 used to control line colour, type and width, with the return levels in
 the order that they were supplied in \code{m}.}

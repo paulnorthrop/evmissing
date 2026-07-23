@@ -19,7 +19,7 @@ The dataset \code{Brest} in the \code{Renext} R package, specifically
 \url{https://data.shom.fr/}.
 }
 \usage{
-BrestSurgeMissing
+data(BrestSurgeMissing)
 }
 \description{
 Numbers of missing values in each month of the Brest sea surge heights data

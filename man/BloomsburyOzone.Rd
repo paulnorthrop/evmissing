@@ -19,7 +19,7 @@ the \href{https://uk-air.defra.gov.uk/}{UK-AIR} database
 \href{https://uk-air.defra.gov.uk/data/data_selector}{Data Selector}.
 }
 \usage{
-BloomsburyOzone
+data(BloomsburyOzone)
 }
 \description{
 Daily maximum ozone levels at Bloomsbury in London (UK) for the years

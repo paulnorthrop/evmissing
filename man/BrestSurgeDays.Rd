@@ -13,7 +13,7 @@ The row names of \code{BrestSurgeMaxima} are the years \code{1946:2007} and the 
 names are the abbreviated names of the months.
 }
 \usage{
-BrestSurgeDays
+data(BrestSurgeDays)
 }
 \description{
 Number of days in each month relevant to the Brest sea surge heights data

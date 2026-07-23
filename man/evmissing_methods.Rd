@@ -54,9 +54,9 @@ call to \code{\link{gev_mle}}.}
 \item{...}{Further arguments. Only used in the following cases.
 \itemize{
 \item \code{plot.evmissing}: to pass graphical parameters to the graphical functions
-\code{\link[graphics:plot.default]{plot}}, \code{\link[graphics:matplot]{matplot}},
+\code{\link[graphics:plot]{plot}}, \code{\link[graphics:matplot]{matplot}},
 \code{\link[graphics:abline]{abline}}, \code{\link[graphics:lines]{lines}},
-\code{\link[graphics:matplot]{matlines}} and \code{\link[graphics:points]{points}}.
+\code{\link[graphics:matlines]{matlines}} and \code{\link[graphics:points]{points}}.
 In particular, \code{col}, \code{lty} and \code{lwd} may be used to control the colour,
 type and width of lines and \code{pch} the type of plotting symbol. All data
 points are coloured black in all plots, which cannot be changed.

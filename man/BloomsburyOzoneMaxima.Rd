@@ -24,7 +24,7 @@ the \href{https://uk-air.defra.gov.uk/}{UK-AIR} database
 \href{https://uk-air.defra.gov.uk/data/data_selector}{Data Selector}.
 }
 \usage{
-BloomsburyOzoneMaxima
+data(BloomsburyOzoneMaxima)
 }
 \description{
 Annual maxima of daily maximum ozone levels at Bloomsbury in London (UK)

@@ -24,7 +24,7 @@ the \href{https://uk-air.defra.gov.uk/}{UK-AIR} database
 \href{https://uk-air.defra.gov.uk/data/data_selector}{Data Selector}.
 }
 \usage{
-PlymouthOzoneMaxima
+data(PlymouthOzoneMaxima)
 }
 \description{
 Annual maxima of daily maximum ozone levels at Plymouth in Devon (UK)

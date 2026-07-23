@@ -19,7 +19,7 @@ the \href{https://uk-air.defra.gov.uk/}{UK-AIR} database
 \href{https://uk-air.defra.gov.uk/data/data_selector}{Data Selector}.
 }
 \usage{
-PlymouthOzone
+data(PlymouthOzone)
 }
 \description{
 Daily maximum ozone levels at Plymouth in London (UK) for the years

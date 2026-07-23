@@ -16,7 +16,7 @@ of a call to \code{\link{confint.return_level}}.}
 
 \item{...}{Further arguments. For \code{print.confint_return_level} to pass
 arguments to \code{\link{print}}). For \code{plot.confint_return_level} to pass graphical
-parameters to \code{\link[graphics:plot.default]{plot}} to create the initial plot of the
+parameters to \code{\link[graphics:plot]{plot}} to create the initial plot of the
 profile log-likelihood.}
 
 \item{parm}{An integer scalar. For which component, that is, which return

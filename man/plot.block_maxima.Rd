@@ -13,7 +13,7 @@
 number. If \code{which = 2} then the block maxima are plotted against the
 proportion of non-missing raw values.}
 
-\item{...}{Further arguments to \code{\link[graphics:plot.default]{plot}}.}
+\item{...}{Further arguments to \code{\link[graphics:plot]{plot}}.}
 }
 \value{
 Nothing is returned.

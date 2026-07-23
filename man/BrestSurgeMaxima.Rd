@@ -22,7 +22,7 @@ The dataset \code{Brest} in the \code{Renext} R package, specifically
 \url{https://data.shom.fr/}.
 }
 \usage{
-BrestSurgeMaxima
+data(BrestSurgeMaxima)
 }
 \description{
 Annual maxima of sea surge heights near high tide at Brest tide gauge
