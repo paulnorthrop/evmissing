@@ -244,3 +244,31 @@
 #' plot(PlymouthOzone$Date, PlymouthOzone$Ozone, xlab = "year",
 #'      ylab = "ozone (micrograms / metre cubed)", pch = 16)
 "PlymouthOzone"
+
+#' Winter snow and precipitation at La Plagne, France
+#'
+#' Daily snow depth and precipitation at La Plagne (France) for the winters
+#' (December to April) starting in 1996 to 2024
+#'
+#' @format `LaPlagne` is a data frame with 4386 rows and the 5 variables:
+#'
+#' * `rr24`: precipitation in millimetres in the previous 24 hours.
+#' * `ht_neige`: total snow depth in metres.
+#' * `date`: with class `"Date"` in the format `YYYY-MM-DD`.
+#' * `time`: time at which the observations are recorded, in the format
+#'   `hh:mm:ss`.
+#' * `winter`: the year in which the winter starts.
+#'
+#' 18.5% of the precipitation values and 11.8% of the snow depth data are
+#' missing.
+#'
+#' @source METEO FRANCE’s
+#'   [snow-weather network archive](https://meteo.data.gouv.fr/datasets/68aeced879316c333d564f95).
+#' @examples
+#' head(LaPlagne)
+#' tail(LaPlagne)
+#' plot(LaPlagneWinter$date, LaPlagneWinter$rr24, pch = 16,
+#'      xlab = "year", ylab = "precipitation (mm)")
+#' plot(LaPlagneWinter$date, LaPlagneWinter$ht_neige, pch = 16,
+#'      xlab = "year", ylab = "total snow depth (m)")
+"LaPlagne"
