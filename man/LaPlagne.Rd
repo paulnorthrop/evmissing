@@ -26,7 +26,7 @@ METEO FRANCE’s
 data(LaPlagne)
 }
 \description{
-Daily snow depth and precipitation at La Plagne (France) for the winters
+Daily snow depth and precipitation at La Plagne (France) for the 29 winters
 (December to April) starting in 1996 to 2024
 }
 \examples{
