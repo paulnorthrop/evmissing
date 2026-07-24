@@ -33,8 +33,8 @@ Daily snow depth and precipitation at La Plagne (France) for the winters
 head(LaPlagne)
 tail(LaPlagne)
 plot(LaPlagne$date, LaPlagne$rr24, pch = 16,
-     xlab = "year", ylab = "precipitation (mm)")
+     xlab = "year", ylab = "24 hour precipitation (mm)")
 plot(LaPlagne$date, LaPlagne$ht_neige, pch = 16,
-     xlab = "year", ylab = "total snow depth (m)")
+     xlab = "year", ylab = "snow depth (m)")
 }
 \keyword{datasets}
