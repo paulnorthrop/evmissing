@@ -248,7 +248,7 @@
 #' Winter snow and precipitation at La Plagne, France
 #'
 #' Daily snow depth and precipitation at La Plagne (France) for the 29 winters
-#' (December to April) starting in 1996 to 2024
+#' (December to April inclusive) starting in 1996 to 2024
 #'
 #' @format `LaPlagne` is a data frame with 4386 rows and the 5 variables:
 #'
