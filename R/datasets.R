@@ -267,8 +267,8 @@
 #' @examples
 #' head(LaPlagne)
 #' tail(LaPlagne)
-#' plot(LaPlagneWinter$date, LaPlagneWinter$rr24, pch = 16,
+#' plot(LaPlagne$date, LaPlagne$rr24, pch = 16,
 #'      xlab = "year", ylab = "precipitation (mm)")
-#' plot(LaPlagneWinter$date, LaPlagneWinter$ht_neige, pch = 16,
+#' plot(LaPlagne$date, LaPlagne$ht_neige, pch = 16,
 #'      xlab = "year", ylab = "total snow depth (m)")
 "LaPlagne"
