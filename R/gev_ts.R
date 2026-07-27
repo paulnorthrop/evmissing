@@ -25,8 +25,6 @@
 #' @param block A numeric vector with the same length as `data`. The value of
 #'   `block[i]` indicates the block into which `data[i]` falls. For example,
 #'   `block` could provide the year in which observation `i` was observed.
-#'   Not applicable if `sliding = TRUE`. If `sliding = TRUE`, then
-#'   `block_length` must be supplied.
 #' @param pseudo A logical scalar. If `pseudo = TRUE` then the pseudo-maxima
 #'   returned from [`block_maxima`] are used to estimate the value of
 #'   \eqn{r_i} for an incomplete, partially-observed block. See **Details**.
@@ -44,9 +42,8 @@
 #'   variance of these maxima and an initial value of 0.1 for \eqn{\xi}.
 #' @param ... Further arguments to be passed to [`stats::optim`].
 #' @details If `data` is a numeric vector then exactly one of the arguments
-#'   `block_length` or `block` must be supplied if `sliding = FALSE` and only
-#'   `block_length` can be supplied if `sliding = TRUE`. The parameters are
-#'   fitted using maximum likelihood estimation.
+#'   `block_length` or `block` must be supplied. The parameters are fitted
+#'   using maximum likelihood estimation.
 #'
 #' The adjustment for the numbers of non-missing values underlying the block
 #' maxima is based on the strong assumption that missing values occur
@@ -129,18 +126,12 @@
 gev_ts <- function(data, block_length, block, pseudo = TRUE, full = FALSE,
                    sliding = TRUE, seasonal = sliding, init = "quartiles",
                    ...) {
-  # If sliding = TRUE then check that only block_length is supplied
-  block_length_supplied <- !missing(block_length)
-  block_supplied <- !missing(block)
-  if (sliding && (block_supplied || !block_length_supplied)) {
-    stop("If ''sliding = TRUE'' then (only) ''block_length'' must be supplied")
-  }
   # If data was created by block_maxima() or is a data frame that contains the
   # correct information then use it.
   # Otherwise, use block_maxima() to calculate the block maxima, the numbers
   # of non-missing values in the blocks and the largest possible number of
   # non-missing values in each block.
-  from_maxima <- inherits(data, "block_maxima") || inherits(data, "sliding")
+  from_maxima <- inherits(data, "block_maxima")
   required <- c("maxima", "notNA", "n", "whereNA", "pseudo_maxima",
                 "full_maxima", "partial_maxima")
   has_components <- all(is.element(required, names(data)))
@@ -153,14 +144,11 @@ gev_ts <- function(data, block_length, block, pseudo = TRUE, full = FALSE,
       stop("List ''data'' does not contain the required named components.")
     }
   } else {
-    #
-    # PJN: Need to adjust to use block argument when this is available
-    #
-    print("Calculating block maxima")
+    message("Calculating block maxima")
     maxima_notNA <- block_maxima(data = data, block_length = block_length,
-                                 pseudo = pseudo, full = full,
+                                 block = block, pseudo = pseudo, full = full,
                                  sliding = sliding, seasonal = seasonal)
-    print("Calculated block maxima")
+    message("Calculated block maxima")
   }
   # If there are maxima = NA, notNA = 0 entries in the data then remove them
   no_data <- which(maxima_notNA$notNA == 0)
@@ -201,7 +189,7 @@ gev_ts <- function(data, block_length, block, pseudo = TRUE, full = FALSE,
       big_val <- 10 ^ 10
     }
   }
-  print("Calling optim()")
+  message("Calling optim()")
   fit <- try(stats::optim(par = init, fn = negated_gev_loglik_ts,
                           hessian = TRUE, ..., maxima_notNA = maxima_notNA,
                           pseudo = pseudo, big_val = big_val),

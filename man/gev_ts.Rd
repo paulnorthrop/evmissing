@@ -39,9 +39,7 @@ a complete block of length \code{block_length} are discarded, without warning.}
 
 \item{block}{A numeric vector with the same length as \code{data}. The value of
 \code{block[i]} indicates the block into which \code{data[i]} falls. For example,
-\code{block} could provide the year in which observation \code{i} was observed.
-Not applicable if \code{sliding = TRUE}. If \code{sliding = TRUE}, then
-\code{block_length} must be supplied.}
+\code{block} could provide the year in which observation \code{i} was observed.}
 
 \item{pseudo}{A logical scalar. If \code{pseudo = TRUE} then the pseudo-maxima
 returned from \code{\link{block_maxima}} are used to estimate the value of
@@ -95,9 +93,8 @@ of raw values that are missing and the time series dependence in the data.
 }
 \details{
 If \code{data} is a numeric vector then exactly one of the arguments
-\code{block_length} or \code{block} must be supplied if \code{sliding = FALSE} and only
-\code{block_length} can be supplied if \code{sliding = TRUE}. The parameters are
-fitted using maximum likelihood estimation.
+\code{block_length} or \code{block} must be supplied. The parameters are fitted
+using maximum likelihood estimation.
 
 The adjustment for the numbers of non-missing values underlying the block
 maxima is based on the strong assumption that missing values occur
