@@ -1,4 +1,4 @@
-# Check that gev_mle() works as expected when there are missing data
+# Check that gev_mle() and gev_ts() work when there are missing data
 
 # sdata are simulated in test/testthat/setup.R
 # and block_length and block are set there
@@ -29,4 +29,19 @@ bm <- block_maxima(sdata$data_miss, block_length = sdata$block_length)
 bm_fit <- gev_mle(bm)
 test_that("gev_mle(): missing data, block_length vs block, adjust = FALSE", {
   testthat::expect_equal(bm_fit, adj_block, ignore_attr = TRUE)
+})
+
+# gev_ts()
+
+# gev_ts() with pseudo = FALSE vs gev_mle()
+adj_block_ts <- gev_ts(sdata$data_miss,
+                       block = sdata$block,
+                       pseudo = FALSE)
+test_that("gev_ts(), pseudo = FALSE, vs gev_mle, coef: missing data, block", {
+  testthat::expect_equal(coef(adj_block), coef(adj_block_ts),
+                         ignore_attr = FALSE)
+})
+test_that("gev_ts(), pseudo = FALSE, vs gev_mle, vcov: missing data, block", {
+  testthat::expect_equal(vcov(adj_block), vcov(adj_block_ts),
+                         ignore_attr = FALSE)
 })
