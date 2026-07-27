@@ -594,9 +594,9 @@ rhat <- function(parameters, maxima_notNA) {
   rhats[rhats > 1] <- 1
   # A r_i should be no smaller than the proportion of non-missing values in
   # block i, so set rhats < propn_notNA to propn_notNA
-  propn_notNA <- maxima_notNA$notNA / maxima_notNA$n
-  # Only the propn_notNA (< 1) for the columns of exp_data are relevant
-  propn_notNA <- propn_notNA[as.numeric(colnames(exp_data))]
+  # We must do this only for the partial blocks
+  partial_blocks <- maxima_notNA$notNA != maxima_notNA$n
+  propn_notNA <- (maxima_notNA$notNA / maxima_notNA$n)[partial_blocks]
   rhats[rhats < propn_notNA] <- propn_notNA[rhats < propn_notNA]
   # Save the proportions of non-NA values in incomplete blocks as an attribute
   attr(rhats, "propn_notNA") <- propn_notNA
