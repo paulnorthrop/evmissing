@@ -195,8 +195,12 @@ x_donates_to_y <- function(x, y, full) {
   }
   # Calculate the block maximum for donor block x using only the positions for
   # which the corresponding value in the receiving block y is not NA.
-  # If x has any NA values in these positions then NA is returned.
-  return(max(x[!is.na(y)]))
+  # If x has any/all NA values in these positions then NA is returned.
+  newx <- x[!is.na(y)]
+  if (length(newx) == 0) {
+    return(NA)
+  }
+  return(max(newx))
 }
 
 #' @keywords internal
@@ -208,10 +212,14 @@ x_donates_to_y_seasonal <- function(x, y, full) {
   }
   # Calculate the block maximum for donor block x using only the positions for
   # which the corresponding value in the receiving block y is not NA.
-  # If x has any NA values in these positions then NA is returned.
+  # If x has any/all NA values in these positions then NA is returned.
   # Reorder the receiving block y so that seasonal positions agree.
   y <- y[as.numeric(names(x))]
-  return(max(x[!is.na(y)]))
+  newx <- x[!is.na(y)]
+  if (length(newx) == 0) {
+    return(NA)
+  }
+  return(max(newx))
 }
 
 #' @keywords internal
@@ -331,8 +339,12 @@ x_donates_to_y_block <- function(x, y, full, sliding) {
   }
   # Calculate the block maximum for donor block x using only the positions for
   # which the corresponding value in the receiving block y is not NA.
-  # If x has any NA values in these positions then NA is returned.
-  return(max(x[!is.na(y)]))
+  # If x has any/all NA values in these positions then NA is returned.
+  newx <- x[!is.na(y)]
+  if (length(newx) == 0) {
+    return(NA)
+  }
+  return(max(newx))
 }
 
 #' @keywords internal
@@ -356,13 +368,17 @@ x_donates_to_y_seasonal_block <- function(x, y, full, sliding) {
   }
   # Calculate the block maximum for donor block x using only the positions for
   # which the corresponding value in the receiving block y is not NA.
-  # If x has any NA values in these positions then NA is returned.
+  # If x has any/all NA values in these positions then NA is returned.
   # If necessary, adjust the names (seasonal positions) of the donor block x
   # to account for differing block lengths
   x <- adjust_seasonal_positions(x, y)
   # Reorder the receiving block y so that seasonal positions agree.
   y <- y[as.numeric(names(x))]
-  return(max(x[!is.na(y)]))
+  newx <- x[!is.na(y)]
+  if (length(newx) == 0) {
+    return(NA)
+  }
+  return(max(newx))
 }
 
 #' @keywords internal
