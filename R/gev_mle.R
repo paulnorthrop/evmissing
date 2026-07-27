@@ -194,7 +194,7 @@ gev_mle <- function(data, block_length, block, adjust = TRUE, discard = 0,
   if (discard > 0) {
     maxima_notNA <- discard_maxima(maxima_notNA, discard = discard)
   }
-  # maxima_notNA is a list with 3 components
+  # maxima_notNA is a list with 3 main components
   #   maxima: the block maxima, the response
   #    notNA: the numbers of non-missing values in each block, the covariate
   #        n: the largest possible number of non-missing values in each block
