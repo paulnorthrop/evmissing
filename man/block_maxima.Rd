@@ -70,6 +70,12 @@ could have been observed in each block.
 If \code{block} is supplied then these vectors are named using the values in
 \code{block}. Otherwise, they do not have names.
 
+If a block contains only missing values then its value of \code{maxima} is \code{NA}
+and its value of \code{notNA} is \code{0}.
+
+The input arguments \code{pseudo}, \code{full}, \code{sliding} and \code{seasonal} are also
+included.
+
 If \code{pseudo = TRUE} then the returned list also contains the following:
 \itemize{
 \item \code{whereNA}: a named list containing, for each block, the positions of any
@@ -88,12 +94,6 @@ partial blocks then \code{pseudo_maxima} is \code{NA}.
 \item \code{full_maxima}: a numeric vector of maxima from full blocks.
 \item \code{partial_maxima}: a numeric vector of maxima from partial blocks.
 }
-
-The input arguments \code{pseudo}, \code{full}, \code{sliding} and \code{seasonal} are also
-included.
-
-If a block contains only missing values then its value of \code{maxima} is \code{NA}
-and its value of \code{notNA} is \code{0}.
 }
 \description{
 Extracts disjoint block maxima from a time series of raw data. Can also

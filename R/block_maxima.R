@@ -107,6 +107,12 @@
 #' If `block` is supplied then these vectors are named using the values in
 #' `block`. Otherwise, they do not have names.
 #'
+#' If a block contains only missing values then its value of `maxima` is `NA`
+#' and its value of `notNA` is `0`.
+#'
+#' The input arguments `pseudo`, `full`, `sliding` and `seasonal` are also
+#' included.
+#'
 #' If `pseudo = TRUE` then the returned list also contains the following:
 #'
 #'  * `whereNA`: a named list containing, for each block, the positions of any
@@ -124,12 +130,6 @@
 #'    partial blocks then `pseudo_maxima` is `NA`.
 #'  * `full_maxima`: a numeric vector of maxima from full blocks.
 #'  * `partial_maxima`: a numeric vector of maxima from partial blocks.
-#'
-#' The input arguments `pseudo`, `full`, `sliding` and `seasonal` are also
-#' included.
-#'
-#' If a block contains only missing values then its value of `maxima` is `NA`
-#' and its value of `notNA` is `0`.
 #' @examples
 #' ## Simulate example data
 #' set.seed(7032025)
