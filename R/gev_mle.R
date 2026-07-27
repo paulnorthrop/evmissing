@@ -185,7 +185,9 @@ gev_mle <- function(data, block_length, block, adjust = TRUE, discard = 0,
   # If there are maxima = NA, notNA = 0 entries in the data then remove them
   no_data <- which(maxima_notNA$notNA == 0)
   if (length(no_data) > 0) {
-    maxima_notNA <- lapply(maxima_notNA, function(x) x[-no_data])
+    maxima_notNA$maxima <- maxima_notNA$maxima[-no_data]
+    maxima_notNA$notNA <- maxima_notNA$notNA[-no_data]
+    maxima_notNA$n <- maxima_notNA$n[-no_data]
   }
   # If discard >  0 then discard any block maxima based on underlying data with
   # greater than discard% missing.
