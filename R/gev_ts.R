@@ -153,9 +153,13 @@ gev_ts <- function(data, block_length, block, pseudo = TRUE, full = FALSE,
   # If there are maxima = NA, notNA = 0 entries in the data then remove them
   no_data <- which(maxima_notNA$notNA == 0)
   if (length(no_data) > 0) {
-    maxima_notNA <- lapply(maxima_notNA, function(x) x[-no_data])
+    maxima_notNA$maxima <- maxima_notNA$maxima[-no_data]
+    maxima_notNA$notNA <- maxima_notNA$notNA[-no_data]
+    maxima_notNA$n <- maxima_notNA$n[-no_data]
+    maxima_notNA$partial_maxima <- maxima_notNA$partial_maxima[-no_data]
+    maxima_notNA$pseudo_maxima <- maxima_notNA$pseudo_maxima[, -no_data]
   }
-  # maxima_notNA is a list with 7 components
+  # maxima_notNA is a list with 7 main components
   #         maxima: the block maxima, the response
   #          notNA: numbers of non-missing values in each block, the covariate
   #              n: largest possible number of non-missing values in each block
@@ -190,10 +194,18 @@ gev_ts <- function(data, block_length, block, pseudo = TRUE, full = FALSE,
     }
   }
   message("Calling optim()")
-  fit <- try(stats::optim(par = init, fn = negated_gev_loglik_ts,
-                          hessian = TRUE, ..., maxima_notNA = maxima_notNA,
-                          pseudo = pseudo, big_val = big_val),
-             silent = TRUE)
+  # If the data have no NAs then call the same log-likelihood as gev_mle()
+  no_NAs <- length(maxima_notNA$partial_maxima) == 0
+  if (no_NAs) {
+    fit <- try(stats::optim(par = init, fn = negated_gev_loglik, hessian = TRUE,
+                            ..., maxima_notNA = maxima_notNA, adjust = TRUE,
+                            big_val = big_val), silent = TRUE)
+  } else {
+    fit <- try(stats::optim(par = init, fn = negated_gev_loglik_ts,
+                            hessian = TRUE, ..., maxima_notNA = maxima_notNA,
+                            pseudo = pseudo, big_val = big_val),
+               silent = TRUE)
+  }
   # If there is an error then it is probably because the sample size is small
   # and the log-likelihood does not have a maximum that is away from the
   # boundary of the parameter space. If this happens then return NA values for
@@ -213,7 +225,7 @@ gev_ts <- function(data, block_length, block, pseudo = TRUE, full = FALSE,
   } else {
     # Include the final values of r used in the fitting (if pseudo = TRUE)
     # Also a vector of the values of r for all blocks (=1 for a full block)
-    if (pseudo) {
+    if (pseudo && !no_NAs) {
       fit$rhats <- rhat(parameters = fit$par, maxima_notNA = maxima_notNA)
       rvec <- rep(1, length(maxima_notNA$maxima))
       rvec[as.numeric(names(fit$rhats))] <- fit$rhats
