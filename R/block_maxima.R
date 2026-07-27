@@ -179,6 +179,10 @@ block_maxima <- function(data, block_length, block, pseudo = FALSE,
   }
   block_length_supplied <- !missing(block_length)
   block_supplied <- !missing(block)
+  # Check that block_length is small enough
+  if (block_length_supplied && block_length >= length(data)) {
+    stop("''block_length'' must be (much) smaller than ''length(data)''")
+  }
   # Check that exactly one of block_length or block has been supplied
   if (block_length_supplied & block_supplied) {
     stop("Only one of ''block_length'' or ''block'' may be supplied.")
