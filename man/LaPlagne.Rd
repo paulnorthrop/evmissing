@@ -3,7 +3,7 @@
 \docType{data}
 \name{LaPlagne}
 \alias{LaPlagne}
-\title{Winter snow and precipitation at La Plagne, France}
+\title{Winter Snow and Precipitation at La Plagne, France}
 \format{
 \code{LaPlagne} is a data frame with 4386 rows and the 5 variables:
 \itemize{
