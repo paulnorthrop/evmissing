@@ -3,7 +3,7 @@
 \docType{data}
 \name{LaPlagne}
 \alias{LaPlagne}
-\title{Winter Snow and Precipitation at La Plagne, France}
+\title{Winter Snow Depth and Precipitation at La Plagne, France}
 \format{
 \code{LaPlagne} is a data frame with 4386 rows and the 5 variables:
 \itemize{
@@ -36,5 +36,9 @@ plot(LaPlagne$date, LaPlagne$rr24, pch = 16,
      xlab = "year", ylab = "24 hour precipitation (mm)")
 plot(LaPlagne$date, LaPlagne$ht_neige, pch = 16,
      xlab = "year", ylab = "snow depth (m)")
+}
+\seealso{
+\code{\link{LaPlagnePrecipMaxima}}, \code{\link{LaPlagnePrecipMaximaSeasonal}},
+\code{\link{LaPlagneSnowMaxima}}, \code{\link{LaPlagneSnowMaximaSeasonal}}.
 }
 \keyword{datasets}

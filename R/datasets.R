@@ -245,7 +245,7 @@
 #'      ylab = "ozone (micrograms / metre cubed)", pch = 16)
 "PlymouthOzone"
 
-#' Winter Snow and Precipitation at La Plagne, France
+#' Winter Snow Depth and Precipitation at La Plagne, France
 #'
 #' Daily snow depth and precipitation at La Plagne (France) for the 29 winters
 #' (December to April inclusive) starting in 1996 to 2024
@@ -271,6 +271,8 @@
 #'      xlab = "year", ylab = "24 hour precipitation (mm)")
 #' plot(LaPlagne$date, LaPlagne$ht_neige, pch = 16,
 #'      xlab = "year", ylab = "snow depth (m)")
+#' @seealso [`LaPlagnePrecipMaxima`], [`LaPlagnePrecipMaximaSeasonal`],
+#'   [`LaPlagneSnowMaxima`], [`LaPlagneSnowMaximaSeasonal`].
 "LaPlagne"
 
 #' Winter Precipitation Maxima and Missing Information at La Plagne, France

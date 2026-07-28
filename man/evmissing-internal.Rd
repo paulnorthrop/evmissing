@@ -43,6 +43,9 @@
 \alias{rm_NA_rows}
 \alias{cbind_na_for_list_of_matrices}
 \alias{make_seasonal_positions}
+\alias{get_day}
+\alias{get_month}
+\alias{get_year}
 \title{Internal evmissing functions}
 \usage{
 negated_gev_loglik(parameters, maxima_notNA, adjust, big_val = Inf)
@@ -171,6 +174,12 @@ rm_NA_rows(x)
 cbind_na_for_list_of_matrices(mat_list)
 
 make_seasonal_positions(block, block_length)
+
+get_day(x)
+
+get_month(x)
+
+get_year(x)
 }
 \description{
 Internal evmissing functions
