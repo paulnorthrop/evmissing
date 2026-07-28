@@ -1931,3 +1931,21 @@ make_seasonal_positions <- function(block, block_length) {
   }
   return(lapply(X = index, FUN = fun))
 }
+
+#' @keywords internal
+#' @rdname evmissing-internal
+get_day <- function(x) {
+  return(format(as.Date(x, format="%Y-%m-%d"), "%d"))
+}
+
+#' @keywords internal
+#' @rdname evmissing-internal
+get_month <- function(x) {
+  return(format(as.Date(x, format="%Y-%m-%d"), "%m"))
+}
+
+#' @keywords internal
+#' @rdname evmissing-internal
+get_year <- function(x) {
+  return(format(as.Date(x, format="%Y-%m-%d"), "%Y"))
+}
