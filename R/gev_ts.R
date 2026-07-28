@@ -137,12 +137,14 @@ gev_ts <- function(data, block_length, block, pseudo = TRUE, full = FALSE,
   has_components <- all(is.element(required, names(data)))
   if (from_maxima && has_components && inherits(data, "evmissing")) {
     maxima_notNA <- data
+    no_NAs <- length(data$partial_maxima) == 0
   } else if (is.list(data)) {
     if (has_components) {
       maxima_notNA <- as.list(data)
     } else {
       stop("List ''data'' does not contain the required named components.")
     }
+    no_NAs <- length(data$partial_maxima) == 0
   } else {
     # If data has no NAs then set pseudo = FALSE: pseudo maxima are irrelevant
     no_NAs <- !anyNA(data)
