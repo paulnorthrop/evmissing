@@ -386,11 +386,13 @@ x_donates_to_y_seasonal_block <- function(x, y, full, sliding) {
 adjust_seasonal_positions <- function(x, y) {
   # Set the block length of the receiver disjoint block
   b <- length(y)
-  if (max(names(x)) > b) {
-    from <- which.max(names(x))
+  # Make the name numeric!
+  namesx <- as.numeric(names(x))
+  if (max(namesx) > b) {
+    from <- which.max(namesx)
     names(x)[from:b] <- seq_len(b - from + 1)
-  } else if (max(names(x)) < b) {
-    from <- which.max(names(x)) + 1
+  } else if (max(namesx) < b) {
+    from <- which.max(namesx) + 1
     names(x)[from:b] <- c(b, seq_len(b - from))
   }
   return(x)
@@ -417,10 +419,10 @@ find_pseudo_maxima_block <- function(data, block, full, sliding, seasonal) {
                        simplify = FALSE)
   block_order <- unlist(block_list)
   disjoint_block_starts <- which(!duplicated(block))
-  # create a function that does all this once for each block length in block_lengths
-  # call this function for each block length
-  # merge the results
 
+  # A function that does all this once for each block length in block_lengths
+  # Call this function for each block length
+  # Merge the results
   by_block_length <- function(block_length_number) {
     # Extract the block length
     block_length <- block_lengths[block_length_number]
