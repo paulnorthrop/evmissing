@@ -5,8 +5,7 @@
 data <- c(1:10, 10:1)
 # Add some missing values
 data[c(3, 8, 9, 19, 20)] <- NA
-# Set block_length and block to give the same output (5 blocks of 4 values)
-# Call these a_block_length and a_block to avoid over-writing values in setup.R
+# Call block length a_block_length to avoid over-writing the value in setup.R
 a_block_length <- 4
 
 # 1. full = FALSE, sliding = TRUE, seasonal = FALSE
