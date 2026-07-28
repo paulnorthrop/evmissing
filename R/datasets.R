@@ -245,7 +245,7 @@
 #'      ylab = "ozone (micrograms / metre cubed)", pch = 16)
 "PlymouthOzone"
 
-#' Winter snow and precipitation at La Plagne, France
+#' Winter Snow and Precipitation at La Plagne, France
 #'
 #' Daily snow depth and precipitation at La Plagne (France) for the 29 winters
 #' (December to April inclusive) starting in 1996 to 2024
@@ -272,3 +272,43 @@
 #' plot(LaPlagne$date, LaPlagne$ht_neige, pch = 16,
 #'      xlab = "year", ylab = "snow depth (m)")
 "LaPlagne"
+
+#' Winter Precipitation Maxima and Missing Information at La Plagne, France
+#'
+#' These data are the result of a call
+#' `block_maxima(data = LaPlagne$rr24, block = LaPlagne$winter, pseudo = TRUE, seasonal = FALSE)`
+#' to [`block_maxima()`].
+#'
+#' @format `LaPlagnePrecipMaxima` is a list. See [`block_maxima`].
+#' @seealso [`LaPlagne`].
+"LaPlagnePrecipMaxima"
+
+#' Winter Precipitation Maxima and Seasonal Missing Information at La Plagne, France
+#'
+#' These data are the result of a call
+#' `block_maxima(data = LaPlagne$rr24, block = LaPlagne$winter, pseudo = TRUE, seasonal = TRUE)`
+#' to [`block_maxima()`].
+#'
+#' @format `LaPlagnePrecipMaximaSeasonal` is a list. See [`block_maxima`].
+#' @seealso [`LaPlagne`].
+"LaPlagnePrecipMaximaSeasonal"
+
+#' Winter Snow Depth Maxima and Missing Information at La Plagne, France
+#'
+#' These data are the result of a call
+#' `block_maxima(data = LaPlagne$ht_neige, block = LaPlagne$winter, pseudo = TRUE, seasonal = FALSE)`
+#' to [`block_maxima()`].
+#'
+#' @format `LaPlagneSnowMaxima` is a list. See [`block_maxima`].
+#' @seealso [`LaPlagne`].
+"LaPlagneSnowMaxima"
+
+#' Winter Snow Depth Maxima and Seasonal Missing Information at La Plagne, France
+#'
+#' These data are the result of a call
+#' `block_maxima(data = LaPlagne$ht_neige, block = LaPlagne$winter, pseudo = TRUE, seasonal = TRUE)`
+#' to [`block_maxima()`].
+#'
+#' @format `LaPlagneSnowMaximaSeasonal` is a list. See [`block_maxima`].
+#' @seealso [`LaPlagne`].
+"LaPlagneSnowMaximaSeasonal"
