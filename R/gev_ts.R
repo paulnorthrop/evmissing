@@ -144,6 +144,11 @@ gev_ts <- function(data, block_length, block, pseudo = TRUE, full = FALSE,
       stop("List ''data'' does not contain the required named components.")
     }
   } else {
+    # If data has no NAs then set pseudo = FALSE: pseudo maxima are irrelevant
+    no_NAs <- !anyNA(data)
+    if (no_NAs) {
+      pseudo <- FALSE
+    }
     message("Calculating block maxima")
     maxima_notNA <- block_maxima(data = data, block_length = block_length,
                                  block = block, pseudo = pseudo, full = full,
@@ -194,9 +199,9 @@ gev_ts <- function(data, block_length, block, pseudo = TRUE, full = FALSE,
     }
   }
   message("Calling optim()")
-  # If the data have no NAs then call the same log-likelihood as gev_mle()
-  no_NAs <- length(maxima_notNA$partial_maxima) == 0
-  if (no_NAs) {
+  # If pseudo = FALSE or the data have no NAs then call the same log-likelihood
+  # as gev_mle()
+  if (!pseudo || no_NAs) {
     fit <- try(stats::optim(par = init, fn = negated_gev_loglik, hessian = TRUE,
                             ..., maxima_notNA = maxima_notNA, adjust = TRUE,
                             big_val = big_val), silent = TRUE)
