@@ -491,7 +491,7 @@ find_pseudo_maxima_block <- function(data, block, full, sliding, seasonal) {
   res_matrix <- cbind_na_for_list_of_matrices(res_list)
   # Put the blocks back in order across the columns
   colnames(res_matrix) <- names(block_order)
-  res_matrix <- res_matrix[, order(colnames(res_matrix))]
+  res_matrix <- res_matrix[, order(as.numeric(colnames(res_matrix)))]
 
   # Remove trivial cases (disjoint block = sliding block)
   disjoint_number <- seq_len(n_disjoint)
