@@ -135,18 +135,13 @@ missing_args <- list(p0miss = 0.5, min = 0, max = 0.4)
 sdata <- sim_data(blocks = blocks, block_length = block_length,
                   missing_args = missing_args)
 
-# Using disjoint blocks
-pt <- gev_ts(sdata$data_miss, block_length = 90, pseudo = TRUE)
 pf <- gev_ts(sdata$data_miss, block_length = 90, pseudo = FALSE)
-pf2 <- gev_mle(sdata$data_miss, block_length = 90)
-
-# Using sliding blocks
-\dontrun{
-pts <- gev_ts(sdata$data_miss, block_length = 90, pseudo = TRUE,
-              sliding = TRUE)
-pfs <- gev_ts(sdata$data_miss, block_length = 90, pseudo = FALSE,
-              sliding = TRUE)
-}
+pt <- gev_ts(sdata$data_miss, block_length = 90, pseudo = TRUE)
+pt2 <- gev_ts(sdata$data_miss, block_length = 90, pseudo = TRUE,
+              seasonal = FALSE)
+ptb <- gev_ts(sdata$data_miss, block = sdata$block, pseudo = TRUE)
+ptb2 <- gev_ts(sdata$data_miss, block = sdata$block, pseudo = TRUE,
+               seasonal = FALSE)
 }
 \seealso{
 \code{\link{gev_mle}} provides an adjustment for missing data in the

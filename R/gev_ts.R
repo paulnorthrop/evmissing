@@ -110,18 +110,14 @@
 #' sdata <- sim_data(blocks = blocks, block_length = block_length,
 #'                   missing_args = missing_args)
 #'
-#' # Using disjoint blocks
-#' pt <- gev_ts(sdata$data_miss, block_length = 90, pseudo = TRUE)
 #' pf <- gev_ts(sdata$data_miss, block_length = 90, pseudo = FALSE)
-#' pf2 <- gev_mle(sdata$data_miss, block_length = 90)
-#'
-#' # Using sliding blocks
-#' \dontrun{
-#' pts <- gev_ts(sdata$data_miss, block_length = 90, pseudo = TRUE,
-#'               sliding = TRUE)
-#' pfs <- gev_ts(sdata$data_miss, block_length = 90, pseudo = FALSE,
-#'               sliding = TRUE)
-#' }
+#' pt <- gev_ts(sdata$data_miss, block_length = 90, pseudo = TRUE)
+#' pt2 <- gev_ts(sdata$data_miss, block_length = 90, pseudo = TRUE,
+#'               seasonal = FALSE)
+
+#' ptb <- gev_ts(sdata$data_miss, block = sdata$block, pseudo = TRUE)
+#' ptb2 <- gev_ts(sdata$data_miss, block = sdata$block, pseudo = TRUE,
+#'                seasonal = FALSE)
 #' @export
 gev_ts <- function(data, block_length, block, pseudo = TRUE, full = FALSE,
                    sliding = TRUE, seasonal = sliding, init = "quartiles",
@@ -235,7 +231,8 @@ gev_ts <- function(data, block_length, block, pseudo = TRUE, full = FALSE,
     if (pseudo && !no_NAs) {
       fit$rhats <- rhat(parameters = fit$par, maxima_notNA = maxima_notNA)
       rvec <- rep(1, length(maxima_notNA$maxima))
-      rvec[as.numeric(names(fit$rhats))] <- fit$rhats
+      names(rvec) <- names(maxima_notNA$maxima)
+      rvec[names(fit$rhats)] <- fit$rhats[names(fit$rhats)]
       fit$rvec <- rvec
       # Call stats::optimHess(), suppling fixed_r, so that the values of r do
       # not vary as the GEV parameter values are changed
@@ -271,6 +268,6 @@ gev_ts <- function(data, block_length, block, pseudo = TRUE, full = FALSE,
   fit$n <- maxima_notNA$n
   fit$sliding <- sliding
   attr(fit, "call") <- match.call(expand.dots = TRUE)
-  class(fit) <- c("evmissing", "mle", class(fit))
+  class(fit) <- c("evmissing", "gev_ts", class(fit))
   return(fit)
 }
