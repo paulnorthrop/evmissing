@@ -20,32 +20,27 @@ gev_ts(
 \item{data}{Either
 \itemize{
 \item a numeric vector containing a time series of raw data,
-\item an object returned from \code{\link{block_maxima}}, a list with components
-\code{maxima}, \code{notNA}, \code{n}, \code{whereNA}, \code{pseudo_maxima}, \code{full_maxima} and
-\code{partial_maxima},
-\item a named list containing the same information, that is, the variables
-\code{maxima}, \code{notNA}, \code{n}, \code{whereNA}, \code{pseudo_maxima}, \code{full_maxima} and
-\code{partial_maxima} as an object returned from \code{\link{block_maxima}}.
-}
+\item an object returned from a call to \code{\link{block_maxima}} with \code{pseudo = TRUE},
+such as \code{\link{LaPlagnePrecipMaximaSeasonal}}.
+}}
 
-There must be at least one full block of data, that is, at least one block
-for which no data are missing.}
-
-\item{block_length}{A numeric scalar. Used calculate the maxima of disjoint
-blocks of \code{block_length} contiguous values in the vector \code{data}.
-If \code{sliding = FALSE} and if \code{length(data)} is not an integer multiple of
-\code{block_length}, then the values at the end of \code{data} that do not constitute
-a complete block of length \code{block_length} are discarded, without warning.}
+\item{block_length}{A numeric scalar. Used calculate the maxima of
+disjoint blocks of \code{block_length} contiguous values in the vector \code{data}.
+If \code{length(data)} is not an integer multiple of \code{block_length} then
+the values at the end of \code{data} that do not constitute a complete block
+of length \code{block_length} are discarded, without warning.}
 
 \item{block}{A numeric vector with the same length as \code{data}. The value of
-\code{block[i]} indicates the block into which \code{data[i]} falls. For example,
-\code{block} could provide the year in which observation \code{i} was observed.}
+\code{block[i]} indicates the block into which \code{data[i]} falls. The block
+lengths implied by \code{block} may differ by at most 1. For example,
+\code{block[i]} could give the block in which observation \code{i} was observed,
+with block lengths of 366 for leap years and 365 for other years.}
 
 \item{pseudo}{A logical scalar. If \code{pseudo = TRUE} then the pseudo-maxima
 returned from \code{\link{block_maxima}} are used to estimate the value of
-\eqn{r_i} for an incomplete, partially-observed block. See \strong{Details}.
-If \code{pseudo = FALSE} then the ratio \eqn{n_i/n} is used, as in
-\code{\link[=gev_mle]{gev_mle()}}.}
+\eqn{r_i} for an incomplete, partially-observed block. See \strong{Details}
+and the \strong{Details} section of \code{\link{block_maxima}}. If \code{pseudo = FALSE} then
+the ratio \eqn{n_i/n} is used, as in \code{\link[=gev_mle]{gev_mle()}}.}
 
 \item{full, sliding, seasonal}{Arguments passed to \code{\link{block_maxima}} to
 determine how the pseudo-maxima are calculated.}
@@ -88,8 +83,8 @@ The call to \code{gev_ts} is provided in the attribute \code{"call"}.
 \description{
 Fits a GEV distribution to block maxima using maximum likelihood estimation,
 making an adjustment for the locations of missing raw values in each block.
-The GEV location and scale parameters are adjusted to reflect the proportion
-of raw values that are missing and the time series dependence in the data.
+The GEV location and scale parameters are adjusted to reflect the positions
+of missing raw values and time series dependence in the data.
 }
 \details{
 If \code{data} is a numeric vector then exactly one of the arguments
@@ -109,13 +104,13 @@ distribution, where \deqn{\mu(r_i) = \mu + \sigma [r_i^\xi -1] / \xi,}
 These expressions are based on the \eqn{M_{n_i}} having approximately a
 GEV distribution with distribution function \eqn{G(x)^{r_i}}.
 
-For a full block, \eqn{r_i = 1}. If \code{pseudo = TRUE}, then, for an
-incomplete, partially-observed block, the value of \eqn{r_i} is estimated
-using the pseudo-maxima returned from \code{\link{block_maxima}} and the GEV
-distribution function based on the current value of \eqn{(\mu, \sigma, \xi)}
-in the optimisation routine. Suppose that we have a vector \eqn{M_i} of
-pseudo-maxima resulting from a particular incomplete block \eqn{i}.  It can
-be shown that the components of \eqn{V_i = -\log G(M_i)} each have an
+For a full block, \eqn{r_i = 1}. If \code{pseudo = TRUE}, then, for a
+partially-observed block, the value of \eqn{r_i} is estimated using the
+pseudo-maxima returned from \code{\link{block_maxima}} and the GEV distribution
+function based on the current value of \eqn{(\mu, \sigma, \xi)} in the
+optimisation routine. Suppose that we have a vector \eqn{M_i} of
+pseudo-maxima resulting from a particular partially-observed block \eqn{i}.
+It can be shown that the components of \eqn{V_i = -\log G(M_i)} each have an
 exponential distribution with mean \eqn{1/r_i}. We estimate \eqn{r_i} using
 the reciprocal of the mean of the values in \eqn{V_i}.
 
@@ -142,6 +137,16 @@ pt2 <- gev_ts(sdata$data_miss, block_length = 90, pseudo = TRUE,
 ptb <- gev_ts(sdata$data_miss, block = sdata$block, pseudo = TRUE)
 ptb2 <- gev_ts(sdata$data_miss, block = sdata$block, pseudo = TRUE,
                seasonal = FALSE)
+
+## La Plagne data
+
+# Precipitation
+p <- gev_ts(LaPlagnePrecipMaximaSeasonal)
+coef(p)
+
+# Snow depth
+s <- gev_ts(LaPlagnePrecipMaximaSeasonal)
+coef(s)
 }
 \seealso{
 \code{\link{gev_mle}} provides an adjustment for missing data in the
