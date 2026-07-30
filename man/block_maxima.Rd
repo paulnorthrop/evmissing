@@ -31,22 +31,25 @@ with block lengths of 366 for leap years and 365 for other years.}
 
 \item{pseudo}{A logical scalar. If \code{pseudo = TRUE} then pseudo-maxima are
 calculated as the block maxima obtained by applying the missing value
-patterns from partial disjoint blocks to all suitable other blocks, which
-we call \strong{donor} blocks. See \code{full}.}
+patterns from partial disjoint (\strong{receiver}) blocks to all suitable other
+blocks, which we call \strong{donor} blocks, as they are donating their data.
+See \code{full}.}
 
-\item{full}{If \code{full = FALSE} then a donor block for a given partial
+\item{full}{A logical scalar. Only relevant if \code{pseudo = TRUE}.
+If \code{full = FALSE} then a donor block for a given partial
 disjoint block is any block that has non-missing values in all the
 comparable positions where the partial block has non-missing values.
 The comparable positions depend on whether we respect the seasonality that
-may be exhibited within a block. See \code{seasonal}.
-If \code{full = TRUE} then only full blocks are used as donor blocks:
+may be exhibited within a block. See \code{seasonal}.  If \code{full = TRUE} then
+only fully-observed ("full") blocks are used as donor blocks:
 if \code{sliding = FALSE} then \code{data} must contain at least one full disjoint
 block and if \code{sliding = TRUE} then \code{data} must contain at least one full
 sliding block.}
 
 \item{sliding}{A logical scalar. Only relevant if \code{pseudo = TRUE}. If
-\code{sliding = TRUE} then pseudo-maxima are calculated for \strong{all} donor blocks
-of the relevant length, rather than only a set of disjoint donor blocks.}
+\code{sliding = TRUE} then pseudo-maxima are calculated for \strong{all} donor
+blocks of the relevant length. Otherwise, only the set of disjoint blocks
+defined by \code{block_length} or \code{block} act as donors.}
 
 \item{seasonal}{A logical scalar. Only relevant if \code{pseudo = TRUE} and
 \code{sliding = TRUE}. If \code{seasonal = TRUE} then the way in which the
@@ -99,28 +102,37 @@ partial blocks then \code{pseudo_maxima} is \code{NA}.
 Extracts disjoint block maxima from a time series of raw data. Can also
 provide information about the effect of missing value patterns on block
 maxima via pseudo-maxima created by applying blockwise missing value
-patterns in partially-observed (partial) disjoint blocks to fully-observed
-(full) blocks or to full blocks and other suitable partially-observed
-blocks.
+patterns in partially-observed ("partial") disjoint blocks to suitable
+donor blocks. Candidate donor blocks are either any block of the appropriate
+length ("sliding blocks") or only other disjoint blocks.
 }
 \details{
-Exactly one of the arguments \code{block_length} or \code{block} must be
-supplied.
+The idea of using donor blocks is to quantify the effect of the
+missing value pattern of a given receiver block on its block maximum.
+After applying this missing value pattern to a suitable donor block,
+the donor block will have missing values in the same pattern as the
+receiver block. Calculating the block maxima for these donor blocks
+provides a sample that provides information about the extent to which the
+maximum of the receiver block tends to be smaller than the maximum of a
+full block. See \code{\link{gev_ts}} for an explanation of how the pseudo-maxima are
+used.
 
-If \code{block_length} is supplied and \code{sliding = TRUE} then the pseudo-maxima
-are calculated for \strong{all} blocks of length \code{block_length} present in
-\code{data}, starting with the first block \code{data[1:block_length]} and sliding
-the block repeatedly by one observation until reaching the final block
-\code{data[(length(data) - block_length + 1):length(data)]}.
-
-\strong{Also explain for \code{block}}
-\subsection{Calculation of pseudo-maxima}{
+Exactly one of the arguments \code{block_length} or \code{block} must be supplied.
+If \code{block_length} is supplied then all candidate donor blocks have the
+same length as the partial disjoint blocks. If \code{block} is supplied then,
+given the restriction described in \code{block}, a donor block can be at most
+one observation longer or shorter than a given partial disjoint block.
+If \code{sliding = FALSE} then, if necessary, the longer of the receiver and
+donor blocks is truncated to the length of the shorter before calculating
+the pseudo-maximum. If \code{sliding = TRUE} then only sliding blocks that have
+the same length as a given receiver block are used as donor blocks.
+\subsection{Example calculation of pseudo-maxima}{
 
 Consider example data \code{c(1, 2, NA, 3, 6, 5, 8, 7, 4, 3, NA, NA)} and a
 block length of 4. There are 3 disjoint blocks, with block maxima
 \code{c(3, 8, 4)}. Blocks 1 and 3 are partially-observed. We consider the 6
 valid combinations of \code{full}, \code{sliding} and \code{seasonal}.
-\subsection{Full donor blocks only}{
+\subsection{Full donor blocks only (\code{full = TRUE})}{
 \itemize{
 \item \code{sliding = FALSE}. Disjoint block 2, \code{c(6, 5, 8, 7)}, is the only donor
 block. Applying the missing value patterns from disjoint blocks 1 and 3
@@ -132,14 +144,14 @@ pseudo-maxima are \code{c(8, 7, 8, 8)} for block 1 and \code{c(6, 6, 8, 8)} for
 block 3.
 \item \code{sliding = TRUE} and \code{seasonal = TRUE}. The vector of seasons is
 \verb{c(1:4, 1;4, 1:4)}. Sliding block 4, \code{c(3, 6, 5, 8)} has season vector
-\code{c(4, 1, 2, 3)} leads to pseudo-maxima \code{c(6, 6)} for disjoint blocks 1
+\code{c(4, 1, 2, 3)} leading to pseudo-maxima \code{c(6, 6)} for disjoint blocks 1
 and 3 because the \code{8} becomes \code{NA} for block 1 and both \code{3} and \code{8}
 become \code{NA} for block 3. The full sets of pseudo-maxima are
-\code{c(6, 6, 6, 7)} for block 1 and \code{c(6, 6, 5, 4)} for block 3.
+\code{c(6, 7, 7, 7)} for block 1 and \code{c(6, 6, 5, 4)} for block 3.
 }
 }
 
-\subsection{All suitable donor blocks}{
+\subsection{All suitable donor blocks (\code{full = FALSE})}{
 \itemize{
 \item \code{sliding = FALSE}. Disjoint block 1, \code{c(1, 2, NA, 3)}, can donate to
 disjoint block 3, \code{c(4, 3, NA, NA)}, leading to a pseudo-maximum of
@@ -148,7 +160,7 @@ for block 3.
 \item \code{sliding = TRUE} and \code{seasonal = FALSE}. In addition to the full sliding
 blocks, sliding blocks 1 \code{c(1, 2, NA, 3)} and 8, \code{c(7, 4, 3, NA)}, can
 donate to disjoint block 3, \code{c(4, 3, NA, NA)}. The full sets of
-pseudo-maxima are \code{c(8, 7, 8, 7, 8)} for block 1 and
+pseudo-maxima are \code{c(8, 7, 8, 8)} for block 1 and
 \code{c(2, 6, 6, 8, 8, 7)} for block 3.
 \item \code{sliding = TRUE} and \code{seasonal = TRUE}. In addition to the full sliding
 blocks, sliding block 1 can donate to disjoint block 3 and sliding
@@ -156,8 +168,6 @@ blocks 2, 3 and 8 donate to both disjoint blocks 1 and 3. The full sets
 of pseudo-maxima are \code{c(6, 6, 6, 7, 7, 7, 7)} for block 1 and
 \code{c(2, 6, 6, 6, 6, 5, 4, 4)} for block 3.
 }
-
-See \code{\link{gev_ts}} for an explanation of how the pseudo-maxima are used.
 }
 
 }
@@ -179,7 +189,7 @@ block_maxima(data, block_length = block_length)
 # Supplying block_length, sliding maxima
 res1 <- block_maxima(data, block_length = block_length, pseudo = TRUE)
 res2 <- block_maxima(data, block_length = block_length, pseudo = TRUE,
-                     sliding = TRUE)
+                     sliding = FALSE)
 # res1 and res2 have the same missing positions, full and partial maxima
 res1$whereNA
 res1$full_maxima
@@ -201,6 +211,39 @@ block_maxima(data, block_length = block_length)
 # Supplying block (with an extra group indicator)
 block <- c(block, 7, 7)
 block_maxima(data, block = block)
+
+## The example calculation of pseudo-maxima in Details
+data <- c(1, 2, NA, 3, 6, 5, 8, 7, 4, 3, NA, NA)
+
+# full, !sliding
+ex1 <- block_maxima(data, pseudo = TRUE, block_length = 4, full = TRUE,
+                    sliding = FALSE)
+ex1$pseudo_maxima
+
+# full, sliding, !seasonal
+ex2 <- block_maxima(data, pseudo = TRUE, block_length = 4, full = TRUE,
+                    sliding = TRUE, seasonal = FALSE)
+ex2$pseudo_maxima
+
+# full, sliding, !seasonal
+ex3 <- block_maxima(data, pseudo = TRUE, block_length = 4, full = TRUE,
+                    sliding = TRUE, seasonal = TRUE)
+ex3$pseudo_maxima
+
+# full, !sliding
+ex4 <- block_maxima(data, pseudo = TRUE, block_length = 4, full = FALSE,
+                    sliding = FALSE)
+ex4$pseudo_maxima
+
+# full, sliding, !seasonal
+ex5 <- block_maxima(data, pseudo = TRUE, block_length = 4, full = FALSE,
+                    sliding = TRUE, seasonal = FALSE)
+ex5$pseudo_maxima
+
+# full, sliding, !seasonal
+ex6 <- block_maxima(data, pseudo = TRUE, block_length = 4, full = FALSE,
+                    sliding = TRUE, seasonal = TRUE)
+ex6$pseudo_maxima
 }
 \seealso{
 Plot method \code{\link{plot.block_maxima}}.
