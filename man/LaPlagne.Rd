@@ -30,14 +30,25 @@ Daily snow depth and precipitation at La Plagne (France) for the 29 winters
 (December to April inclusive) starting in 1996 to 2024
 }
 \examples{
+# Data strcture
 head(LaPlagne)
 tail(LaPlagne)
+
+# Percentage missing values
+mean(is.na(LaPlagne$rr24))
+mean(is.na(LaPlagne$ht_neige))
+
+# Cross-tabulation of precipitation and snow missingness
+table(is.na(LaPlagne$rr24), is.na(LaPlagne$ht_neige))
+
+# Time series plots
 plot(LaPlagne$date, LaPlagne$rr24, pch = 16,
      xlab = "year", ylab = "24 hour precipitation (mm)")
 plot(LaPlagne$date, LaPlagne$ht_neige, pch = 16,
      xlab = "year", ylab = "snow depth (m)")
 }
 \seealso{
+\code{\link{LaPlagnePrecipMissings}}, \code{\link{LaPlagneSnowMissings}},
 \code{\link{LaPlagnePrecipMaxima}}, \code{\link{LaPlagnePrecipMaximaSeasonal}},
 \code{\link{LaPlagneSnowMaxima}}, \code{\link{LaPlagneSnowMaximaSeasonal}}.
 }

@@ -265,15 +265,62 @@
 #' @source METEO FRANCE’s
 #'   [snow-weather network archive](https://meteo.data.gouv.fr/datasets/68aeced879316c333d564f95).
 #' @examples
+#' # Data strcture
 #' head(LaPlagne)
 #' tail(LaPlagne)
+#'
+#' # Percentage missing values
+#' mean(is.na(LaPlagne$rr24))
+#' mean(is.na(LaPlagne$ht_neige))
+#'
+#' # Cross-tabulation of precipitation and snow missingness
+#' table(is.na(LaPlagne$rr24), is.na(LaPlagne$ht_neige))
+#'
+#' # Time series plots
 #' plot(LaPlagne$date, LaPlagne$rr24, pch = 16,
 #'      xlab = "year", ylab = "24 hour precipitation (mm)")
 #' plot(LaPlagne$date, LaPlagne$ht_neige, pch = 16,
 #'      xlab = "year", ylab = "snow depth (m)")
-#' @seealso [`LaPlagnePrecipMaxima`], [`LaPlagnePrecipMaximaSeasonal`],
+#' @seealso [`LaPlagnePrecipMissings`], [`LaPlagneSnowMissings`],
+#'   [`LaPlagnePrecipMaxima`], [`LaPlagnePrecipMaximaSeasonal`],
 #'   [`LaPlagneSnowMaxima`], [`LaPlagneSnowMaximaSeasonal`].
 "LaPlagne"
+
+#' Winter Precipitation Missingness at La Plagne, France
+#'
+#' Provides the days on which the 24 hour precipitation variable is missing,
+#' that is, the winter in which is occurs and the day of this winter, where
+#' day 1 is 1 Decemeber, day 2 is 2 December etc.
+#'
+#' @format `LaPlagnePrecipMissings` is a data frame with 813 rows and the 2
+#' variables:
+#'
+#' * `winter`: the winter in which a missing precipitation value occurs.
+#' * `day of winter`: the day of the winter on which the missing value occurs.
+#'
+#' @seealso [`LaPlagne`].
+#' @examples
+#' # Pattern of missingness over and within winters
+#' plot(LaPlagnePrecipMissings, pch = "_", main = "24 hour precipitation")
+"LaPlagnePrecipMissings"
+
+#' Winter Snow Missingness at La Plagne, France
+#'
+#' Provides the days on which the snow depth variable is missing,
+#' that is, the winter in which is occurs and the day of this winter, where
+#' day 1 is 1 Decemeber, day 2 is 2 December etc.
+#'
+#' @format `LaPlagneSnowMissings` is a data frame with 517 rows and the 2
+#' variables:
+#'
+#' * `winter`: the winter in which a missing snow depth value occurs.
+#' * `day of winter`: the day of the winter on which the missing value occurs.
+#'
+#' @seealso [`LaPlagne`].
+#' @examples
+#' # Pattern of missingness over and within winters
+#' plot(LaPlagneSnowMissings, pch = "_", main = "snow depth")
+"LaPlagneSnowMissings"
 
 #' Winter Precipitation Maxima and Missing Information at La Plagne, France
 #'
