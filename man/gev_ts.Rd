@@ -64,6 +64,7 @@ component \code{par}), with the additional components:
 \item \code{vcov}: estimated variance-covariance matrix of the parameters.
 \item \code{se}: estimated standard errors of the parameters.
 \item \code{maxima}: the vector of block maxima used to fit the model.
+\item \verb{full_maxima,partial_maxima}: vectors of full and partial block maxima.
 \item \code{notNA}: the number of non-missing raw values on which the maxima in
 \code{maxima} are based.
 \item \code{n}: the maximal block length, that is, the largest number of values that

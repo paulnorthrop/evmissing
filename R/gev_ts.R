@@ -79,6 +79,7 @@
 #' * `vcov`: estimated variance-covariance matrix of the parameters.
 #' * `se`: estimated standard errors of the parameters.
 #' * `maxima`: the vector of block maxima used to fit the model.
+#' * `full_maxima,partial_maxima`: vectors of full and partial block maxima.
 #' * `notNA`: the number of non-missing raw values on which the maxima in
 #'   `maxima` are based.
 #' * `n`: the maximal block length, that is, the largest number of values that
@@ -271,6 +272,8 @@ gev_ts <- function(data, block_length, block, pseudo = TRUE, full = FALSE,
     fit$loglik <- -fit$value
   }
   fit$maxima <- maxima_notNA$maxima
+  fit$full_maxima <- maxima_notNA$full_maxima
+  fit$partial_maxima <- maxima_notNA$partial_maxima
   fit$notNA <- maxima_notNA$notNA
   fit$n <- maxima_notNA$n
   fit$sliding <- sliding
