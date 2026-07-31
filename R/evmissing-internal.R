@@ -630,7 +630,11 @@ negated_gev_loglik_ts <- function(parameters, maxima_notNA, pseudo, fixed_r,
   # Extract the full-block maxima, partial-block maxima and pseudo-maxima
   partial_maxima <- maxima_notNA$partial_maxima
   full_maxima <- maxima_notNA$full_maxima
-  pseudo_maxima <- maxima_notNA$pseudo_maxima
+  # The pseudo-maxima are only needed if the estimates of r have not been
+  # supplied using fixed_r
+  if (missing(fixed_r)) {
+    pseudo_maxima <- maxima_notNA$pseudo_maxima
+  }
   # Row i of pseudo_maxima is produced from full maximum i
 
   # Extract the GEV parameter values for a complete block
