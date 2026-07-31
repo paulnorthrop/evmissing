@@ -46,7 +46,9 @@ UK, 1998-2024.
 \item \code{\link{BrestSurgeMaxima}}: Annual maxima surge heights at Brest, France,
 1846-2007.
 \item \code{\link{LaPlagne}}: Winter snow depth and precipitation at La Plagne, France,
-1996-2024.
+1996-2024. See also \code{\link{LaPlagnePrecipMaxima}}, \code{\link{LaPlagneSnowMaxima}},
+\code{\link{LaPlagnePrecipMaximaSeasonal}}, \code{\link{LaPlagneSnowMaximaSeasonal}},
+\code{\link{LaPlagnePrecipMissings}}, \code{\link{LaPlagneSnowMissings}}.
 }
 }
 \references{

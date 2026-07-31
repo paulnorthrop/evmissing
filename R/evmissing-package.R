@@ -38,7 +38,9 @@
 #' * [`BrestSurgeMaxima`]: Annual maxima surge heights at Brest, France,
 #'   1846-2007.
 #' * [`LaPlagne`]: Winter snow depth and precipitation at La Plagne, France,
-#'   1996-2024.
+#'   1996-2024. See also [`LaPlagnePrecipMaxima`], [`LaPlagneSnowMaxima`],
+#'   [`LaPlagnePrecipMaximaSeasonal`], [`LaPlagneSnowMaximaSeasonal`],
+#'   [`LaPlagnePrecipMissings`], [`LaPlagneSnowMissings`].
 #'
 #' @references Simpson, E. S. and Northrop, P. J. (2026) Accounting for Missing
 #' Data When Modelling Block Maxima, *Environmetrics* **37**(2): e70075.
