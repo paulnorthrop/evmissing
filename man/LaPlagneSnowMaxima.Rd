@@ -13,7 +13,7 @@ data(LaPlagneSnowMaxima)
 \description{
 These data are the result of a call
 \code{block_maxima(data = LaPlagne$ht_neige, block = LaPlagne$winter, pseudo = TRUE, seasonal = FALSE)}
-to \code{\link[=block_maxima]{block_maxima()}}.
+to \code{\link{block_maxima}}.
 }
 \seealso{
 \code{\link{LaPlagne}}.
