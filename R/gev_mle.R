@@ -99,7 +99,7 @@
 #'
 #' The call to `gev_mle` is provided in the attribute `"call"`.
 #'
-#' The class of the returned object is `c("evmissing", "mle", "list")`.
+#' The class of the returned object is `c("evmissing", "gev_mle", "list")`.
 #'
 #' Objects inheriting from class `"evmissing"` have `coef`, `logLik`, `nobs`,
 #' `summary`, `vcov` and `confint` methods.  See [`evmissing_methods`].
@@ -270,6 +270,6 @@ gev_mle <- function(data, block_length, block, adjust = TRUE, discard = 0,
   fit$adjust <- adjust
   fit$discard <- discard
   attr(fit, "call") <- match.call(expand.dots = TRUE)
-  class(fit) <- c("evmissing", "mle", class(fit))
+  class(fit) <- c("evmissing", "gev_mle", class(fit))
   return(fit)
 }

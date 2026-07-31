@@ -76,7 +76,7 @@ could have been observed in each of these blocks.
 
 The call to \code{gev_mle} is provided in the attribute \code{"call"}.
 
-The class of the returned object is \code{c("evmissing", "mle", "list")}.
+The class of the returned object is \code{c("evmissing", "gev_mle", "list")}.
 
 Objects inheriting from class \code{"evmissing"} have \code{coef}, \code{logLik}, \code{nobs},
 \code{summary}, \code{vcov} and \code{confint} methods.  See \code{\link{evmissing_methods}}.

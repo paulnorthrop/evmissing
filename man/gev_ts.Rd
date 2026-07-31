@@ -79,6 +79,8 @@ in the interval \eqn{[n_i/n, 1]}.
 }
 
 The call to \code{gev_ts} is provided in the attribute \code{"call"}.
+
+The class of the returned object is \code{c("evmissing", "gev_ts", "list")}.
 }
 \description{
 Fits a GEV distribution to block maxima using maximum likelihood estimation,
