@@ -5,7 +5,8 @@
 \alias{LaPlagnePrecipMaximaSeasonal}
 \title{Winter Precipitation Maxima and Seasonal Missing Information at La Plagne, France}
 \format{
-\code{LaPlagnePrecipMaximaSeasonal} is a list. See \code{\link{block_maxima}}.
+\code{LaPlagnePrecipMaximaSeasonal} is a list inheriting from class
+\code{"block_maxima"}. See \code{\link{block_maxima}} and \code{\link{plot.block_maxima}}.
 }
 \usage{
 data(LaPlagnePrecipMaximaSeasonal)
