@@ -345,11 +345,11 @@ confint.evmissing <- function(object, parm = "all", level = 0.95,
     # Extract the parameter numbers to include
     parm_numbers <- (1:length(parm_values))[which_parm]
     # Recreate the list maxima_notNA, depending on whether object came from
-    # gev_mle()/gev_weighted or gev_ts()
+    # gev_mle() or gev_ts()
     if (fitting_fn == "gev_mle") {
       maxima_notNA <- list(maxima = object$maxima, notNA = object$notNA,
                            n = object$n)
-    } else {
+    } else if (fitting_fn == "gev_ts") {
       maxima_notNA <- list(full_maxima = object$full_maxima,
                            partial_maxima = object$partial_maxima)
     }
