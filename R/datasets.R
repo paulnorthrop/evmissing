@@ -326,7 +326,7 @@
 #'
 #' These data are the result of a call
 #' `block_maxima(data = LaPlagne$rr24, block = LaPlagne$winter, pseudo = TRUE, seasonal = FALSE)`
-#' to [`block_maxima()`].
+#' to [`block_maxima`].
 #'
 #' @format `LaPlagnePrecipMaxima` is a list. See [`block_maxima`].
 #' @seealso [`LaPlagne`].
@@ -336,7 +336,7 @@
 #'
 #' These data are the result of a call
 #' `block_maxima(data = LaPlagne$rr24, block = LaPlagne$winter, pseudo = TRUE, seasonal = TRUE)`
-#' to [`block_maxima()`].
+#' to [`block_maxima`].
 #'
 #' @format `LaPlagnePrecipMaximaSeasonal` is a list. See [`block_maxima`].
 #' @seealso [`LaPlagne`].
@@ -346,7 +346,7 @@
 #'
 #' These data are the result of a call
 #' `block_maxima(data = LaPlagne$ht_neige, block = LaPlagne$winter, pseudo = TRUE, seasonal = FALSE)`
-#' to [`block_maxima()`].
+#' to [`block_maxima`].
 #'
 #' @format `LaPlagneSnowMaxima` is a list. See [`block_maxima`].
 #' @seealso [`LaPlagne`].
@@ -356,7 +356,7 @@
 #'
 #' These data are the result of a call
 #' `block_maxima(data = LaPlagne$ht_neige, block = LaPlagne$winter, pseudo = TRUE, seasonal = TRUE)`
-#' to [`block_maxima()`].
+#' to [`block_maxima`].
 #'
 #' @format `LaPlagneSnowMaximaSeasonal` is a list. See [`block_maxima`].
 #' @seealso [`LaPlagne`].
