@@ -323,6 +323,7 @@ confint.evmissing <- function(object, parm = "all", level = 0.95,
   # If not, was it produced by gev_mle() or gev_ts()?
   if (inherits(object, "weighted_mle")) {
     weighted_fit <- TRUE
+    fitting_fn <- "gev_weighted"
   } else {
     weighted_fit <- FALSE
     if (inherits(object, "gev_mle")) {
