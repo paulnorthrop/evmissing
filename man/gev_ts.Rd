@@ -71,11 +71,11 @@ component \code{par}), with the additional components:
 could have been observed in each of these blocks.
 \item \code{rvec}: a vector of the values used for \eqn{r_1, ..., r_b}, where \eqn{b}
 is the number of blocks. The content depends on the argument \code{pseudo}.
-\item \code{rhats}: if \code{pseudo = TRUE}, a vector of the subset of \code{rvec} for
-partially-observed blocks only. The attributes \code{"propn_notNA"} and
-\code{"unconstrained"} give, respectively, the values of \eqn{n_i/n} for these
-blocks and the estimates of \eqn{r_i} before they are constrained to lie
-in the interval \eqn{[n_i/n, 1]}.
+\item \code{rhats}: a vector of the subset of \code{rvec} for partially-observed blocks
+only. The attributes \code{"propn_notNA"} and \code{"unconstrained"} give,
+respectively, the values of \eqn{n_i/n} for these blocks and the
+estimates of \eqn{r_i} before they are constrained to lie in the interval
+\eqn{[n_i/n, 1]}.
 \item \code{sliding}: the input argument \code{sliding}.
 }
 

@@ -86,11 +86,11 @@
 #'     could have been observed in each of these blocks.
 #' * `rvec`: a vector of the values used for \eqn{r_1, ..., r_b}, where \eqn{b}
 #'   is the number of blocks. The content depends on the argument `pseudo`.
-#' * `rhats`: if `pseudo = TRUE`, a vector of the subset of `rvec` for
-#'    partially-observed blocks only. The attributes `"propn_notNA"` and
-#'    `"unconstrained"` give, respectively, the values of \eqn{n_i/n} for these
-#'    blocks and the estimates of \eqn{r_i} before they are constrained to lie
-#'    in the interval \eqn{[n_i/n, 1]}.
+#' * `rhats`: a vector of the subset of `rvec` for partially-observed blocks
+#'    only. The attributes `"propn_notNA"` and `"unconstrained"` give,
+#'    respectively, the values of \eqn{n_i/n} for these blocks and the
+#'    estimates of \eqn{r_i} before they are constrained to lie in the interval
+#'    \eqn{[n_i/n, 1]}.
 #' * `sliding`: the input argument `sliding`.
 #'
 #' The call to `gev_ts` is provided in the attribute `"call"`.
@@ -242,7 +242,7 @@ gev_ts <- function(data, block_length, block, pseudo = TRUE, full = FALSE,
       names(rvec) <- names(maxima_notNA$maxima)
       rvec[names(fit$rhats)] <- fit$rhats[names(fit$rhats)]
       fit$rvec <- rvec
-      # Call stats::optimHess(), suppling fixed_r, so that the values of r do
+      # Call stats::optimHess(), supplying fixed_r, so that the values of r do
       # not vary as the GEV parameter values are changed
       hessian <- stats::optimHess(par = fit$par,
                                   fn = negated_gev_loglik_ts,
@@ -253,6 +253,9 @@ gev_ts <- function(data, block_length, block, pseudo = TRUE, full = FALSE,
     } else {
       fit$rhats <- NULL
       fit$rvec <- maxima_notNA$notNA / maxima_notNA$n
+      rm_full <- which(is.element(names(fit$rvec),
+                                  names(maxima_notNA$full_maxima)))
+      fit$rhats <- fit$rvec[-rm_full]
       hessian <- fit$hessian
     }
     var_cov <- qr(hessian)
