@@ -362,7 +362,8 @@ confint.evmissing <- function(object, parm = "all", level = 0.95,
           if (weighted_fit) {
             conf_list <- faster_profile_ci(negated_loglik_fn =
                                              weighted_negated_gev_loglik,
-                                           which = parm_numbers[i], level = level,
+                                           which = parm_numbers[i],
+                                           level = level,
                                            mle = coef(object),
                                            ci_sym_mat = ci_sym_mat,
                                            inc = inc[i],
@@ -370,8 +371,10 @@ confint.evmissing <- function(object, parm = "all", level = 0.95,
                                            maxima = object$maxima,
                                            weights = object$weights)
           } else {
-            conf_list <- faster_profile_ci(negated_loglik_fn = negated_gev_loglik,
-                                           which = parm_numbers[i], level = level,
+            conf_list <- faster_profile_ci(negated_loglik_fn =
+                                             negated_gev_loglik,
+                                           which = parm_numbers[i],
+                                           level = level,
                                            mle = coef(object),
                                            ci_sym_mat = ci_sym_mat,
                                            inc = inc[i],
