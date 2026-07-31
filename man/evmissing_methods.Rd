@@ -49,7 +49,7 @@
 }
 \arguments{
 \item{object}{An object inheriting from class \code{"evmissing"}, a result of a
-call to \code{\link{gev_mle}}.}
+call to \code{\link{gev_mle}} or \code{\link{gev_ts}}.}
 
 \item{...}{Further arguments. Only used in the following cases.
 \itemize{
@@ -185,7 +185,8 @@ contains the estimated return levels and columns 1 and 3 the lower and
 upper confidence limits.
 }
 \description{
-Methods for objects of class \code{"evmissing"} returned from \code{\link{gev_mle}}.
+Methods for objects of class \code{"evmissing"} returned from \code{\link{gev_mle}} or
+\code{\link{gev_ts}}.
 }
 \details{
 The plots produced by \code{plot.evmissing} are of a similar form to the
@@ -266,5 +267,5 @@ Introduction to Statistical Modeling of Extreme Values}. R package version
 1.42. \doi{10.32614/CRAN.package.ismev}
 }
 \seealso{
-\code{\link{gev_mle}} and \code{\link{confint_gev_methods}}.
+\code{\link{gev_mle}}, \code{\link{gev_ts}} and \code{\link{confint_gev_methods}}.
 }

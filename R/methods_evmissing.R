@@ -1,8 +1,9 @@
 #' Methods for objects of class `"evmissing"`
 #'
-#' Methods for objects of class `"evmissing"` returned from [`gev_mle`].
+#' Methods for objects of class `"evmissing"` returned from [`gev_mle`] or
+#' [`gev_ts`].
 #' @param object An object inheriting from class `"evmissing"`, a result of a
-#'   call to [`gev_mle`].
+#'   call to [`gev_mle`] or [`gev_ts`].
 #' @param x An object returned by `summary.evmissing` or (for `plot.evmissing`)
 #'   an object inheriting from class `"evmissing"`.
 #' @param ... Further arguments. Only used in the following cases.
@@ -129,7 +130,7 @@
 #' x <- confint(fit, profile = TRUE, mult = 32, faster = TRUE)
 #' x
 #' plot(x, parm = "xi", type = "b")
-#' @seealso [`gev_mle`] and [`confint_gev_methods`].
+#' @seealso [`gev_mle`], [`gev_ts`] and [`confint_gev_methods`].
 #' @name evmissing_methods
 NULL
 ## NULL
@@ -319,11 +320,22 @@ confint.evmissing <- function(object, parm = "all", level = 0.95,
 
   # If profile log-likelihood-based intervals are required then calculate them
   # Was the fitted object produced by gev_weighted()?
+  # If not, was it produced by gev_mle() or gev_ts()?
   if (inherits(object, "weighted_mle")) {
     weighted_fit <- TRUE
   } else {
     weighted_fit <- FALSE
+    if (inherits(object, "gev_mle")) {
+      fitting_fn <- "gev_mle"
+    } else if (inherits(object, "gev_ts")) {
+      fitting_fn <- "gev_ts"
+    } else {
+      error_message <-
+        "''object'' must inherit from class gev_mle, gev_ts or weighted_mle"
+      stop(error_message)
+    }
   }
+
   if (profile) {
     # The number of parameters
     n_parm <- length(parm)
@@ -331,9 +343,15 @@ confint.evmissing <- function(object, parm = "all", level = 0.95,
     epsilon <- rep_len(epsilon, n_parm)
     # Extract the parameter numbers to include
     parm_numbers <- (1:length(parm_values))[which_parm]
-    # Recreate the list maxima_notNA
-    maxima_notNA <- list(maxima = object$maxima, notNA = object$notNA,
-                         n = object$n)
+    # Recreate the list maxima_notNA, depending on whether object came from
+    # gev_mle()/gev_weighted or gev_ts()
+    if (fitting_fn == "gev_mle") {
+      maxima_notNA <- list(maxima = object$maxima, notNA = object$notNA,
+                           n = object$n)
+    } else {
+      maxima_notNA <- list(full_maxima = object$full_maxima,
+                           partial_maxima = object$partial_maxima)
+    }
     # An empty list in which to store the profile log-likelihood values
     # Likewise for the values of the GEV parameters at the confidence limits
     for_plot <- list()
@@ -371,16 +389,29 @@ confint.evmissing <- function(object, parm = "all", level = 0.95,
                                            maxima = object$maxima,
                                            weights = object$weights)
           } else {
-            conf_list <- faster_profile_ci(negated_loglik_fn =
-                                             negated_gev_loglik,
-                                           which = parm_numbers[i],
-                                           level = level,
-                                           mle = coef(object),
-                                           ci_sym_mat = ci_sym_mat,
-                                           inc = inc[i],
-                                           epsilon = epsilon[i],
-                                           maxima_notNA = maxima_notNA,
-                                           adjust = object$adjust)
+            if (fitting_fn == "gev_mle") {
+              conf_list <- faster_profile_ci(negated_loglik_fn =
+                                               negated_gev_loglik,
+                                             which = parm_numbers[i],
+                                             level = level,
+                                             mle = coef(object),
+                                             ci_sym_mat = ci_sym_mat,
+                                             inc = inc[i],
+                                             epsilon = epsilon[i],
+                                             maxima_notNA = maxima_notNA,
+                                             adjust = object$adjust)
+            } else {
+              conf_list <- faster_profile_ci(negated_loglik_fn =
+                                               negated_gev_loglik_ts,
+                                             which = parm_numbers[i],
+                                             level = level,
+                                             mle = coef(object),
+                                             ci_sym_mat = ci_sym_mat,
+                                             inc = inc[i],
+                                             epsilon = epsilon[i],
+                                             maxima_notNA = maxima_notNA,
+                                             fixed_r = as.numeric(object$rhats))
+            }
           }
           if (!is.null(conf_list$optim_error)) {
             mult <- mult / 2
@@ -402,12 +433,21 @@ confint.evmissing <- function(object, parm = "all", level = 0.95,
                                     maxima = object$maxima,
                                     weights = object$weights)
           } else {
-            conf_list <- profile_ci(negated_loglik_fn = negated_gev_loglik,
-                                    which = parm_numbers[i], level = level,
-                                    mle = coef(object), inc = inc[i],
-                                    epsilon = epsilon[i],
-                                    maxima_notNA = maxima_notNA,
-                                    adjust = object$adjust)
+            if (fitting_fn == "gev_mle") {
+              conf_list <- profile_ci(negated_loglik_fn = negated_gev_loglik,
+                                      which = parm_numbers[i], level = level,
+                                      mle = coef(object), inc = inc[i],
+                                      epsilon = epsilon[i],
+                                      maxima_notNA = maxima_notNA,
+                                      adjust = object$adjust)
+            } else {
+              conf_list <- profile_ci(negated_loglik_fn = negated_gev_loglik_ts,
+                                      which = parm_numbers[i], level = level,
+                                      mle = coef(object), inc = inc[i],
+                                      epsilon = epsilon[i],
+                                      maxima_notNA = maxima_notNA,
+                                      fixed_r = as.numeric(object$rhats))
+            }
           }
           if (!is.null(conf_list$optim_error)) {
             mult <- mult / 2
@@ -444,9 +484,11 @@ confint.evmissing <- function(object, parm = "all", level = 0.95,
     attr(ci_mat, "crit") <- conf_list$crit
     attr(ci_mat, "level") <- level
     if (any(epsilon > 0) || !faster) {
-      names(lower_pars) <- c("when profiling for mu", "when profiling for sigma",
+      names(lower_pars) <- c("when profiling for mu",
+                             "when profiling for sigma",
                              "when profiling for xi")[which_parm]
-      names(upper_pars) <- c("when profiling for mu", "when profiling for sigma",
+      names(upper_pars) <- c("when profiling for mu",
+                             "when profiling for sigma",
                              "when profiling for xi")[which_parm]
     }
     attr(ci_mat, "lower_pars") <- lower_pars
