@@ -21,6 +21,7 @@
 \alias{maxima_block}
 \alias{rhat}
 \alias{negated_gev_loglik_ts}
+\alias{negated_gev_loglik_ret_levs_ts}
 \alias{faster_profile_ci}
 \alias{profile_ci}
 \alias{box_cox}
@@ -99,6 +100,8 @@ maxima_block(data, block, pseudo)
 rhat(parameters, maxima_notNA)
 
 negated_gev_loglik_ts(parameters, maxima_notNA, pseudo, fixed_r, big_val = Inf)
+
+negated_gev_loglik_ret_levs_ts(parameters, maxima_notNA, m, npy, big_val = Inf)
 
 faster_profile_ci(
   negated_loglik_fn,

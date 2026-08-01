@@ -682,6 +682,37 @@ negated_gev_loglik_ts <- function(parameters, maxima_notNA, pseudo, fixed_r,
   return(-sum(loglik))
 }
 
+# ================== GEV log-likelihood for return levels ts ================ #
+
+#' @keywords internal
+#' @rdname evmissing-internal
+negated_gev_loglik_ret_levs_ts <- function(parameters, maxima_notNA, m, npy,
+                                           big_val = Inf) {
+  # Extract (all) the maxima and the values of r
+  maxima <- maxima_notNA$maxima
+  rvec <- maxima_notNA$rvec
+  # Extract the parameter values: (return level zp, sigma, xi)
+  zp <- parameters[1]
+  sigma <- parameters[2]
+  xi <- parameters[3]
+  # Infer the value of the GEV location parameter mu
+  # Set the annual probability of exceedance based on m and npy
+  p <- 1 - (1 - 1 / m) ^ (1 / npy)
+  mu <- zp + sigma * box_cox_vec(x = -log(1 - p), lambda = -xi)
+  # Infer the GEV parameter values for all blocks
+  mu <- mu + sigma * box_cox_vec(x = rvec, lambda = xi)
+  sigma <- sigma * rvec ^ xi
+  # Check that the parameters are not out-of-bounds
+  if (any(sigma <= 0) || any(1 + xi * (maxima - mu) / sigma <= 0)) {
+    return(big_val)
+  }
+  # Use the nieve package to calculate the contributions to the log-likelihood
+  loglik <- nieve::dGEV(x = maxima, loc = mu, scale = sigma, shape = xi,
+                        log = TRUE)
+  # Return the sum of the contributions
+  return(-sum(loglik))
+}
+
 # ======================== Faster GEV profiling function ==================== #
 
 #' @keywords internal
