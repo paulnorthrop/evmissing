@@ -246,7 +246,7 @@ confint.return_level <- function(object, parm = 1:length(object), level = 0.95,
         adjust <- gev_object$adjust
       } else if (fitting_fn == "gev_ts") {
         maxima_notNA <- list(maxima = gev_object$maxima,
-                             rvec = attr(object, "gev_mle")$rvec)
+                             rvec = gev_object$rvec)
       }
     }
     # An empty list in which to store the profile log-likelihood values
