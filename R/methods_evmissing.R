@@ -350,7 +350,8 @@ confint.evmissing <- function(object, parm = "all", level = 0.95,
       maxima_notNA <- list(maxima = object$maxima, notNA = object$notNA,
                            n = object$n)
     } else if (fitting_fn == "gev_ts") {
-      maxima_notNA <- list(full_maxima = object$full_maxima,
+      maxima_notNA <- list(maxima = object$maxima,
+                           full_maxima = object$full_maxima,
                            partial_maxima = object$partial_maxima)
     }
     # An empty list in which to store the profile log-likelihood values
