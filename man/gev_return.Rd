@@ -20,9 +20,9 @@ year. If the blocks are of length 1 year then \code{npy = 1}.}
 An object with class \code{c("return_level", "numeric", "evmissing")}.
 A numeric vector containing the MLEs of the required return levels, with
 names indicating the return period. The fitted model object returned
-from \code{\link{gev_mle}} is included as an attribute called \code{"gev_mle"}.
-The input arguments \code{m} and \code{npy} are also included as attributes as is
-the call to \code{gev_return}.
+from \code{\link{gev_mle}}, \code{\link{gev_ts}} or \code{\link{gev_weighted}} is included as an
+attribute called \code{"gev_fit_object"}. The input arguments \code{m} and \code{npy} are
+also included as attributes as is the call to \code{gev_return}.
 }
 \description{
 Calculates point estimates of \eqn{m}-year return levels for fitted model

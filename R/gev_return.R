@@ -18,9 +18,9 @@
 #' @return An object with class `c("return_level", "numeric", "evmissing")`.
 #'   A numeric vector containing the MLEs of the required return levels, with
 #'   names indicating the return period. The fitted model object returned
-#'   from [`gev_mle`] is included as an attribute called `"gev_mle"`.
-#'   The input arguments `m` and `npy` are also included as attributes as is
-#'   the call to `gev_return`.
+#'   from [`gev_mle`], [`gev_ts`] or [`gev_weighted`] is included as an
+#'   attribute called `"gev_fit_object"`. The input arguments `m` and `npy` are
+#'   also included as attributes as is the call to `gev_return`.
 #' @references Coles, S. G. (2001) *An Introduction to Statistical
 #'   Modeling of Extreme Values*, Springer-Verlag, London.
 #'   \doi{10.1007/978-1-4471-3675-0_3}
@@ -79,7 +79,7 @@ gev_return <- function(x, m = 100, npy = 1) {
   return_levels <- nieve::qGEV(p, loc = mu, scale = sigma, shape = xi,
                                lower.tail = FALSE)
   names(return_levels) <- paste0(round(m, 2), "-year level")
-  attr(return_levels, "gev_mle") <- x
+  attr(return_levels, "gev_fit_object") <- x
   attr(return_levels, "m") <- m
   attr(return_levels, "npy") <- npy
   attr(return_levels, "call") <- match.call(expand.dots = TRUE)

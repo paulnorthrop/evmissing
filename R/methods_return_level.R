@@ -86,7 +86,7 @@ vcov.return_level <- function(object, ...) {
   # Extract m, npy and the fitted GEV model object
   m <- attr(object, "m")
   npy <- attr(object, "npy")
-  gev_mle_object <- attr(object, "gev_mle")
+  gev_mle_object <- attr(object, "gev_fit_object")
   # Extract the MLEs and their estimated VC matrix
   mle <- coef(gev_mle_object)
   mu <- mle[1]
@@ -210,14 +210,14 @@ confint.return_level <- function(object, parm = 1:length(object), level = 0.95,
 
   # If profile log-likelihood-based intervals are required then calculate them
   # Was the fitted object produced by gev_weighted()?
-  if (inherits(attr(object, "gev_mle"), "weighted_mle")) {
+  if (inherits(attr(object, "gev_fit_object"), "weighted_mle")) {
     weighted_fit <- TRUE
     fitting_fn <- "gev_weighted"
   } else {
     weighted_fit <- FALSE
-    if (inherits(attr(object, "gev_mle"), "gev_mle")) {
+    if (inherits(attr(object, "gev_fit_object"), "gev_mle")) {
       fitting_fn <- "gev_mle"
-    } else if (inherits(attr(object, "gev_mle"), "gev_ts")) {
+    } else if (inherits(attr(object, "gev_fit_object"), "gev_ts")) {
       fitting_fn <- "gev_ts"
     } else {
       error_message <-
@@ -228,7 +228,7 @@ confint.return_level <- function(object, parm = 1:length(object), level = 0.95,
 
   if (profile) {
     # Extract the fitted GEV object returned by gev_mle()
-    gev_object <- attr(object, "gev_mle")
+    gev_object <- attr(object, "gev_fit_object")
     # The number of parameters
     n_parm <- length(parm)
     # Force epsilon to have length equal to the total number of return levels
