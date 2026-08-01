@@ -212,8 +212,18 @@ confint.return_level <- function(object, parm = 1:length(object), level = 0.95,
   # Was the fitted object produced by gev_weighted()?
   if (inherits(attr(object, "gev_mle"), "weighted_mle")) {
     weighted_fit <- TRUE
+    fitting_fn <- "gev_weighted"
   } else {
     weighted_fit <- FALSE
+    if (inherits(attr(object, "gev_mle"), "gev_mle")) {
+      fitting_fn <- "gev_mle"
+    } else if (inherits(attr(object, "gev_mle"), "gev_ts")) {
+      fitting_fn <- "gev_ts"
+    } else {
+      error_message <-
+        "''object'' must inherit from class gev_mle, gev_ts or weighted_mle"
+      stop(error_message)
+    }
   }
 
   if (profile) {
@@ -228,9 +238,16 @@ confint.return_level <- function(object, parm = 1:length(object), level = 0.95,
       maxima <- gev_object$maxima
       weights <- gev_object$weights
     } else {
-      maxima_notNA <- list(maxima = gev_object$maxima, notNA = gev_object$notNA,
-                           n = gev_object$n)
-      adjust <- gev_object$adjust
+      # Recreate the list maxima_notNA, depending on whether object came from
+      # gev_mle() or gev_ts()
+      if (fitting_fn == "gev_mle") {
+        maxima_notNA <- list(maxima = gev_object$maxima,
+                             notNA = gev_object$notNA, n = gev_object$n)
+        adjust <- gev_object$adjust
+      } else if (fitting_fn == "gev_ts") {
+        maxima_notNA <- list(maxima = gev_object$maxima,
+                             rvec = attr(object, "gev_mle")$rvec)
+      }
     }
     # An empty list in which to store the profile log-likelihood values
     for_plot <- list()
@@ -283,17 +300,31 @@ confint.return_level <- function(object, parm = 1:length(object), level = 0.95,
                                            weights = weights, m = m[i],
                                            npy = npy, ci_init = ci_init)
           } else {
-            conf_list <- faster_profile_ci(negated_loglik_fn =
-                                             negated_gev_loglik_ret_levs,
-                                           which = 1, level = level,
-                                           mle = mle_to_pass,
-                                           ci_sym_mat =
-                                             ci_sym_mat[i, , drop = FALSE],
-                                           inc = inc[i],
-                                           epsilon = epsilon[i],
-                                           maxima_notNA = maxima_notNA,
-                                           adjust = adjust, m = m[i],
-                                           npy = npy, ci_init = ci_init)
+            if (fitting_fn == "gev_mle") {
+              conf_list <- faster_profile_ci(negated_loglik_fn =
+                                               negated_gev_loglik_ret_levs,
+                                             which = 1, level = level,
+                                             mle = mle_to_pass,
+                                             ci_sym_mat =
+                                               ci_sym_mat[i, , drop = FALSE],
+                                             inc = inc[i],
+                                             epsilon = epsilon[i],
+                                             maxima_notNA = maxima_notNA,
+                                             adjust = adjust, m = m[i],
+                                             npy = npy, ci_init = ci_init)
+            } else {
+              conf_list <- faster_profile_ci(negated_loglik_fn =
+                                               negated_gev_loglik_ret_levs_ts,
+                                             which = 1, level = level,
+                                             mle = mle_to_pass,
+                                             ci_sym_mat =
+                                               ci_sym_mat[i, , drop = FALSE],
+                                             inc = inc[i],
+                                             epsilon = epsilon[i],
+                                             maxima_notNA = maxima_notNA,
+                                             m = m[i], npy = npy,
+                                             ci_init = ci_init)
+            }
           }
           if (!is.null(conf_list$optim_error)) {
             mult <- mult / 2
@@ -316,14 +347,24 @@ confint.return_level <- function(object, parm = 1:length(object), level = 0.95,
                                     weights = weights, m = m[i],
                                     npy = npy)
           } else {
-            conf_list <- profile_ci(negated_loglik_fn =
-                                      negated_gev_loglik_ret_levs,
-                                    which = 1, level = level,
-                                    mle = mle_to_pass, inc = inc[i],
-                                    epsilon = epsilon[i],
-                                    maxima_notNA = maxima_notNA,
-                                    adjust = adjust, m = m[i],
-                                    npy = npy)
+            if (fitting_fn == "gev_mle") {
+              conf_list <- profile_ci(negated_loglik_fn =
+                                        negated_gev_loglik_ret_levs,
+                                      which = 1, level = level,
+                                      mle = mle_to_pass, inc = inc[i],
+                                      epsilon = epsilon[i],
+                                      maxima_notNA = maxima_notNA,
+                                      adjust = adjust, m = m[i],
+                                      npy = npy)
+            } else {
+              conf_list <- profile_ci(negated_loglik_fn =
+                                        negated_gev_loglik_ret_levs_ts,
+                                      which = 1, level = level,
+                                      mle = mle_to_pass, inc = inc[i],
+                                      epsilon = epsilon[i],
+                                      maxima_notNA = maxima_notNA,
+                                      m = m[i], npy = npy)
+            }
           }
           if (!is.null(conf_list$optim_error)) {
             mult <- mult / 2
