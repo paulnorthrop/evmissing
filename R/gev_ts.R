@@ -232,7 +232,8 @@ gev_ts <- function(data, block_length, block, pseudo = TRUE, full = FALSE,
     dimnames(fit$vcov) <- list(par_names, par_names)
     fit$se <- fit$par
     fit$loglik <- NA
-    warning("MLEs not found: NA values returned.")
+    warning("MLEs not found: NA values returned")
+    warning("optim() error: ", optim_error)
   } else {
     # Include the final values of r used in the fitting (if pseudo = TRUE)
     # Also a vector of the values of r for all blocks (=1 for a full block)

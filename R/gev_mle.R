@@ -246,7 +246,8 @@ gev_mle <- function(data, block_length, block, adjust = TRUE, discard = 0,
     dimnames(fit$vcov) <- list(par_names, par_names)
     fit$se <- fit$par
     fit$loglik <- NA
-    warning("MLEs not found: NA values returned.")
+    warning("MLEs not found: NA values returned")
+    warning("optim() error: ", optim_error)
   } else {
     var_cov <- qr(fit$hessian)
     if (var_cov$rank != ncol(var_cov$qr)) {

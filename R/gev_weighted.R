@@ -211,7 +211,8 @@ gev_weighted <- function(data, scheme = 1, block_length, block,
     dimnames(fit$vcov) <- list(par_names, par_names)
     fit$se <- fit$par
     fit$loglik <- NA
-    warning("MLEs not found: NA values returned.")
+    warning("MLEs not found: NA values returned")
+    warning("optim() error: ", optim_error)
   } else {
     var_cov <- qr(fit$hessian)
     if (var_cov$rank != ncol(var_cov$qr)) {
