@@ -288,17 +288,12 @@ confint.return_level <- function(object, parm = 1:length(object), level = 0.95,
           # Reset inc
           inc <- mult * ses / 100
           if (weighted_fit) {
-            conf_list <- faster_profile_ci(negated_loglik_fn =
-                                             weighted_negated_gev_loglik_ret_levs,
-                                           which = 1, level = level,
-                                           mle = mle_to_pass,
-                                           ci_sym_mat =
-                                             ci_sym_mat[i, , drop = FALSE],
-                                           inc = inc[i],
-                                           epsilon = epsilon[i],
-                                           maxima = maxima,
-                                           weights = weights, m = m[i],
-                                           npy = npy, ci_init = ci_init)
+            conf_list <- faster_profile_ci(
+              negated_loglik_fn = weighted_negated_gev_loglik_ret_levs,
+              which = 1, level = level, mle = mle_to_pass,
+              ci_sym_mat = ci_sym_mat[i, , drop = FALSE], inc = inc[i],
+              epsilon = epsilon[i], maxima = maxima, weights = weights,
+              m = m[i], npy = npy, ci_init = ci_init)
           } else {
             if (fitting_fn == "gev_mle") {
               conf_list <- faster_profile_ci(negated_loglik_fn =
