@@ -1568,19 +1568,24 @@ gev_pp <- function (x, adjust, level, ...){
   # Standard uniform quantiles
   model <- (1:b) / (b + 1)
 
-  # Adjust the GEV parameters for each block maximum based on the number of
-  # non-missing raw observations
-  n_i <- x$notNA
-  n <- x$n
   # Extract the GEV parameter values for a complete block
   mu <- mle["mu"]
   sigma <- mle["sigma"]
   xi <- mle["xi"]
-  # Infer the GEV parameter values for all blocks
+  # Adjust the GEV parameters for each block maximum based on the proportion
+  # ("gev_mle") or positions ("gev_ts") of non-missing raw observations
   if (adjust) {
-    p_i <- n_i / n
-    mu <- mu + sigma * box_cox_vec(x = p_i, lambda = xi)
-    sigma <- sigma * p_i ^ xi
+    if (inherits(x, "gev_mle")) {
+      n_i <- x$notNA
+      n <- x$n
+      p_i <- n_i / n
+      mu <- mu + sigma * box_cox_vec(x = p_i, lambda = xi)
+      sigma <- sigma * p_i ^ xi
+    } else if (inherits(x, "gev_ts")) {
+      rvec <- x$rvec
+      mu <- mu + sigma * box_cox_vec(x = rvec, lambda = xi)
+      sigma <- sigma * rvec ^ xi
+    }
   }
 
   # Calculate the GEV cdf for each block maximum
@@ -1616,16 +1621,22 @@ gev_qq <- function (x, adjust, level, ...){
                        lower.tail = TRUE)
 
   # If adjust = TRUE transform maxima to have a 'full-block' GEV distribution.
-  # Adjust the GEV parameters for each block maximum based on the number of
-  # non-missing raw observations.
+  # Adjust the GEV parameters for each block maximum based on the proportion
+  # ("gev_mle") or positions ("gev_ts") of non-missing raw observations
   # Otherwise, use the maxima untransformed.
-  n_i <- x$notNA
-  n <- x$n
-  # Infer the GEV parameter values for all blocks
   if (adjust) {
-    p_i <- n_i / n
-    mu <- mu_full + sigma_full * box_cox_vec(x = p_i, lambda = xi)
-    sigma <- sigma_full * p_i ^ xi
+    if (inherits(x, "gev_mle")) {
+      n_i <- x$notNA
+      n <- x$n
+      p_i <- n_i / n
+      mu <- mu_full + sigma_full * box_cox_vec(x = p_i, lambda = xi)
+      sigma <- sigma_full * p_i ^ xi
+    } else if (inherits(x, "gev_ts")) {
+      rvec <- x$rvec
+      mu <- mu_full + sigma_full * box_cox_vec(x = rvec, lambda = xi)
+      sigma <- sigma_full * rvec ^ xi
+    }
+
     # Calculate the GEV cdf for each block maximum
     # We need to retain the order of the block maxima for this calculation
     empirical <- nieve::pGEV(q = maxima,
@@ -1664,16 +1675,22 @@ gev_rl <- function (x, adjust, m, level, profile, num, npy, ...){
   xi <- mle["xi"]
 
   # If adjust = TRUE transform maxima to have a 'full-block' GEV distribution.
-  # Adjust the GEV parameters for each block maximum based on the number of
-  # non-missing raw observations.
+  # Adjust the GEV parameters for each block maximum based on the proportion
+  # ("gev_mle") or positions ("gev_ts") of non-missing raw observations
   # Otherwise, use the maxima untransformed.
-  n_i <- x$notNA
-  n <- x$n
-  # Infer the GEV parameter values for all blocks
   if (adjust) {
-    p_i <- n_i / n
-    mu <- mu_full + sigma_full * box_cox_vec(x = p_i, lambda = xi)
-    sigma <- sigma_full * p_i ^ xi
+    if (inherits(x, "gev_mle")) {
+      n_i <- x$notNA
+      n <- x$n
+      p_i <- n_i / n
+      mu <- mu_full + sigma_full * box_cox_vec(x = p_i, lambda = xi)
+      sigma <- sigma_full * p_i ^ xi
+    } else if (inherits(x, "gev_ts")) {
+      rvec <- x$rvec
+      mu <- mu_full + sigma_full * box_cox_vec(x = rvec, lambda = xi)
+      sigma <- sigma_full * rvec ^ xi
+    }
+
     # Calculate the GEV cdf for each block maximum
     # We need to retain the order of the block maxima for this calculation
     empirical <- nieve::pGEV(q = maxima,
@@ -1739,16 +1756,22 @@ gev_his <- function (x, adjust, ...){
                        lower.tail = TRUE)
 
   # If adjust = TRUE transform maxima to have a 'full-block' GEV distribution.
-  # Adjust the GEV parameters for each block maximum based on the number of
-  # non-missing raw observations.
+  # Adjust the GEV parameters for each block maximum based on the proportion
+  # ("gev_mle") or positions ("gev_ts") of non-missing raw observations
   # Otherwise, use the maxima untransformed.
-  n_i <- x$notNA
-  n <- x$n
-  # Infer the GEV parameter values for all blocks
   if (adjust) {
-    p_i <- n_i / n
-    mu <- mu_full + sigma_full * box_cox_vec(x = p_i, lambda = xi)
-    sigma <- sigma_full * p_i ^ xi
+    if (inherits(x, "gev_mle")) {
+      n_i <- x$notNA
+      n <- x$n
+      p_i <- n_i / n
+      mu <- mu_full + sigma_full * box_cox_vec(x = p_i, lambda = xi)
+      sigma <- sigma_full * p_i ^ xi
+    } else if (inherits(x, "gev_ts")) {
+      rvec <- x$rvec
+      mu <- mu_full + sigma_full * box_cox_vec(x = rvec, lambda = xi)
+      sigma <- sigma_full * rvec ^ xi
+    }
+
     # Calculate the GEV cdf for each block maximum
     # We need to retain the order of the block maxima for this calculation
     empirical <- nieve::pGEV(q = maxima,
