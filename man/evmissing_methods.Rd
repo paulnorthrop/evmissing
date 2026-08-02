@@ -112,8 +112,9 @@ faster still.
 }}
 
 \item{adjust}{If \code{adjust = TRUE} then the diagnostic plots produced by
-\code{plot.evmissing} are adjusted for the number of non-missing observations
-contributing to each block maximum. Otherwise, no adjustment is made.}
+\code{plot.evmissing} are adjusted for the number \code{\link{gev_mle}} or positions
+\code{\link{gev_ts}} of non-missing observations contributing to each block maximum.
+Otherwise, no adjustment is made.}
 
 \item{which}{If supplied, this must either be a character scalar, one of
 \code{"pp"}, \code{"qq"}, \code{"return"} or \code{"density"} or a numeric scalar in \code{1:4},
@@ -210,6 +211,9 @@ each block based on the fitted GEV parameter values for reduced block
 sizes. Passing \code{adjust = FALSE} is not sensible, but, if there are missing
 data, then it can serve to show that making the adjustment is necessary to
 give the correct impression of how well the model has fitted the data.
+
+The \code{plot} method is not available for objects returned from
+\code{\link{gev_weighted}}.
 
 For \code{confint.evmissing}, the default, \code{epsilon = -1}, should work well
 enough in most circumstances, but to achieve a specific accuracy set

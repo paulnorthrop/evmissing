@@ -38,6 +38,9 @@
 #'   data, then it can serve to show that making the adjustment is necessary to
 #'   give the correct impression of how well the model has fitted the data.
 #'
+#'   The `plot` method is not available for objects returned from
+#'   [`gev_weighted`].
+#'
 #' @references Coles, S. G. (2001) *An Introduction to Statistical
 #'   Modeling of Extreme Values*, Springer-Verlag, London.
 #'   \doi{10.1007/978-1-4471-3675-0_3}
@@ -501,8 +504,9 @@ confint.evmissing <- function(object, parm = "all", level = 0.95,
 }
 
 #' @param adjust If `adjust = TRUE` then the diagnostic plots produced by
-#'   `plot.evmissing` are adjusted for the number of non-missing observations
-#'   contributing to each block maximum. Otherwise, no adjustment is made.
+#'   `plot.evmissing` are adjusted for the number [`gev_mle`] or positions
+#'   [`gev_ts`] of non-missing observations contributing to each block maximum.
+#'   Otherwise, no adjustment is made.
 #' @param which If supplied, this must either be a character scalar, one of
 #'   `"pp"`, `"qq"`, `"return"` or `"density"` or a numeric scalar in `1:4`,
 #'   with `1` corresponding to `"pp"` etc. If `which` is missing then all four
@@ -527,6 +531,10 @@ plot.evmissing <- function(x, adjust = TRUE,
                            which = c("pp", "qq", "return", "density"),
                            m = c(2, 10, 100, 1000), level = 0.95,
                            profile = TRUE, num, npy = 1, ...) {
+  # The plot method is not set up for objects returned from gev_weighted()
+  if (inherits(x, "weighted_mle")) {
+    stop("Plot method not available for objects returned from gev_weighted()")
+  }
   # Choose which plots to produce
   if (!missing(which)) {
     if (is.character(which)) {
