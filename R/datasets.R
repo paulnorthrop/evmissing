@@ -301,7 +301,7 @@
 #' @seealso [`LaPlagne`].
 #' @examples
 #' # Pattern of missingness over and within winters
-#' plot(LaPlagnePrecipMissings, pch = "_", main = "24 hour precipitation")
+#' plot(LaPlagnePrecipMissings, pch = "_", main = "missing 24 hour precipitation")
 "LaPlagnePrecipMissings"
 
 #' Winter Snow Missingness at La Plagne, France
@@ -319,7 +319,7 @@
 #' @seealso [`LaPlagne`].
 #' @examples
 #' # Pattern of missingness over and within winters
-#' plot(LaPlagneSnowMissings, pch = "_", main = "snow depth")
+#' plot(LaPlagneSnowMissings, pch = "_", main = "missing snow depth")
 "LaPlagneSnowMissings"
 
 #' Winter Precipitation Maxima and Missing Information at La Plagne, France

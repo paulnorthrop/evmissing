@@ -22,7 +22,7 @@ day 1 is 1 Decemeber, day 2 is 2 December etc.
 }
 \examples{
 # Pattern of missingness over and within winters
-plot(LaPlagneSnowMissings, pch = "_", main = "snow depth")
+plot(LaPlagneSnowMissings, pch = "_", main = "missing snow depth")
 }
 \seealso{
 \code{\link{LaPlagne}}.

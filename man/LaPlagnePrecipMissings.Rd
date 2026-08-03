@@ -22,7 +22,7 @@ day 1 is 1 Decemeber, day 2 is 2 December etc.
 }
 \examples{
 # Pattern of missingness over and within winters
-plot(LaPlagnePrecipMissings, pch = "_", main = "24 hour precipitation")
+plot(LaPlagnePrecipMissings, pch = "_", main = "missing 24 hour precipitation")
 }
 \seealso{
 \code{\link{LaPlagne}}.
