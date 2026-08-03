@@ -82,6 +82,9 @@ estimates of \eqn{r_i} before they are constrained to lie in the interval
 The call to \code{gev_ts} is provided in the attribute \code{"call"}.
 
 The class of the returned object is \code{c("evmissing", "gev_ts", "list")}.
+
+Objects inheriting from class \code{"evmissing"} have \code{coef}, \code{logLik}, \code{nobs},
+\code{summary}, \code{vcov}, \code{confint} and \code{plot} methods.  See \code{\link{evmissing_methods}}.
 }
 \description{
 Fits a GEV distribution to block maxima using maximum likelihood estimation,

@@ -23,15 +23,19 @@ when modelling block maxima, \emph{Environmetrics}, \strong{37}(2): e70075
 \details{
 The main functions are
 \itemize{
-\item \code{\link{gev_mle}}: maximum likelihood inference for block maxima based on a GEV
-distribution, with \code{\link[=evmissing_methods]{S3 methods}} including \code{confint}.
-\item \code{\link{gev_bayes}}: Bayesian inference for block maxima based on a GEV
-distribution.
+\item \code{\link{gev_mle}}: maximum likelihood inference for block maxima of independent
+sequences based on a GEV distribution.
+\item \code{\link{gev_ts}}: maximum likelihood inference for block maxima of stationary
+sequences based on a GEV distribution.
 }
 
-For objects returned by \code{gev_mle}, inferences about return levels are
-performed by \code{\link{gev_return}}, with with \code{\link[=return_level_methods]{S3 methods}}
-including \code{confint}.
+Objects returned by \code{\link{gev_mle}} or \code{\link{gev_ts}} have \code{coef}, \code{logLik}, \code{nobs},
+\code{summary}, \code{vcov}, \code{confint} and \code{plot} methods.  See \code{\link{evmissing_methods}}.
+For objects returned by \code{\link{gev_mle}} or \code{\link{gev_ts}} , inferences about return
+levels are performed by \code{\link{gev_return}}, with with
+\code{\link[=return_level_methods]{S3 methods}} including \code{confint}.
+
+The function \code{\link{gev_bayes}} is a Bayesian version of \code{\link{gev_mle}}.
 
 The function \code{\link{gev_influence}} quantifies the influence that individual
 extreme (small or large) block maxima have on the maximum likelihood

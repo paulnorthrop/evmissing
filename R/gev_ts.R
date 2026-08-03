@@ -96,6 +96,9 @@
 #' The call to `gev_ts` is provided in the attribute `"call"`.
 #'
 #' The class of the returned object is `c("evmissing", "gev_ts", "list")`.
+#'
+#' Objects inheriting from class `"evmissing"` have `coef`, `logLik`, `nobs`,
+#' `summary`, `vcov`, `confint` and `plot` methods.  See [`evmissing_methods`].
 #' @seealso [`gev_mle`] provides an adjustment for missing data in the
 #' case where the raw data can be assumed to be independent and identically
 #' distributed.
